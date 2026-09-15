@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+.sc-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  width: 100%;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.sc-modal {
+  background: #f0f2f8;
+  border-radius: 20px;
+  overflow: hidden;
+
+  width: 100%;
+  max-width: 480px;
+
+  border: 2px solid #c0392b;
+
+  box-sizing: border-box;
+}
+
+.sc-accent-bar {
+  height: 10px;
+  background: #c0392b;
+  width: 100%;
+}
+
+.sc-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 2rem 2.5rem;
+
+  box-sizing: border-box;
+}
+
+.sc-mensaje {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #1a1f36;
+
+  text-align: center;
+  line-height: 1.6;
+
+  margin: 0 0 0.5rem;
+
+  overflow-wrap: break-word;
+}
+
+.sc-btn-si {
+  display: block;
+
+  width: 100%;
+
+  padding: 14px;
+
+  border-radius: 50px;
+
+  background: #c0392b;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  text-align: center;
+  text-decoration: none;
+
+  transition: background 0.2s ease;
+
+  box-sizing: border-box;
+  min-height: 48px;
+}
+
+.sc-btn-si:hover {
+  background: #e74c3c;
+}
+
+.sc-btn-no {
+  width: 100%;
+
+  padding: 14px;
+
+  border-radius: 50px;
+
+  background: #1a1f36;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  border: none;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+
+  box-sizing: border-box;
+  min-height: 48px;
+}
+
+.sc-btn-no:hover {
+  background: #2d3561;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 600px) {
+  .sc-overlay {
+    padding: 1rem;
+  }
+
+  .sc-modal {
+    max-width: 100%;
+    border-radius: 18px;
+  }
+
+  .sc-body {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .sc-mensaje {
+    font-size: 16px;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .sc-overlay {
+    padding: 0.75rem;
+  }
+
+  .sc-modal {
+    border-radius: 16px;
+  }
+
+  .sc-accent-bar {
+    height: 8px;
+  }
+
+  .sc-body {
+    gap: 0.75rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .sc-mensaje {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .sc-btn-si,
+  .sc-btn-no {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .sc-overlay {
+    padding: 0.5rem;
+  }
+
+  .sc-body {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .sc-mensaje {
+    font-size: 14px;
+  }
+
+  .sc-btn-si,
+  .sc-btn-no {
+    padding: 11px;
+    font-size: 13px;
+  }
+}

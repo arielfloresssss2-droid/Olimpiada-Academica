@@ -1,0 +1,163 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/auth/Login-Register.css";
+
+function Soporte() {
+  const navigate = useNavigate();
+
+  // Estado del formulario
+  const [formData, setFormData] = useState({
+    nombreCompleto: "",
+    email: "",
+    asunto: "",
+    descripcion: "",
+    aceptaTerminos: false,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value, type } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !formData.nombreCompleto ||
+      !formData.email ||
+      !formData.asunto ||
+      !formData.descripcion
+    ) {
+      alert("Por favor completá todos los campos");
+      return;
+    }
+
+    if (!formData.aceptaTerminos) {
+      alert("Debes aceptar los términos para enviar la consulta");
+      return;
+    }
+
+    console.log("Formulario enviado:", formData);
+
+    navigate("/support-success");
+  };
+
+  return (
+    <div className="login-page">
+      <br />
+
+      <div className="soporte-card">
+        <div className="login-accent-bar" />
+
+        <div className="login-body">
+          <div className="login-logo">
+            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+          </div>
+
+          <h1 className="login-school-name">E.E.S.T. N°6 Chacabuco</h1>
+
+          <p className="login-school-city">MORÓN</p>
+
+          <div className="soporte-divider-top">
+            <div className="soporte-divider-line-full" />
+          </div>
+
+          <h2 className="soporte-title">Soporte técnico</h2>
+
+          <p className="login-subtitle">
+            Describe tu inconveniente y nuestro equipo revisará tu solicitud.
+          </p>
+
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-field">
+              <label className="login-label">NOMBRE COMPLETO</label>
+
+              <div className="login-input-wrapper">
+                <input
+                  className="login-input"
+                  type="text"
+                  name="nombreCompleto"
+                  value={formData.nombreCompleto}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu nombre completo"
+                />
+              </div>
+            </div>
+
+            <div className="login-field">
+              <label className="login-label">EMAIL</label>
+
+              <div className="login-input-wrapper">
+                <input
+                  className="login-input"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Ingresa tu email"
+                />
+              </div>
+            </div>
+
+            <div className="login-field">
+              <label className="login-label">ASUNTO</label>
+
+              <div className="login-input-wrapper">
+                <input
+                  className="login-input"
+                  type="text"
+                  name="asunto"
+                  value={formData.asunto}
+                  onChange={handleChange}
+                  placeholder="Asunto"
+                />
+              </div>
+            </div>
+
+            <div className="login-field">
+              <label className="login-label">DESCRIPCIÓN</label>
+
+              <div className="login-input-wrapper">
+                <textarea
+                  className="soporte-textarea"
+                  name="descripcion"
+                  value={formData.descripcion}
+                  onChange={handleChange}
+                  placeholder="Describe tu problema"
+                />
+              </div>
+            </div>
+
+            <label className="login-remember">
+              <input
+                type="checkbox"
+                name="aceptaTerminos"
+                checked={formData.aceptaTerminos}
+                onChange={handleChange}
+              />
+
+              <span className="login-remember-text">
+                Acepto que mis datos sean utilizados para responder a esta
+                solicitud.
+              </span>
+            </label>
+
+            <button type="submit" className="login-submit-btn">
+              Enviar consulta
+            </button>
+          </form>
+        </div>
+      </div>
+      <br />
+    </div>
+  );
+}
+
+export default Soporte;

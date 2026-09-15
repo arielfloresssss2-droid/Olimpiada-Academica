@@ -1,0 +1,320 @@
+@import "tailwindcss";
+
+.cp-section {
+  @apply min-h-screen p-6 flex flex-col gap-6;
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.cp-header {
+  @apply flex flex-col gap-2;
+}
+
+.cp-header h2 {
+  @apply text-3xl font-bold;
+  color: white;
+}
+
+.cp-header p {
+  @apply text-base;
+  color: #aeb8d4;
+}
+
+.cp-card {
+  @apply rounded-3xl p-8 flex flex-col gap-7;
+  background: #f0f2f8;
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cp-card h3 {
+  @apply text-2xl font-bold;
+  color: #1a1f36;
+}
+
+.cp-metodos {
+  @apply grid grid-cols-2 gap-5;
+
+  width: 100%;
+}
+
+.cp-metodo {
+  @apply rounded-2xl p-6 flex flex-col items-center justify-center;
+
+  background: white;
+  border: 2px solid transparent;
+  min-height: 170px;
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cp-metodo:hover {
+  @apply -translate-y-1;
+
+  box-shadow: 0 8px 20px rgba(26, 31, 54, 0.12);
+}
+
+.cp-metodo.seleccionado {
+  border-color: #c0392b;
+  background: #fff8f7;
+}
+
+.cp-metodo-icono {
+  @apply text-4xl mb-3;
+}
+
+.cp-metodo h4 {
+  @apply text-xl font-bold;
+
+  color: #1a1f36;
+
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.cp-metodo p {
+  @apply text-sm mt-2;
+
+  color: #5a6490;
+
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.cp-continuar {
+  @apply w-full rounded-2xl p-4 text-lg font-bold;
+
+  background: #c0392b;
+  color: white;
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  min-height: 50px;
+}
+
+.cp-continuar:hover {
+  background: #a93226;
+}
+
+.cp-continuar:disabled {
+  background: #b8bdcc;
+  cursor: not-allowed;
+}
+
+.cp-resumen {
+  @apply flex justify-between items-center p-4 rounded-xl;
+
+  background: white;
+  border: 1px solid #e2e8f0;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  gap: 1rem;
+}
+
+.cp-resumen p {
+  @apply text-base;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.cp-total {
+  @apply text-xl font-bold;
+
+  color: #c0392b;
+
+  white-space: nowrap;
+}
+
+.cp-volver {
+  @apply w-full text-center text-sm font-semibold py-2;
+
+  color: #5a6490;
+
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  transition: 0.2s;
+
+  min-height: 40px;
+}
+
+.cp-volver:hover {
+  color: #1a1f36;
+  text-decoration: underline;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .cp-section {
+    @apply p-5;
+  }
+
+  .cp-card {
+    @apply p-6;
+  }
+
+  .cp-metodos {
+    gap: 1rem;
+  }
+
+  .cp-metodo {
+    min-height: 150px;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 768px) {
+  .cp-section {
+    @apply p-4 gap-5;
+  }
+
+  .cp-header h2 {
+    @apply text-2xl;
+  }
+
+  .cp-header p {
+    @apply text-sm;
+  }
+
+  .cp-card {
+    @apply p-5 rounded-[26px] gap-5;
+  }
+
+  .cp-card h3 {
+    @apply text-xl;
+  }
+
+  .cp-metodos {
+    @apply grid-cols-1;
+
+    gap: 0.75rem;
+  }
+
+  .cp-metodo {
+    min-height: 135px;
+    padding: 1.25rem;
+  }
+
+  .cp-metodo-icono {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cp-metodo h4 {
+    font-size: 1.1rem;
+  }
+
+  .cp-metodo p {
+    font-size: 0.8rem;
+  }
+
+  .cp-continuar {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+
+  .cp-resumen {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cp-total {
+    font-size: 1.15rem;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .cp-section {
+    @apply p-3 gap-4;
+  }
+
+  .cp-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .cp-header p {
+    font-size: 0.75rem;
+  }
+
+  .cp-card {
+    @apply p-4 rounded-[22px];
+  }
+
+  .cp-card h3 {
+    font-size: 1.05rem;
+  }
+
+  .cp-metodo {
+    min-height: 120px;
+    padding: 1rem;
+  }
+
+  .cp-metodo-icono {
+    font-size: 1.8rem;
+  }
+
+  .cp-metodo h4 {
+    font-size: 1rem;
+  }
+
+  .cp-metodo p {
+    font-size: 0.75rem;
+  }
+
+  .cp-resumen {
+    @apply p-3;
+  }
+
+  .cp-resumen p {
+    font-size: 0.8rem;
+  }
+
+  .cp-total {
+    font-size: 1rem;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .cp-section {
+    @apply p-2;
+  }
+
+  .cp-card {
+    @apply p-3 rounded-[20px];
+  }
+
+  .cp-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .cp-metodo {
+    min-height: 110px;
+    padding: 0.75rem;
+  }
+
+  .cp-continuar {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}

@@ -1,0 +1,599 @@
+@import "tailwindcss";
+
+/* Home.css */
+
+.home-page {
+  @apply min-h-screen;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.home-content {
+  @apply p-5;
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ================= HEADER ================= */
+
+.home-header {
+  @apply flex flex-col gap-5 mb-6;
+}
+
+.home-title {
+  @apply text-3xl font-bold;
+
+  color: white;
+}
+
+.home-subtitle {
+  @apply text-sm mt-1;
+
+  color: #aeb8d4;
+}
+
+.home-user-card {
+  @apply flex items-center gap-3 rounded-3xl px-4 py-3 w-fit;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.home-user-card img {
+  @apply w-12 h-12 rounded-full p-2;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  flex-shrink: 0;
+}
+
+.home-user-card h3 {
+  @apply text-sm font-bold;
+
+  color: white;
+}
+
+.home-user-card p {
+  @apply text-xs;
+
+  color: #c5cee8;
+}
+
+/* ================= MAIN CARD ================= */
+
+.home-main-card {
+  @apply rounded-[32px] p-6 mb-6 flex flex-col gap-6 overflow-hidden relative;
+
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home-main-card::before {
+  content: "";
+
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -60px;
+  top: -60px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  pointer-events: none;
+}
+
+.home-badge {
+  @apply text-xs font-bold px-3 py-1 rounded-full w-fit mb-3;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  letter-spacing: 0.08em;
+
+  max-width: 100%;
+}
+
+.home-main-info {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.home-main-info h2 {
+  @apply text-3xl font-bold mb-2;
+
+  color: white;
+
+  overflow-wrap: break-word;
+}
+
+.home-main-info p {
+  @apply text-sm leading-6;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  overflow-wrap: break-word;
+}
+
+.home-main-footer {
+  @apply flex flex-col gap-3 mt-6;
+}
+
+.home-price {
+  @apply text-sm font-bold;
+
+  color: white;
+}
+
+.home-main-btn {
+  @apply px-6 py-3 rounded-2xl font-bold transition-all duration-200;
+
+  background: white;
+  color: #c0392b;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+
+  width: fit-content;
+  max-width: 100%;
+}
+
+.home-main-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ocultar imagen en móvil */
+
+.home-main-image {
+  display: none;
+}
+
+/* ================= GRID ================= */
+
+.home-grid {
+  @apply grid gap-5;
+
+  width: 100%;
+}
+
+/* ================= GENERIC CARD ================= */
+
+.home-card {
+  @apply rounded-[30px] p-5;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.home-card-title {
+  @apply text-lg font-bold mb-4;
+
+  color: #1a1f36;
+}
+
+/* ================= RESERVA ================= */
+
+.home-card-header {
+  @apply flex items-center justify-between mb-3;
+
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.home-card-header h3 {
+  @apply text-lg font-bold;
+
+  color: #1a1f36;
+}
+
+.home-success-dot {
+  @apply w-3 h-3 rounded-full;
+
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+
+  flex-shrink: 0;
+}
+
+.home-card-text {
+  @apply text-sm mb-4;
+
+  color: #5a6490;
+}
+
+.home-qr {
+  @apply rounded-2xl px-4 py-5 text-center font-bold text-xl;
+
+  background: #e2e5f0;
+  color: #1a1f36;
+  border: 2px dashed #c0392b;
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+/* ================= SHORTCUTS ================= */
+
+.home-shortcuts {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.home-shortcut-btn {
+  @apply rounded-2xl py-4 px-3 text-sm font-semibold transition-all duration-200;
+
+  background: #e2e5f0;
+  color: #1a1f36;
+
+  min-width: 0;
+}
+
+.home-shortcut-btn:hover {
+  transform: translateY(-2px);
+
+  background: #d9deee;
+}
+
+/* ================= NOTIFICATIONS ================= */
+
+.home-notifications {
+  @apply flex flex-col gap-3;
+}
+
+.home-notification {
+  @apply flex items-start gap-3 rounded-2xl p-3;
+
+  background: #e2e5f0;
+
+  transition: all 0.2s ease;
+
+  min-width: 0;
+}
+
+.home-notification:hover {
+  transform: translateY(-2px);
+}
+
+.home-notification p {
+  @apply text-sm;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+/* ================= STATS ================= */
+
+.home-card-stats {
+  @apply rounded-[30px] p-5;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.home-stat-box {
+  @apply rounded-2xl p-6 text-center;
+
+  background: #e2e5f0;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.home-stat-box h4 {
+  @apply text-2xl font-bold;
+
+  color: #c0392b;
+}
+
+.home-stat-box p {
+  @apply text-sm mt-2;
+
+  color: #5a6490;
+
+  overflow-wrap: break-word;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 1023px) {
+  .home-content {
+    @apply p-5;
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-card-stats {
+    grid-column: auto;
+  }
+
+  .home-main-card {
+    gap: 4px;
+  }
+
+  .home-main-info h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width: 1024px) {
+  .home-content {
+    @apply p-8;
+  }
+
+  .home-header {
+    @apply flex-row items-center justify-between;
+  }
+
+  .home-main-card {
+    @apply flex-row items-center justify-between;
+  }
+
+  .home-main-info {
+    flex: 1;
+  }
+
+  .home-main-image {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 2rem;
+
+    flex-shrink: 0;
+  }
+
+  .home-main-image img {
+    width: 180px;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .home-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-card-stats {
+    grid-column: 1 / -1;
+  }
+
+  .home-stats {
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 600px) {
+  .home-content {
+    @apply p-4;
+  }
+
+  .home-header {
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .home-title {
+    @apply text-2xl;
+  }
+
+  .home-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .home-user-card {
+    width: 100%;
+  }
+
+  .home-main-card {
+    @apply rounded-[26px] p-5;
+
+    gap: 3px;
+  }
+
+  .home-main-info h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .home-main-info p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .home-main-footer {
+    margin-top: 1rem;
+  }
+
+  .home-main-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .home-card {
+    @apply rounded-[24px] p-4;
+  }
+
+  .home-card-stats {
+    @apply rounded-[24px] p-4;
+  }
+
+  .home-stats {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .home-stat-box {
+    @apply p-4;
+  }
+
+  .home-shortcuts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .home-content {
+    @apply p-3;
+  }
+
+  .home-title {
+    font-size: 1.4rem;
+  }
+
+  .home-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .home-user-card {
+    @apply rounded-2xl px-3 py-2;
+  }
+
+  .home-user-card img {
+    @apply w-10 h-10;
+  }
+
+  .home-user-card h3 {
+    font-size: 0.8rem;
+  }
+
+  .home-user-card p {
+    font-size: 0.7rem;
+  }
+
+  .home-main-card {
+    @apply rounded-[22px] p-4;
+  }
+
+  .home-badge {
+    font-size: 0.65rem;
+  }
+
+  .home-main-info h2 {
+    font-size: 1.3rem;
+  }
+
+  .home-main-info p {
+    font-size: 0.8rem;
+  }
+
+  .home-price {
+    font-size: 0.8rem;
+  }
+
+  .home-card-title,
+  .home-card-header h3 {
+    font-size: 1rem;
+  }
+
+  .home-card-text {
+    font-size: 0.8rem;
+  }
+
+  .home-qr {
+    @apply px-3 py-4;
+
+    font-size: 1rem;
+  }
+
+  .home-shortcut-btn {
+    @apply py-3 px-2;
+
+    font-size: 0.75rem;
+  }
+
+  .home-notification {
+    @apply p-2;
+  }
+
+  .home-notification p {
+    font-size: 0.75rem;
+  }
+
+  .home-stat-box h4 {
+    font-size: 1.3rem;
+  }
+
+  .home-stat-box p {
+    font-size: 0.75rem;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .home-content {
+    @apply p-2;
+  }
+
+  .home-title {
+    font-size: 1.25rem;
+  }
+
+  .home-main-card {
+    @apply p-3 rounded-[20px];
+  }
+
+  .home-main-info h2 {
+    font-size: 1.15rem;
+  }
+
+  .home-main-info p {
+    font-size: 0.75rem;
+  }
+
+  .home-card {
+    @apply p-3 rounded-[20px];
+  }
+
+  .home-card-stats {
+    @apply p-3 rounded-[20px];
+  }
+
+  .home-shortcuts {
+    grid-template-columns: 1fr;
+  }
+
+  .home-shortcut-btn {
+    width: 100%;
+  }
+
+  .home-stat-box {
+    @apply p-3;
+  }
+}

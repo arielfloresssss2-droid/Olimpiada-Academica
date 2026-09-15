@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+.admin-home {
+  @apply min-h-screen p-6 md:p-10;
+
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ------------------------- */
+/* HEADER */
+/* ------------------------- */
+
+.admin-home-header {
+  @apply mb-10;
+}
+
+.admin-home-tag {
+  @apply inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4;
+
+  background: rgba(192, 57, 43, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.25);
+}
+
+.admin-home-header h1 {
+  @apply text-4xl font-bold mb-3;
+
+  color: white;
+}
+
+.admin-home-header p {
+  @apply text-lg max-w-2xl;
+
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+/* ------------------------- */
+/* GRID */
+/* ------------------------- */
+
+.admin-grid {
+  @apply grid gap-8;
+
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+  width: 100%;
+  min-width: 0;
+}
+
+/* ------------------------- */
+/* TARJETAS */
+/* ------------------------- */
+
+.admin-card {
+  @apply rounded-3xl p-6 flex flex-col gap-5;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.2s ease;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+}
+
+.admin-card-icon {
+  @apply w-14 h-14 rounded-2xl flex items-center justify-center;
+
+  background: rgba(192, 57, 43, 0.12);
+  color: #c0392b;
+}
+
+.admin-card h2 {
+  @apply text-2xl font-bold;
+
+  color: #1a1f36;
+}
+
+.admin-card p {
+  @apply text-base;
+
+  color: #5a6490;
+  line-height: 1.6;
+}
+
+/* ------------------------- */
+/* BOTÓN */
+/* ------------------------- */
+
+.admin-card-button {
+  @apply w-full rounded-2xl px-5 py-3 font-bold;
+
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+
+  color: white;
+
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 8px 18px rgba(192, 57, 43, 0.25);
+
+  transition: all 0.2s ease;
+
+  min-height: 48px;
+}
+
+.admin-card-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 22px rgba(192, 57, 43, 0.35);
+}
+
+/* ------------------------- */
+/* TABLET */
+/* ------------------------- */
+
+@media (max-width: 900px) {
+  .admin-home {
+    @apply p-6;
+  }
+
+  .admin-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .admin-home-header h1 {
+    @apply text-3xl;
+  }
+}
+
+/* ------------------------- */
+/* CELULAR */
+/* ------------------------- */
+
+@media (max-width: 600px) {
+  .admin-home {
+    @apply p-4;
+  }
+
+  .admin-home-header {
+    @apply mb-6;
+  }
+
+  .admin-home-header h1 {
+    @apply text-2xl;
+  }
+
+  .admin-home-header p {
+    @apply text-base;
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .admin-card {
+    @apply p-5 rounded-2xl;
+  }
+
+  .admin-card h2 {
+    @apply text-xl;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES CHICOS */
+/* ------------------------- */
+
+@media (max-width: 360px) {
+  .admin-home {
+    @apply p-3;
+  }
+
+  .admin-home-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-home-header p {
+    font-size: 0.9rem;
+  }
+
+  .admin-card {
+    @apply p-4;
+  }
+
+  .admin-card-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .admin-card-button {
+    font-size: 0.85rem;
+  }
+}

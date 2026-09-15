@@ -1,0 +1,822 @@
+@import "tailwindcss";
+
+.estadisticas-home {
+  @apply min-h-screen p-6 md:p-10;
+
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+
+  box-sizing: border-box;
+}
+
+/* ------------------------- */
+/* HEADER */
+/* ------------------------- */
+.btn-exportar-excel { margin-top: 20px;
+   padding: 12px 20px; 
+   border: none; 
+   border-radius: 8px; 
+   background: #16a34a; 
+   color: white; 
+   font-size: 15px; 
+   font-weight: 600; 
+   cursor: pointer; 
+   transition: 0.2s; } 
+.btn-exportar-excel:hover {
+ transform: translateY(-2px); 
+  opacity: 0.9; }
+.estadisticas-header {
+  @apply mb-8;
+}
+
+.estadisticas-tag {
+  @apply inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4;
+
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+.estadisticas-header h1 {
+  @apply text-4xl font-bold mb-3;
+
+  color: white;
+}
+
+.estadisticas-header p {
+  @apply text-lg;
+
+  color: #9ca3af;
+}
+
+/* ------------------------- */
+/* TARJETAS RESUMEN */
+/* ------------------------- */
+
+.estadisticas-resumen {
+  @apply grid gap-6 mb-8;
+
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.estadistica-card {
+  @apply p-6 rounded-3xl transition-all duration-300;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+}
+
+.estadistica-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(239, 68, 68, 0.25);
+
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.28);
+}
+
+.estadistica-icon {
+  @apply w-16 h-16 rounded-2xl flex items-center justify-center mb-5;
+
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+
+  color: white;
+}
+
+.estadistica-card span {
+  @apply text-sm font-medium;
+
+  color: #94a3b8;
+}
+
+.estadistica-card h2 {
+  @apply text-4xl font-bold mt-3 mb-2;
+
+  color: white;
+}
+
+.estadistica-card h3 {
+  @apply text-2xl font-bold mt-3 mb-2;
+
+  color: white;
+}
+
+.estadistica-card small {
+  @apply text-sm;
+
+  color: #cbd5e1;
+}
+
+.danger {
+  color: #ef4444 !important;
+}
+
+/* ------------------------- */
+/* GRAFICO */
+/* ------------------------- */
+
+.grafico-card {
+  @apply rounded-3xl p-7 mb-8;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+
+  width: 100%;
+  min-width: 0;
+  height: auto;
+
+  overflow: hidden;
+}
+
+.tabla-card {
+  @apply rounded-3xl p-7 mb-8;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.grafico-container {
+  width: 100%;
+  height: 300px;
+
+  min-width: 0;
+  min-height: 0;
+
+  position: relative;
+}
+
+.tabla-estadisticas {
+  @apply w-full;
+
+  border-collapse: collapse;
+}
+
+.tabla-estadisticas thead {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tabla-estadisticas th {
+  @apply text-left py-4 px-5;
+
+  color: white;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.tabla-estadisticas td {
+  @apply py-4 px-5;
+
+  color: #d1d5db;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  white-space: nowrap;
+}
+
+.tabla-estadisticas tbody tr {
+  transition: 0.25s;
+}
+
+.tabla-estadisticas tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ------------------------- */
+/* ESTADOS */
+/* ------------------------- */
+
+.estado {
+  @apply px-4 py-2 rounded-full text-sm font-semibold;
+
+  display: inline-flex;
+
+  justify-content: center;
+
+  min-width: 120px;
+}
+
+.estado.entregado {
+  background: rgba(34, 197, 94, 0.15);
+
+  color: #4ade80;
+}
+
+.estado.pendiente {
+  background: rgba(250, 204, 21, 0.15);
+
+  color: #facc15;
+}
+
+.estado.cancelado {
+  background: rgba(239, 68, 68, 0.15);
+
+  color: #f87171;
+}
+
+/* ------------------------- */
+/* TABLET */
+/* ------------------------- */
+
+@media (max-width: 900px) {
+  .estadisticas-header h1 {
+    @apply text-3xl;
+  }
+
+  .estadisticas-resumen {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grafico-container {
+    height: 280px;
+  }
+
+  .tabla-card {
+    overflow-x: auto;
+  }
+
+  .tabla-estadisticas {
+    min-width: 700px;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES */
+/* ------------------------- */
+
+@media (max-width: 600px) {
+  .estadisticas-home {
+    padding: 20px 14px;
+  }
+
+  .estadisticas-header {
+    margin-bottom: 24px;
+  }
+
+  .estadisticas-tag {
+    font-size: 12px;
+    padding: 7px 12px;
+    margin-bottom: 12px;
+  }
+
+  .estadisticas-header h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .estadisticas-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* TARJETAS */
+
+  .estadisticas-resumen {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .estadistica-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .estadistica-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+
+  .estadistica-card h2 {
+    font-size: 30px;
+    margin-top: 8px;
+  }
+
+  .estadistica-card h3 {
+    font-size: 21px;
+    margin-top: 8px;
+  }
+
+  .estadistica-card span {
+    font-size: 13px;
+  }
+
+  .estadistica-card small {
+    font-size: 12px;
+  }
+
+  /* GRAFICO */
+
+  .grafico-card,
+  .tabla-card {
+    padding: 17px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    margin-bottom: 18px;
+  }
+
+  .card-title h3 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .card-title p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .grafico-container {
+    width: 100%;
+    height: 230px;
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+  }
+
+  /* TABLA */
+
+  .tabla-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabla-estadisticas {
+    min-width: 650px;
+  }
+
+  .tabla-estadisticas th,
+  .tabla-estadisticas td {
+    padding: 11px 12px;
+    font-size: 12px;
+  }
+
+  .estado {
+    min-width: 95px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES MUY CHICOS */
+/* ------------------------- */
+
+@media (max-width: 360px) {
+  .estadisticas-home {
+    padding: 16px 10px;
+  }
+
+  .estadisticas-header h1 {
+    font-size: 24px;
+  }
+
+  .estadisticas-header p {
+    font-size: 13px;
+  }
+
+  .estadistica-card {
+    padding: 15px;
+  }
+
+  .estadistica-card h2 {
+    font-size: 27px;
+  }
+
+  .grafico-card,
+  .tabla-card {
+    padding: 14px;
+    border-radius: 17px;
+  }
+
+  .card-title h3 {
+    font-size: 18px;
+  }
+
+  .grafico-container {
+    height: 210px;
+  }
+}
+
+@import "tailwindcss";
+
+.estadisticas-home {
+  @apply min-h-screen p-6 md:p-10;
+
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+
+  box-sizing: border-box;
+}
+
+/* ------------------------- */
+/* HEADER */
+/* ------------------------- */
+
+.estadisticas-header {
+  @apply mb-8;
+}
+
+.estadisticas-tag {
+  @apply inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4;
+
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+.estadisticas-header h1 {
+  @apply text-4xl font-bold mb-3;
+
+  color: white;
+}
+
+.estadisticas-header p {
+  @apply text-lg;
+
+  color: #9ca3af;
+}
+
+/* ------------------------- */
+/* TARJETAS RESUMEN */
+/* ------------------------- */
+
+.estadisticas-resumen {
+  @apply grid gap-6 mb-8;
+
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.estadistica-card {
+  @apply p-6 rounded-3xl transition-all duration-300;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+}
+
+.estadistica-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(239, 68, 68, 0.25);
+
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.28);
+}
+
+.estadistica-icon {
+  @apply w-16 h-16 rounded-2xl flex items-center justify-center mb-5;
+
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+
+  color: white;
+}
+
+.estadistica-card span {
+  @apply text-sm font-medium;
+
+  color: #94a3b8;
+}
+
+.estadistica-card h2 {
+  @apply text-4xl font-bold mt-3 mb-2;
+
+  color: white;
+}
+
+.estadistica-card h3 {
+  @apply text-2xl font-bold mt-3 mb-2;
+
+  color: white;
+}
+
+.estadistica-card small {
+  @apply text-sm;
+
+  color: #cbd5e1;
+}
+
+.danger {
+  color: #ef4444 !important;
+}
+
+/* ------------------------- */
+/* GRAFICO */
+/* ------------------------- */
+
+.grafico-card,
+.tabla-card {
+  @apply rounded-3xl p-7 mb-8;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+}
+
+.card-title {
+  @apply mb-6;
+}
+
+.card-title h3 {
+  @apply text-2xl font-bold mb-2;
+
+  color: white;
+}
+
+.card-title p {
+  color: #94a3b8;
+}
+
+.grafico-container {
+  @apply w-full;
+
+  height: 320px;
+
+  min-width: 0;
+}
+
+/* ------------------------- */
+/* TABLA */
+/* ------------------------- */
+
+.tabla-card {
+  overflow-x: auto;
+}
+
+.tabla-estadisticas {
+  @apply w-full;
+
+  border-collapse: collapse;
+}
+
+.tabla-estadisticas thead {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tabla-estadisticas th {
+  @apply text-left py-4 px-5;
+
+  color: white;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.tabla-estadisticas td {
+  @apply py-4 px-5;
+
+  color: #d1d5db;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  white-space: nowrap;
+}
+
+.tabla-estadisticas tbody tr {
+  transition: 0.25s;
+}
+
+.tabla-estadisticas tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ------------------------- */
+/* ESTADOS */
+/* ------------------------- */
+
+.estado {
+  @apply px-4 py-2 rounded-full text-sm font-semibold;
+
+  display: inline-flex;
+
+  justify-content: center;
+
+  min-width: 120px;
+}
+
+.estado.entregado {
+  background: rgba(34, 197, 94, 0.15);
+
+  color: #4ade80;
+}
+
+.estado.pendiente {
+  background: rgba(250, 204, 21, 0.15);
+
+  color: #facc15;
+}
+
+.estado.cancelado {
+  background: rgba(239, 68, 68, 0.15);
+
+  color: #f87171;
+}
+
+/* ------------------------- */
+/* TABLET */
+/* ------------------------- */
+
+@media (max-width: 900px) {
+  .estadisticas-header h1 {
+    @apply text-3xl;
+  }
+
+  .estadisticas-resumen {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grafico-container {
+    height: 280px;
+  }
+
+  .tabla-card {
+    overflow-x: auto;
+  }
+
+  .tabla-estadisticas {
+    min-width: 700px;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES */
+/* ------------------------- */
+
+@media (max-width: 600px) {
+  .estadisticas-home {
+    padding: 20px 14px;
+  }
+
+  .estadisticas-header {
+    margin-bottom: 24px;
+  }
+
+  .estadisticas-tag {
+    font-size: 12px;
+    padding: 7px 12px;
+    margin-bottom: 12px;
+  }
+
+  .estadisticas-header h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .estadisticas-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* TARJETAS */
+
+  .estadisticas-resumen {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .estadistica-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .estadistica-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+
+  .estadistica-card h2 {
+    font-size: 30px;
+    margin-top: 8px;
+  }
+
+  .estadistica-card h3 {
+    font-size: 21px;
+    margin-top: 8px;
+  }
+
+  .estadistica-card span {
+    font-size: 13px;
+  }
+
+  .estadistica-card small {
+    font-size: 12px;
+  }
+
+  /* GRAFICO */
+
+  .grafico-card,
+  .tabla-card {
+    padding: 17px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    margin-bottom: 18px;
+  }
+
+  .card-title h3 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .card-title p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .grafico-container {
+    height: 230px;
+  }
+
+  /* TABLA */
+
+  .tabla-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabla-estadisticas {
+    min-width: 650px;
+  }
+
+  .tabla-estadisticas th,
+  .tabla-estadisticas td {
+    padding: 11px 12px;
+    font-size: 12px;
+  }
+
+  .estado {
+    min-width: 95px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES MUY CHICOS */
+/* ------------------------- */
+
+@media (max-width: 360px) {
+  .estadisticas-home {
+    padding: 16px 10px;
+  }
+
+  .estadisticas-header h1 {
+    font-size: 24px;
+  }
+
+  .estadisticas-header p {
+    font-size: 13px;
+  }
+
+  .estadistica-card {
+    padding: 15px;
+  }
+
+  .estadistica-card h2 {
+    font-size: 27px;
+  }
+
+  .grafico-card,
+  .tabla-card {
+    padding: 14px;
+    border-radius: 17px;
+  }
+
+  .card-title h3 {
+    font-size: 18px;
+  }
+
+  .grafico-container {
+    height: 210px;
+  }
+}

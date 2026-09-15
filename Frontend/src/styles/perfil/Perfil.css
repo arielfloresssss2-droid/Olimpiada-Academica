@@ -1,0 +1,376 @@
+@import "tailwindcss";
+
+/* Perfil page */
+
+.perfil-wrapper {
+  @apply min-h-screen flex items-center justify-center p-8;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.perfil-card {
+  @apply flex flex-col items-center rounded-3xl shadow-xl;
+
+  background: #e8eaf2;
+  padding: 2.5rem 2.5rem 1rem;
+
+  width: 100%;
+  max-width: 22rem;
+  box-sizing: border-box;
+}
+
+/* Avatar */
+
+.perfil-avatar {
+  @apply w-30 h-30 rounded-full flex items-center justify-center mb-4;
+
+  background: none;
+
+  flex-shrink: 0;
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+
+  filter: brightness(0) saturate(100%) invert(10%) sepia(30%) saturate(500%)
+    hue-rotate(190deg);
+}
+
+/* Nombre y email */
+
+.perfil-nombre {
+  @apply text-2xl font-bold mb-1 text-center;
+
+  color: #1a1f36;
+
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.perfil-email {
+  @apply text-sm text-center mb-8;
+
+  color: #7b8ab8;
+
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Stats */
+
+.perfil-stats {
+  @apply w-full mb-8;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.perfil-stat {
+  @apply flex flex-col items-center justify-center rounded-2xl py-5 px-3 text-center gap-1;
+
+  background: #d4d8ec;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.perfil-stat-label {
+  @apply text-xs font-semibold leading-tight;
+
+  color: #4a5578;
+
+  overflow-wrap: break-word;
+}
+
+.perfil-stat-value {
+  @apply text-xl font-bold;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+/* Botones */
+
+.perfil-actions {
+  @apply w-full;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.perfil-btn {
+  @apply py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.97] cursor-pointer;
+
+  width: 100%;
+  min-height: 44px;
+}
+
+.perfil-btn-primary {
+  @apply text-white;
+
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+}
+
+.perfil-btn-primary:hover {
+  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+}
+
+.perfil-btn-danger {
+  @apply text-white;
+
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+}
+
+.perfil-btn-danger:hover {
+  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+}
+
+.perfil-btn-secondary {
+  @apply text-white;
+
+  background: #7b8ab8;
+}
+
+.perfil-btn-secondary:hover {
+  background: #5a6490;
+}
+
+/* Modal */
+
+.perfil-modal-overlay {
+  @apply fixed inset-0 flex items-center justify-center z-50;
+
+  background: rgba(10, 13, 28, 0.5);
+  backdrop-filter: blur(4px);
+
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.perfil-modal {
+  @apply rounded-2xl p-8 flex flex-col gap-5 shadow-2xl;
+
+  background: #f0f2f8;
+
+  width: 100%;
+  max-width: 20rem;
+  box-sizing: border-box;
+}
+
+.perfil-modal-text {
+  @apply text-sm text-center;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.perfil-modal-actions {
+  @apply flex gap-3;
+
+  width: 100%;
+}
+
+.perfil-modal-actions .perfil-btn {
+  min-width: 0;
+}
+
+/* Soporte */
+
+.perfil-support {
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  border-top: 1px solid #c7cde2;
+
+  text-align: center;
+}
+
+.login-help-text {
+  margin: 0 !important;
+  padding: 0;
+  line-height: 1.2;
+
+  overflow-wrap: break-word;
+}
+
+.login-help-link {
+  @apply font-semibold hover:underline;
+
+  color: #2d3561;
+}
+
+/* ================= TABLET ================= */
+
+@media (min-width: 640px) {
+  .perfil-card {
+    padding: 3.5rem;
+    max-width: 56rem;
+  }
+
+  .perfil-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .perfil-actions {
+    flex-direction: row;
+  }
+
+  .perfil-btn {
+    flex: 1;
+    width: auto;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 600px) {
+  .perfil-wrapper {
+    @apply p-4;
+  }
+
+  .perfil-card {
+    @apply rounded-[26px];
+
+    padding: 2rem 1.25rem 1rem;
+
+    max-width: 100%;
+  }
+
+  .perfil-avatar {
+    @apply w-24 h-24;
+  }
+
+  .perfil-nombre {
+    font-size: 1.4rem;
+  }
+
+  .perfil-email {
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .perfil-stats {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .perfil-stat {
+    padding: 1rem;
+  }
+
+  .perfil-stat-value {
+    font-size: 1.1rem;
+  }
+
+  .perfil-stat-label {
+    font-size: 0.7rem;
+  }
+
+  .perfil-actions {
+    gap: 0.6rem;
+  }
+
+  .perfil-btn {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+  }
+
+  .perfil-modal {
+    padding: 1.5rem;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 400px) {
+  .perfil-wrapper {
+    @apply p-3;
+  }
+
+  .perfil-card {
+    @apply rounded-[22px];
+
+    padding: 1.5rem 1rem 0.75rem;
+  }
+
+  .perfil-avatar {
+    @apply w-20 h-20;
+
+    margin-bottom: 0.75rem;
+  }
+
+  .perfil-nombre {
+    font-size: 1.2rem;
+  }
+
+  .perfil-email {
+    font-size: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .perfil-stats {
+    gap: 0.6rem;
+  }
+
+  .perfil-stat {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .perfil-stat-value {
+    font-size: 1rem;
+  }
+
+  .perfil-stat-label {
+    font-size: 0.65rem;
+  }
+
+  .perfil-modal-overlay {
+    padding: 0.75rem;
+  }
+
+  .perfil-modal {
+    padding: 1.25rem;
+  }
+
+  .perfil-modal-actions {
+    flex-direction: column;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .perfil-wrapper {
+    @apply p-2;
+  }
+
+  .perfil-card {
+    padding: 1.25rem 0.75rem 0.75rem;
+  }
+
+  .perfil-avatar {
+    @apply w-18 h-18;
+  }
+
+  .perfil-nombre {
+    font-size: 1.1rem;
+  }
+
+  .perfil-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-stat {
+    padding: 0.75rem;
+  }
+}

@@ -1,0 +1,600 @@
+@import "tailwindcss";
+
+.login-page {
+  @apply min-h-screen flex flex-col items-center justify-center;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-card {
+  @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
+
+  background: #f0f2f8;
+  max-width: 100%;
+}
+
+.login-accent-bar {
+  @apply h-2 w-full;
+
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 50%, #c0392b 100%);
+}
+
+.login-body {
+  @apply px-10 py-8 flex flex-col items-center;
+}
+
+.login-logo {
+  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center;
+  width: 200%;
+  height: 200%;
+  flex-shrink: 0;
+}
+
+.login-logo img {
+  @apply w-20 h-20 object-contain;
+}
+
+.login-school-name {
+  @apply text-xl font-bold text-center;
+
+  color: #1a1f36;
+}
+
+.login-school-city {
+  @apply text-xs font-semibold tracking-widest mb-5;
+
+  color: #7b8ab8;
+}
+
+.login-divider {
+  @apply flex items-center gap-3 w-full mb-5;
+}
+
+.login-divider-line {
+  @apply flex-1 h-px;
+
+  background: #c8cde0;
+}
+
+.login-title {
+  @apply text-2xl font-bold mb-1 tracking-tight;
+
+  text-align: center;
+  color: #c0392b;
+  font-family: "Georgia", serif;
+}
+
+.login-subtitle {
+  @apply text-sm mb-6;
+
+  color: #7b8ab8;
+}
+
+.login-form {
+  @apply flex flex-col w-full gap-4;
+}
+
+.login-field {
+  @apply flex flex-col gap-1;
+
+  min-width: 0;
+}
+
+.login-label {
+  @apply text-xs font-bold tracking-widest;
+
+  color: #7b8ab8;
+}
+
+.iconos {
+  filter: brightness(0);
+}
+
+.login-input-wrapper {
+  @apply flex items-center gap-2 rounded-xl px-4 py-3 transition-all duration-200;
+
+  background: #fff;
+  border: 1.5px solid #c8cde0;
+  color: #ff5722;
+
+  min-width: 0;
+}
+
+.login-input-wrapper:focus-within {
+  border-color: #f87171;
+}
+
+.login-input-icon {
+  @apply text-base;
+
+  color: #7b8ab8;
+  flex-shrink: 0;
+}
+
+.login-input {
+  @apply flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400;
+
+  color: #1a1f36;
+  min-width: 0;
+}
+
+.login-row {
+  @apply flex items-center justify-between;
+
+  gap: 12px;
+}
+
+.login-remember {
+  @apply flex items-center gap-2 cursor-pointer select-none;
+
+  min-width: 0;
+}
+
+.login-remember input {
+  @apply accent-red-600 w-4 h-4 cursor-pointer;
+
+  flex-shrink: 0;
+}
+
+.login-remember-text {
+  @apply text-sm;
+
+  color: black;
+}
+
+.login-forgot {
+  @apply text-sm font-semibold transition-colors hover:underline;
+
+  color: #c0392b;
+  white-space: nowrap;
+}
+
+.login-eye-btn {
+  @apply text-base transition-opacity hover:opacity-70;
+
+  filter: brightness(0);
+  flex-shrink: 0;
+}
+
+.login-eye-btn img {
+  @apply w-5 h-5 cursor-pointer transition-opacity hover:opacity-70;
+
+  filter: brightness(0.3);
+}
+
+.login-submit-btn {
+  @apply mt-2 w-full py-3 rounded-xl font-bold text-white text-base shadow-md transition-all duration-200 active:scale-[0.98];
+
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+
+  letter-spacing: 0.03em;
+}
+
+.login-submit-btn:hover {
+  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+}
+
+.login-submit-btn:disabled {
+  @apply opacity-60 cursor-not-allowed active:scale-100;
+}
+
+.login-help-text {
+  @apply text-sm text-center mt-1;
+
+  color: #7b8ab8;
+}
+
+.login-help-link {
+  @apply font-semibold hover:underline;
+
+  color: #2d3561;
+}
+
+.login-footer {
+  @apply flex items-center justify-center gap-2 py-3 text-xs;
+
+  background: #e2e5f0;
+  color: #9aa0bb;
+}
+
+.login-bottom-note {
+  @apply mt-4 text-xs;
+
+  color: #5a6490;
+}
+
+.register-logo {
+  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 border-white overflow-hidden;
+
+  background: #fff;
+}
+
+.register-logo img {
+  @apply w-16 h-16 object-contain;
+}
+
+.register-name-row {
+  @apply flex gap-3;
+
+  width: 100%;
+}
+
+.register-name-row .login-field {
+  @apply flex-1 min-w-0;
+}
+
+.register-name-row .login-input-wrapper {
+  @apply px-3;
+}
+
+.register-select {
+  @apply flex-1 text-sm outline-none cursor-pointer;
+
+  color: #1a1f36;
+  min-width: 0;
+}
+
+.login-input-wrapper .register-select {
+  background-color: transparent;
+  color: #1a1f36;
+
+  @apply flex-1 text-sm outline-none cursor-pointer;
+}
+
+.register-login-link {
+  color: #c0392b;
+}
+
+.login-input-wrapper select {
+  background: transparent;
+  color: #1a1f36;
+}
+
+/* Soporte */
+
+.soporte-card {
+  @apply w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl;
+
+  background: #f0f2f8;
+}
+
+.soporte-enviado-card {
+  @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
+
+  background: #f0f2f8;
+  max-width: 100%;
+}
+
+.soporte-divider-top {
+  @apply w-full mb-6 mt-5;
+}
+
+.soporte-divider-line-full {
+  @apply w-full h-px;
+
+  background: #c8cde0;
+}
+
+.soporte-title {
+  @apply text-3xl font-bold mb-2 tracking-tight text-center;
+
+  color: #1a1f36;
+  font-family: "Georgia", serif;
+}
+
+.soporte-textarea {
+  @apply w-full min-h-32 bg-transparent text-sm outline-none resize-y;
+
+  color: #1a1f36;
+  font-family: inherit;
+}
+
+.soporte-success-title {
+  @apply text-2xl font-bold text-center mt-2;
+
+  color: #1a1f36;
+}
+
+.soporte-success-subtitle {
+  @apply text-sm text-center mt-2 mb-6;
+
+  color: #7b8ab8;
+}
+
+.soporte-buttons-container {
+  @apply flex flex-col gap-3 w-full mt-2;
+}
+
+.soporte-btn-secondary {
+  @apply w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 border;
+
+  background: #ffffff;
+  border-color: #c8cde0;
+  color: #4a5578;
+}
+
+.soporte-btn-secondary:hover {
+  background: #f3f4f8;
+}
+
+.soporte-btn-primary {
+  @apply w-full py-3 rounded-xl font-bold text-white text-sm shadow-md transition-all duration-200;
+
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+}
+
+.soporte-btn-primary:hover {
+  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+}
+
+/* Recuperar contraseña */
+
+.forgot-error-text {
+  @apply text-xs font-semibold text-center -mt-1;
+
+  color: #c0392b;
+}
+
+.forgot-icon-circle {
+  @apply w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4;
+
+  flex-shrink: 0;
+}
+
+.forgot-icon-circle--info {
+  background: #dbe4f7;
+}
+
+.forgot-icon-circle--success {
+  background: #dcf3e3;
+}
+
+.forgot-code-inputs {
+  @apply flex items-center justify-center gap-2;
+
+  max-width: 100%;
+}
+
+.forgot-code-box {
+  @apply w-11 h-14 rounded-xl text-center text-xl font-bold outline-none transition-all duration-200;
+
+  background: #fff;
+  border: 1.5px solid #c8cde0;
+  color: #1a1f36;
+}
+
+.forgot-code-box:focus {
+  border-color: #f87171;
+}
+
+/* Tablet */
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-card {
+    width: 100%;
+  }
+
+  .login-body {
+    @apply px-6 py-6;
+  }
+
+  .login-logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .login-logo img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .login-school-name {
+    font-size: 18px;
+  }
+
+  .login-title {
+    font-size: 22px;
+  }
+
+  .login-subtitle {
+    text-align: center;
+  }
+
+  .soporte-card {
+    width: 100%;
+  }
+
+  .soporte-enviado-card {
+    width: 100%;
+  }
+
+  .soporte-title {
+    font-size: 26px;
+  }
+
+  .register-name-row {
+    gap: 8px;
+  }
+
+  .login-row {
+    gap: 8px;
+  }
+}
+
+/* Celulares chicos */
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 10px;
+  }
+
+  .login-card {
+    width: 100%;
+    border-radius: 22px;
+  }
+
+  .login-body {
+    @apply px-5 py-6;
+  }
+
+  .login-logo {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+  }
+
+  .login-logo img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .login-school-name {
+    font-size: 17px;
+  }
+
+  .login-school-city {
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+
+  .login-title {
+    font-size: 21px;
+  }
+
+  .login-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .login-form {
+    gap: 12px;
+  }
+
+  .login-label {
+    font-size: 10px;
+  }
+
+  .login-input-wrapper {
+    padding: 11px 12px;
+  }
+
+  .login-input {
+    font-size: 13px;
+  }
+
+  .login-row {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .login-remember-text,
+  .login-forgot {
+    font-size: 12px;
+  }
+
+  .login-submit-btn {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .login-help-text {
+    font-size: 12px;
+  }
+
+  .login-footer {
+    font-size: 10px;
+  }
+
+  .login-bottom-note {
+    font-size: 10px;
+  }
+
+  .soporte-card {
+    width: 100%;
+    border-radius: 22px;
+  }
+
+  .soporte-enviado-card {
+    width: 100%;
+    border-radius: 22px;
+  }
+
+  .soporte-title {
+    font-size: 23px;
+  }
+
+  .soporte-success-title {
+    font-size: 20px;
+  }
+
+  .soporte-success-subtitle {
+    font-size: 12px;
+  }
+
+  .forgot-code-inputs {
+    @apply gap-1.5;
+  }
+
+  .forgot-code-box {
+    @apply w-9 h-12 text-lg;
+  }
+}
+
+/* Celulares muy chicos */
+
+@media (max-width: 360px) {
+  .login-body {
+    @apply px-4 py-5;
+  }
+
+  .login-school-name {
+    font-size: 16px;
+  }
+
+  .login-title {
+    font-size: 19px;
+  }
+
+  .login-subtitle {
+    font-size: 11px;
+  }
+
+  .login-input-wrapper {
+    padding: 10px;
+  }
+
+  .login-input {
+    font-size: 12px;
+  }
+
+  .login-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .login-forgot {
+    align-self: flex-end;
+  }
+
+  .register-name-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .forgot-code-box {
+    width: 34px;
+    height: 46px;
+    font-size: 16px;
+  }
+
+  .soporte-title {
+    font-size: 21px;
+  }
+}

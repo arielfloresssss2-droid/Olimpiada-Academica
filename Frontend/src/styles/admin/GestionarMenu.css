@@ -1,0 +1,486 @@
+@import "tailwindcss";
+
+.menu-admin {
+  @apply min-h-screen p-6 md:p-10;
+
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+
+  box-sizing: border-box;
+}
+
+/* ------------------------- */
+/* HEADER */
+/* ------------------------- */
+
+.menu-header {
+  @apply mb-10;
+}
+
+.menu-tag {
+  @apply inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4;
+
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+.menu-header h1 {
+  @apply text-4xl font-bold mb-3;
+
+  color: white;
+}
+
+.menu-header p {
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+/* ------------------------- */
+/* CONTENEDOR */
+/* ------------------------- */
+
+.menu-grid {
+  @apply grid gap-8;
+
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ------------------------- */
+/* TARJETAS */
+/* ------------------------- */
+
+.menu-card {
+  @apply rounded-3xl p-8;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.menu-card-title {
+  @apply flex items-center gap-4 mb-8;
+}
+
+.menu-card-title svg {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.menu-card-title h2 {
+  @apply text-2xl font-bold;
+
+  color: white;
+}
+
+/* ------------------------- */
+/* FORMULARIO */
+/* ------------------------- */
+
+.menu-form {
+  @apply flex flex-col gap-6;
+}
+
+.menu-input {
+  @apply flex flex-col gap-2;
+}
+
+.menu-input label {
+  color: #d1d5db;
+  font-weight: 600;
+}
+
+.menu-input input,
+.menu-input textarea {
+  @apply rounded-2xl px-5 py-4;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background: #1f2937;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  outline: none;
+
+  font-size: 16px;
+}
+
+.menu-input textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.menu-input input:focus,
+.menu-input textarea:focus {
+  border-color: #ef4444;
+}
+
+/* ------------------------- */
+/* FILA DE CAMPOS */
+/* ------------------------- */
+
+.menu-row {
+  @apply grid gap-5;
+
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ------------------------- */
+/* BOTÓN */
+/* ------------------------- */
+
+.menu-button {
+  @apply mt-4 py-4 rounded-2xl font-bold transition-all;
+
+  width: 100%;
+
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: white;
+
+  border: none;
+  cursor: pointer;
+
+  min-height: 52px;
+}
+
+.menu-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 12px 25px rgba(239, 68, 68, 0.3);
+}
+
+/* ------------------------- */
+/* HISTORIAL */
+/* ------------------------- */
+
+.menu-history {
+  @apply flex flex-col gap-4;
+}
+
+.history-item {
+  @apply flex items-center justify-between p-5 rounded-2xl;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  gap: 24px;
+  min-width: 0;
+}
+
+.history-item > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.history-item h4 {
+  color: white;
+  font-weight: 700;
+
+  overflow-wrap: break-word;
+}
+
+.history-item span {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.history-item p {
+  color: #f3f4f6;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+
+.history-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+/* ------------------------- */
+/* ESTADOS */
+/* ------------------------- */
+
+.estado {
+  @apply px-5 py-2 rounded-full font-semibold;
+
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  border: none;
+  cursor: default;
+}
+
+.disponible {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.agotado {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+
+.menu-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+  border-radius: 12px;
+
+  color: #f3f4f6;
+  background: rgba(255, 255, 255, 0.06);
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menu-action:hover {
+  transform: translateY(-1px);
+}
+
+
+.menu-action.edit:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.menu-action.delete:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+
+.menu-section-divider {
+  margin: 64px 0 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.menu-section-divider::after {
+  content: "";
+
+  flex: 1;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.menu-section-divider h1 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.menu-section-divider h1::before {
+  content: "";
+
+  display: inline-block;
+
+  width: 5px;
+  height: 28px;
+
+  margin-right: 12px;
+
+  vertical-align: -4px;
+
+  border-radius: 999px;
+
+  background: #ef4444;
+}
+
+
+.producto-disponible {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 2px;
+
+  color: #f3f4f6;
+}
+
+.producto-disponible input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  accent-color: #ef4444;
+
+  cursor: pointer;
+}
+
+.producto-disponible label {
+  color: #f3f4f6;
+
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+/* ------------------------- */
+/* TABLET */
+/* ------------------------- */
+
+@media (max-width: 900px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------- */
+/* CELULARES */
+/* ------------------------- */
+
+@media (max-width: 600px) {
+  .menu-admin {
+    padding: 20px 14px;
+  }
+
+  .menu-header {
+    margin-bottom: 24px;
+  }
+
+  .menu-tag {
+    font-size: 12px;
+    padding: 7px 12px;
+    margin-bottom: 12px;
+  }
+
+  .menu-header h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .menu-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* TARJETAS */
+
+  .menu-grid {
+    gap: 16px;
+  }
+
+  .menu-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .menu-card-title {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .menu-card-title h2 {
+    font-size: 20px;
+  }
+
+  /* FORMULARIO */
+
+  .menu-form {
+    gap: 18px;
+  }
+
+  .menu-input {
+    gap: 7px;
+  }
+
+  .menu-input label {
+    font-size: 14px;
+  }
+
+  .menu-input input,
+  .menu-input textarea {
+    padding: 13px 14px;
+    border-radius: 14px;
+  }
+
+  .menu-input textarea {
+    min-height: 110px;
+  }
+
+  .menu-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+
+  .menu-section-divider {
+    margin: 42px 0 20px;
+    gap: 12px;
+  }
+
+  .menu-section-divider h1 {
+    font-size: 23px;
+  }
+
+  .menu-section-divider h1::before {
+    height: 23px;
+    width: 4px;
+    margin-right: 9px;
+  }
+
+
+  .history-item {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .history-actions {
+    gap: 7px;
+  }
+
+  .estado {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .menu-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .menu-action svg {
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -1,0 +1,419 @@
+@import "tailwindcss";
+
+.dp-section {
+  @apply min-h-screen p-6 flex flex-col gap-6;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.dp-header {
+  @apply flex items-center gap-4;
+
+  min-width: 0;
+}
+
+.dp-volver {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center;
+
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  transition: 0.2s;
+
+  flex-shrink: 0;
+}
+
+.dp-volver:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dp-header h2 {
+  @apply text-3xl font-bold;
+
+  color: white;
+
+  overflow-wrap: break-word;
+}
+
+.dp-header p {
+  @apply text-base;
+
+  color: #aeb8d4;
+
+  overflow-wrap: break-word;
+}
+
+.dp-card {
+  @apply rounded-3xl p-8 flex flex-col gap-7;
+
+  background: #f0f2f8;
+
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.dp-orden {
+  @apply text-5xl font-extrabold;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.dp-info {
+  @apply grid grid-cols-3 gap-5;
+
+  width: 100%;
+}
+
+.dp-info-item {
+  @apply rounded-2xl p-5 flex items-center gap-4;
+
+  background: white;
+  min-height: 95px;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dp-info-item svg {
+  color: #c0392b;
+
+  flex-shrink: 0;
+}
+
+.dp-info-item div {
+  @apply flex flex-col;
+
+  min-width: 0;
+}
+
+.dp-info-item strong {
+  @apply text-base;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.dp-info-item span {
+  @apply text-lg font-semibold;
+
+  color: #5a6490;
+
+  overflow-wrap: break-word;
+}
+
+.dp-separador {
+  height: 1px;
+
+  background: #d7dceb;
+
+  width: 100%;
+}
+
+.dp-bloque {
+  @apply flex flex-col gap-4;
+
+  min-width: 0;
+}
+
+.dp-bloque h4 {
+  @apply text-2xl font-bold;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.dp-bloque p {
+  @apply text-base;
+
+  color: #5a6490;
+  line-height: 1.8;
+
+  overflow-wrap: break-word;
+}
+
+.dp-producto {
+  @apply flex justify-between items-center rounded-2xl p-5;
+
+  background: white;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  gap: 1rem;
+  min-width: 0;
+}
+
+.dp-producto span:first-child {
+  @apply text-lg;
+
+  color: #1a1f36;
+  font-weight: 600;
+
+  overflow-wrap: break-word;
+}
+
+.dp-producto span:last-child {
+  @apply text-xl;
+
+  color: #c0392b;
+  font-weight: 700;
+
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dp-footer {
+  @apply flex;
+
+  width: 100%;
+}
+
+.dp-footer div {
+  @apply flex-1 rounded-2xl p-5 flex flex-col;
+
+  background: white;
+
+  min-width: 0;
+}
+
+.dp-footer strong {
+  @apply text-lg;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.dp-footer span {
+  @apply text-3xl mt-2;
+
+  color: #c0392b;
+  font-weight: 700;
+
+  overflow-wrap: break-word;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 992px) {
+  .dp-section {
+    @apply p-5;
+  }
+
+  .dp-info {
+    @apply grid-cols-2;
+  }
+
+  .dp-card {
+    @apply p-6;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 768px) {
+  .dp-section {
+    @apply p-4 gap-5;
+  }
+
+  .dp-header {
+    gap: 0.75rem;
+  }
+
+  .dp-volver {
+    @apply w-11 h-11;
+  }
+
+  .dp-header h2 {
+    @apply text-2xl;
+  }
+
+  .dp-header p {
+    @apply text-sm;
+  }
+
+  .dp-card {
+    @apply p-5 rounded-[26px] gap-5;
+  }
+
+  .dp-orden {
+    @apply text-4xl;
+  }
+
+  .dp-info {
+    @apply grid-cols-1;
+
+    gap: 0.75rem;
+  }
+
+  .dp-info-item {
+    min-height: 80px;
+    padding: 1rem;
+  }
+
+  .dp-bloque {
+    gap: 0.75rem;
+  }
+
+  .dp-bloque h4 {
+    @apply text-xl;
+  }
+
+  .dp-bloque p {
+    @apply text-sm;
+
+    line-height: 1.6;
+  }
+
+  .dp-producto {
+    @apply p-4;
+
+    align-items: flex-start;
+  }
+
+  .dp-producto span:first-child {
+    @apply text-base;
+  }
+
+  .dp-producto span:last-child {
+    @apply text-lg;
+  }
+
+  .dp-footer {
+    width: 100%;
+  }
+
+  .dp-footer div {
+    @apply p-4;
+  }
+
+  .dp-footer strong {
+    @apply text-base;
+  }
+
+  .dp-footer span {
+    @apply text-2xl;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .dp-section {
+    @apply p-3 gap-4;
+  }
+
+  .dp-header {
+    gap: 0.6rem;
+  }
+
+  .dp-volver {
+    @apply w-10 h-10 rounded-lg;
+  }
+
+  .dp-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .dp-header p {
+    font-size: 0.75rem;
+  }
+
+  .dp-card {
+    @apply p-4 rounded-[22px];
+  }
+
+  .dp-orden {
+    font-size: 2rem;
+  }
+
+  .dp-info-item {
+    @apply rounded-xl p-3;
+
+    min-height: 70px;
+    gap: 0.75rem;
+  }
+
+  .dp-info-item strong {
+    font-size: 0.8rem;
+  }
+
+  .dp-info-item span {
+    font-size: 0.9rem;
+  }
+
+  .dp-bloque h4 {
+    font-size: 1.1rem;
+  }
+
+  .dp-bloque p {
+    font-size: 0.8rem;
+  }
+
+  .dp-producto {
+    @apply rounded-xl p-3;
+
+    gap: 0.75rem;
+  }
+
+  .dp-producto span:first-child {
+    font-size: 0.85rem;
+  }
+
+  .dp-producto span:last-child {
+    font-size: 0.95rem;
+  }
+
+  .dp-footer div {
+    @apply rounded-xl p-3;
+  }
+
+  .dp-footer strong {
+    font-size: 0.85rem;
+  }
+
+  .dp-footer span {
+    font-size: 1.4rem;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .dp-section {
+    @apply p-2;
+  }
+
+  .dp-card {
+    @apply p-3 rounded-[20px];
+  }
+
+  .dp-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .dp-orden {
+    font-size: 1.7rem;
+  }
+
+  .dp-producto {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dp-producto span:last-child {
+    align-self: flex-end;
+  }
+
+  .dp-footer div {
+    @apply p-3;
+  }
+}

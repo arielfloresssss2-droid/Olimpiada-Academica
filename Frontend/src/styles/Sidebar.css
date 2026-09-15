@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+.sidebar-desktop {
+  @apply hidden md:flex flex-col justify-between;
+
+  width: 270px;
+  min-height: 100vh;
+
+  background: #111827;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+  padding: 24px 18px;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  box-sizing: border-box;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar-top {
+  @apply flex items-center gap-4 mb-10;
+
+  min-width: 0;
+}
+
+.sidebar-logo {
+  @apply w-20 h-20 rounded-2xl flex items-center justify-center;
+
+  background: #f3f4f6;
+
+  flex-shrink: 0;
+}
+
+.sidebar-logo img {
+  @apply w-15 h-15 object-contain;
+
+  max-width: 100%;
+}
+
+.sidebar-school {
+  min-width: 0;
+}
+
+.sidebar-school h1 {
+  @apply text-base font-bold;
+
+  color: white;
+
+  overflow-wrap: break-word;
+}
+
+.sidebar-school p {
+  @apply text-sm;
+
+  color: #9ca3af;
+
+  overflow-wrap: break-word;
+}
+
+.sidebar-nav {
+  @apply flex flex-col gap-3;
+
+  width: 100%;
+}
+
+.sidebar-link {
+  @apply flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200;
+
+  color: #d1d5db;
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-link img {
+  @apply w-5 h-5;
+
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+
+  flex-shrink: 0;
+}
+
+.sidebar-link span {
+  @apply text-sm font-medium;
+
+  overflow-wrap: break-word;
+}
+
+.sidebar-link-active {
+  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+
+  color: white;
+
+  box-shadow: 0 10px 20px rgba(192, 57, 43, 0.2);
+}
+
+.sidebar-bottom {
+  @apply flex flex-col gap-4;
+
+  width: 100%;
+}
+
+.sidebar-reminder-card {
+  @apply rounded-2xl p-4 flex gap-3 items-start;
+
+  background: linear-gradient(
+    135deg,
+    rgba(231, 76, 60, 0.18),
+    rgba(192, 57, 43, 0.1)
+  );
+
+  border: 1px solid rgba(231, 76, 60, 0.15);
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.sidebar-reminder-icon {
+  @apply w-10 h-10 rounded-xl flex items-center justify-center text-lg;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  flex-shrink: 0;
+}
+
+.sidebar-reminder-card h4 {
+  @apply text-sm font-bold mb-1;
+
+  color: white;
+}
+
+.sidebar-reminder-card p {
+  @apply text-xs leading-relaxed;
+
+  color: #d1d5db;
+
+  overflow-wrap: break-word;
+}
+
+.sidebar-footer {
+  @apply text-center text-xs mt-2;
+
+  color: #6b7280;
+}
+
+/* ================= MOBILE NAVBAR ================= */
+
+.mobile-navbar {
+  @apply fixed md:hidden flex items-center justify-around;
+
+  left: 16px;
+  right: 16px;
+  bottom: 18px;
+
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+
+  padding: 12px 8px;
+
+  z-index: 999;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+  max-width: calc(100% - 32px);
+}
+
+.mobile-link {
+  @apply flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200;
+
+  color: #6b7280;
+
+  min-width: 0;
+  flex: 1;
+}
+
+.mobile-link img {
+  @apply w-5 h-5;
+
+  filter: brightness(0.25);
+  opacity: 0.85;
+
+  flex-shrink: 0;
+}
+
+.mobile-link span {
+  @apply text-[11px] font-medium;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mobile-link-active {
+  background: rgba(231, 76, 60, 0.12);
+
+  color: #c0392b;
+}
+
+.mobile-link-active img {
+  opacity: 1;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 1100px) and (min-width: 769px) {
+  .sidebar-desktop {
+    width: 240px;
+    padding: 20px 14px;
+  }
+
+  .sidebar-top {
+    gap: 12px;
+  }
+
+  .sidebar-logo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .sidebar-logo img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sidebar-school h1 {
+    font-size: 0.9rem;
+  }
+
+  .sidebar-school p {
+    font-size: 0.75rem;
+  }
+
+  .sidebar-link {
+    @apply px-3 py-3;
+
+    gap: 12px;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 480px) {
+  .mobile-navbar {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+
+    max-width: calc(100% - 20px);
+
+    border-radius: 20px;
+    padding: 8px 5px;
+  }
+
+  .mobile-link {
+    @apply px-2 py-2;
+
+    gap: 2px;
+  }
+
+  .mobile-link img {
+    @apply w-5 h-5;
+  }
+
+  .mobile-link span {
+    font-size: 9px;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .mobile-navbar {
+    left: 6px;
+    right: 6px;
+    bottom: 8px;
+
+    max-width: calc(100% - 12px);
+
+    padding: 7px 3px;
+    border-radius: 18px;
+  }
+
+  .mobile-link {
+    @apply px-1 py-2;
+  }
+
+  .mobile-link img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .mobile-link span {
+    font-size: 8px;
+  }
+}

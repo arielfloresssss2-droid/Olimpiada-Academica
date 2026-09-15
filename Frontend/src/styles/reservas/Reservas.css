@@ -1,0 +1,588 @@
+@import "tailwindcss";
+
+.reservar-section {
+  @apply min-h-screen p-6 flex flex-col gap-6;
+
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+}
+
+.reservar-header {
+  @apply flex flex-col gap-2 md:flex-row md:items-center md:justify-between;
+
+  min-width: 0;
+}
+
+.reservar-header h2 {
+  @apply text-3xl font-bold;
+
+  color: white;
+  overflow-wrap: break-word;
+}
+
+.reservar-header span {
+  @apply text-base font-semibold;
+
+  color: #aeb8d4;
+}
+
+/* ================= RESERVA PRINCIPAL ================= */
+
+.reservar-card {
+  @apply flex flex-col gap-6 rounded-[32px] p-6 md:flex-row md:items-center md:justify-between;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.reservar-left {
+  @apply flex items-start gap-5 md:items-center;
+
+  min-width: 0;
+}
+
+.reservar-icon {
+  @apply flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-[#fff1f1] md:h-24 md:w-24;
+}
+
+.reservar-icon img {
+  @apply w-10 md:w-12;
+
+  max-width: 100%;
+}
+
+.reservar-info {
+  min-width: 0;
+}
+
+.reservar-info h3 {
+  @apply mb-3 text-2xl font-bold md:text-3xl;
+
+  color: #1a1f36;
+  overflow-wrap: break-word;
+}
+
+.reservar-info ul {
+  @apply flex list-disc flex-col gap-1 pl-5 text-base md:text-lg;
+
+  color: #5a6490;
+
+  overflow-wrap: break-word;
+}
+
+.reservar-info p {
+  @apply mt-4 font-semibold;
+
+  color: #c0392b;
+
+  overflow-wrap: break-word;
+}
+
+.reservar-button-container {
+  @apply w-full md:w-auto;
+
+  flex-shrink: 0;
+}
+
+.reservar-button {
+  @apply w-full rounded-2xl px-7 py-4 font-bold md:w-auto;
+
+  background: #c0392b;
+  color: white;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  min-height: 48px;
+}
+
+.reservar-button:hover {
+  transform: translateY(-2px);
+}
+
+/* ================= PRODUCTOS ================= */
+
+.reservar-products-wrapper {
+  @apply rounded-[30px] p-6;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reservar-products-header {
+  @apply mb-5;
+
+  border-left: 4px solid #c0392b;
+  padding-left: 12px;
+}
+
+.reservar-products-header h2 {
+  @apply text-2xl font-bold;
+
+  color: #1a1f36;
+  overflow-wrap: break-word;
+}
+
+.reservar-products-grid {
+  @apply grid gap-5;
+
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  width: 100%;
+}
+
+.reservar-product-card {
+  @apply rounded-[24px] p-5 flex flex-col items-center text-center;
+
+  background: #e2e5f0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  transition: all 0.2s ease;
+
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.reservar-product-card:hover {
+  transform: translateY(-3px);
+  background: #d9deee;
+}
+
+.reservar-product-icon {
+  @apply text-5xl mb-3;
+
+  flex-shrink: 0;
+}
+
+.reservar-product-card h3 {
+  @apply text-lg font-bold;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.reservar-product-card p {
+  @apply mt-2;
+
+  color: #5a6490;
+
+  overflow-wrap: break-word;
+}
+
+.reservar-price {
+  @apply mt-3 text-xl font-bold;
+
+  color: #c0392b !important;
+}
+
+.reservar-product-card button {
+  @apply mt-4 px-5 py-3 rounded-2xl font-bold;
+
+  background: #c0392b;
+  color: white;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  min-height: 44px;
+  max-width: 100%;
+}
+
+.reservar-product-card button:hover {
+  transform: translateY(-2px);
+}
+
+/* ================= CARRITO ================= */
+
+.reservar-cart {
+  @apply rounded-[30px] p-6;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reservar-cart-header {
+  @apply text-2xl font-bold mb-5;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.reservar-empty-cart {
+  color: #5a6490;
+  overflow-wrap: break-word;
+}
+
+.reservar-cart-list {
+  @apply flex flex-col gap-3;
+
+  width: 100%;
+}
+
+.reservar-cart-list li {
+  @apply flex items-center justify-between rounded-2xl p-3;
+
+  background: #e2e5f0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #1a1f36;
+
+  gap: 1rem;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.reservar-cart-list li span {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.reservar-remove-btn {
+  @apply px-3 py-2 rounded-xl text-sm font-semibold;
+
+  background: rgba(192, 57, 43, 0.12);
+  color: #c0392b;
+
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
+  min-height: 40px;
+}
+
+.reservar-remove-btn:hover {
+  background: rgba(192, 57, 43, 0.2);
+}
+
+.reservar-cart-total {
+  @apply mt-5 pt-4 flex items-center justify-between text-xl font-bold;
+
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  color: #1a1f36;
+
+  gap: 1rem;
+}
+
+.reservar-cart-total span:last-child {
+  color: #c0392b;
+  white-space: nowrap;
+}
+
+.reservar-confirm-btn {
+  @apply w-full mt-5 py-4 rounded-2xl font-bold;
+
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+
+  color: white;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  min-height: 50px;
+}
+
+.reservar-confirm-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .reservar-section {
+    @apply p-5;
+  }
+
+  .reservar-products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .reservar-card {
+    @apply p-5;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 768px) {
+  .reservar-section {
+    @apply p-4 gap-5;
+  }
+
+  .reservar-header h2 {
+    @apply text-2xl;
+  }
+
+  .reservar-header span {
+    @apply text-sm;
+  }
+
+  .reservar-card {
+    @apply p-5 rounded-[26px];
+
+    gap: 1.25rem;
+  }
+
+  .reservar-left {
+    gap: 1rem;
+  }
+
+  .reservar-icon {
+    @apply h-20 w-20 rounded-2xl;
+  }
+
+  .reservar-icon img {
+    @apply w-9;
+  }
+
+  .reservar-info h3 {
+    @apply text-2xl;
+  }
+
+  .reservar-info ul {
+    @apply text-base;
+  }
+
+  .reservar-button {
+    width: 100%;
+  }
+
+  .reservar-products-wrapper {
+    @apply p-4 rounded-[26px];
+  }
+
+  .reservar-products-header {
+    @apply mb-4;
+  }
+
+  .reservar-products-header h2 {
+    @apply text-xl;
+  }
+
+  .reservar-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .reservar-product-card {
+    @apply rounded-2xl p-4;
+  }
+
+  .reservar-product-icon {
+    @apply text-4xl;
+  }
+
+  .reservar-product-card h3 {
+    font-size: 1rem;
+  }
+
+  .reservar-product-card p {
+    font-size: 0.8rem;
+  }
+
+  .reservar-price {
+    font-size: 1.1rem;
+  }
+
+  .reservar-product-card button {
+    @apply px-4 py-2;
+
+    font-size: 0.8rem;
+  }
+
+  .reservar-cart {
+    @apply p-4 rounded-[26px];
+  }
+
+  .reservar-cart-header {
+    @apply text-xl;
+  }
+
+  .reservar-cart-list li {
+    @apply p-3;
+  }
+
+  .reservar-cart-total {
+    font-size: 1rem;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .reservar-section {
+    @apply p-3 gap-4;
+  }
+
+  .reservar-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .reservar-header span {
+    font-size: 0.75rem;
+  }
+
+  .reservar-card {
+    @apply p-4 rounded-[22px];
+  }
+
+  .reservar-left {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .reservar-icon {
+    @apply h-16 w-16 rounded-2xl;
+  }
+
+  .reservar-icon img {
+    width: 2rem;
+  }
+
+  .reservar-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .reservar-info ul {
+    font-size: 0.8rem;
+    padding-left: 1rem;
+  }
+
+  .reservar-info p {
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+  }
+
+  .reservar-button {
+    @apply rounded-xl px-4 py-3;
+
+    font-size: 0.85rem;
+  }
+
+  .reservar-products-wrapper {
+    @apply p-3 rounded-[22px];
+  }
+
+  .reservar-products-header {
+    padding-left: 8px;
+  }
+
+  .reservar-products-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .reservar-products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reservar-product-card {
+    @apply p-4 rounded-xl;
+  }
+
+  .reservar-product-icon {
+    @apply text-4xl;
+  }
+
+  .reservar-product-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .reservar-product-card p {
+    font-size: 0.75rem;
+  }
+
+  .reservar-price {
+    font-size: 1rem;
+  }
+
+  .reservar-product-card button {
+    width: 100%;
+  }
+
+  .reservar-cart {
+    @apply p-3 rounded-[22px];
+  }
+
+  .reservar-cart-header {
+    font-size: 1.1rem;
+  }
+
+  .reservar-cart-list li {
+    align-items: flex-start;
+  }
+
+  .reservar-cart-total {
+    font-size: 0.9rem;
+  }
+
+  .reservar-confirm-btn {
+    @apply rounded-xl py-3;
+
+    font-size: 0.9rem;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .reservar-section {
+    @apply p-2;
+  }
+
+  .reservar-card {
+    @apply p-3 rounded-[20px];
+  }
+
+  .reservar-left {
+    flex-direction: column;
+  }
+
+  .reservar-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .reservar-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .reservar-info ul {
+    font-size: 0.75rem;
+  }
+
+  .reservar-products-wrapper,
+  .reservar-cart {
+    @apply p-3 rounded-[20px];
+  }
+
+  .reservar-cart-list li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reservar-remove-btn {
+    width: 100%;
+  }
+
+  .reservar-cart-total {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

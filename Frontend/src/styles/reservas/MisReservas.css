@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+.mr-section {
+  @apply min-h-screen p-6 flex flex-col gap-6;
+
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.mr-header {
+  @apply flex items-center justify-between pb-3;
+
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.15);
+
+  gap: 1rem;
+}
+
+.mr-header h2 {
+  @apply text-3xl font-bold;
+
+  color: white;
+}
+
+.mr-historial {
+  @apply text-base font-semibold;
+
+  color: #e74c3c;
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.mr-subtitulo {
+  @apply text-sm;
+
+  color: #aeb8d4;
+}
+
+.mr-lista {
+  @apply flex flex-col gap-5;
+
+  width: 100%;
+}
+
+.mr-card {
+  @apply flex items-center justify-between gap-4 rounded-2xl p-5;
+
+  background: #f0f2f8;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.mr-card-info {
+  @apply flex flex-col gap-1 flex-1;
+
+  min-width: 0;
+}
+
+.mr-card-titulo {
+  @apply text-base font-bold mb-1;
+
+  color: #1a1f36;
+
+  overflow-wrap: break-word;
+}
+
+.mr-card-dato {
+  @apply text-sm;
+
+  color: #5a6490;
+
+  overflow-wrap: break-word;
+}
+
+.mr-card-acciones {
+  @apply flex gap-2 mt-3;
+
+  flex-wrap: wrap;
+}
+
+.mr-btn {
+  @apply px-4 py-2 rounded-lg text-sm font-semibold;
+
+  background: #c0392b;
+  color: white;
+
+  transition: all 0.2s ease;
+
+  min-height: 40px;
+}
+
+.mr-btn:hover {
+  background: #e74c3c;
+}
+
+.mr-card-icono {
+  @apply shrink-0 flex items-center justify-center;
+
+  width: 80px;
+  height: 80px;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .mr-section {
+    @apply p-5;
+  }
+
+  .mr-card {
+    padding: 1rem;
+  }
+
+  .mr-card-icono {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ================= CELULARES ================= */
+
+@media (max-width: 768px) {
+  .mr-section {
+    @apply p-4 gap-5;
+  }
+
+  .mr-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mr-header h2 {
+    @apply text-2xl;
+  }
+
+  .mr-historial {
+    font-size: 0.85rem;
+  }
+
+  .mr-subtitulo {
+    font-size: 0.8rem;
+  }
+
+  .mr-lista {
+    gap: 0.75rem;
+  }
+
+  .mr-card {
+    @apply rounded-xl p-4;
+
+    align-items: flex-start;
+  }
+
+  .mr-card-titulo {
+    font-size: 0.95rem;
+  }
+
+  .mr-card-dato {
+    font-size: 0.8rem;
+  }
+
+  .mr-card-icono {
+    width: 60px;
+    height: 60px;
+  }
+
+  .mr-card-acciones {
+    margin-top: 0.75rem;
+  }
+
+  .mr-btn {
+    @apply px-3 py-2;
+
+    font-size: 0.75rem;
+  }
+}
+
+/* ================= CELULARES CHICOS ================= */
+
+@media (max-width: 480px) {
+  .mr-section {
+    @apply p-3 gap-4;
+  }
+
+  .mr-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .mr-historial {
+    font-size: 0.8rem;
+  }
+
+  .mr-subtitulo {
+    font-size: 0.75rem;
+  }
+
+  .mr-card {
+    @apply rounded-xl p-3;
+
+    gap: 0.75rem;
+  }
+
+  .mr-card-icono {
+    width: 50px;
+    height: 50px;
+  }
+
+  .mr-card-titulo {
+    font-size: 0.85rem;
+  }
+
+  .mr-card-dato {
+    font-size: 0.75rem;
+  }
+
+  .mr-card-acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mr-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ================= CELULARES MUY CHICOS ================= */
+
+@media (max-width: 360px) {
+  .mr-section {
+    @apply p-2;
+  }
+
+  .mr-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mr-card-icono {
+    align-self: center;
+    width: 55px;
+    height: 55px;
+    order: -1;
+  }
+
+  .mr-card-info {
+    width: 100%;
+  }
+}
