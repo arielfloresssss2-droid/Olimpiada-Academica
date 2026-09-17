@@ -1,0 +1,97 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Backend.Data;
+using Backend.DTOs.Usuario;
+using BCrypt.Net;
+
+namespace Backend.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsuarioController : ControllerBase
+{
+    private readonly AppDbContext _context;
+
+    public UsuarioController(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    /// <summary>
+    /// Cambiar la contraseña del usuario autenticado.
+    /// </summary>
+    [HttpPut("cambiar-password")]
+    public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDto request)
+    {
+        if (request.IdUsuario <= 0)
+        {
+            return BadRequest("Id de usuario inválido.");
+        }
+
+        var usuario = await _context.Usuarios.FindAsync(request.IdUsuario);
+        if (usuario == null)
+        {
+            return NotFound("Usuario no encontrado.");
+        }
+
+        // Verificar contraseña actual
+        bool isValid = false;
+        if (usuario.Contrasena.StartsWith("$2a$") || usuario.Contrasena.StartsWith("$2b$") || usuario.Contrasena.StartsWith("$2y$"))
+        {
+            isValid = BCrypt.Net.BCrypt.Verify(request.PasswordActual, usuario.Contrasena);
+        }
+        else
+        {
+            isValid = usuario.Contrasena == request.PasswordActual;
+        }
+
+        if (!isValid)
+        {
+            return BadRequest("La contraseña actual es incorrecta.");
+        }
+
+        usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(request.PasswordNueva);
+        await _context.SaveChangesAsync();
+
+        return Ok("Contraseña actualizada con éxito.");
+    }
+
+    /// <summary>
+    /// Cerrar sesión (opcional para el cliente).
+    /// </summary>
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        return Ok(new { mensaje = "Sesión cerrada correctamente." });
+    }
+
+    /// <summary>
+    /// Obtener información del usuario por ID.
+    /// </summary>
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUsuario(int id)
+    {
+        var usuario = await _context.Usuarios
+            .Include(u => u.Municipio)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (usuario == null)
+        {
+            return NotFound("Usuario no encontrado.");
+        }
+
+        var dto = new UsuarioDto
+        {
+            Id = usuario.Id,
+            IdMun = usuario.IdMun,
+            Nombre = usuario.Nombre,
+            Apellido = usuario.Apellido,
+            Email = usuario.Email,
+            Rol = usuario.Rol,
+            Activo = usuario.Activo,
+            CreatedAt = usuario.CreatedAt
+        };
+
+        return Ok(dto);
+    }
+}
