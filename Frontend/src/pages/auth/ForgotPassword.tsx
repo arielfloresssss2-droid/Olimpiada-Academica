@@ -102,11 +102,11 @@ function ForgotPassword() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+            <img src="/logo.svg" alt="Logo Municipio de Morón" />
           </div>
 
-          <h1 className="login-school-name">E.E.S.T. N°6 Chacabuco</h1>
-          <p className="login-school-city">MORÓN</p>
+          <h1 className="login-school-name">Municipio de Morón</h1>
+          <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
 
           <div className="login-divider">
             <div className="login-divider-line" />
@@ -137,7 +137,7 @@ function ForgotPassword() {
 
                 <input
                   type="email"
-                  placeholder="usuario@escuela.edu"
+                  placeholder="usuario@moron.gob.ar"
                   className="login-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -166,12 +166,12 @@ function ForgotPassword() {
 
         <div className="login-footer">
           <span>⇄</span>
-          <span>Sistema de Gestión Escolar · E.E.S.T. N°6</span>
+          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
 
       <p className="login-bottom-note">
-        Solo para uso de alumnos, docentes y personal autorizado
+        Sistema oficial de reporte y gestión de incidentes · Morón
       </p>
 
       <br />

@@ -1,4 +1,4 @@
-﻿import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Historial.css";
 
 interface Pedido {
@@ -42,10 +42,10 @@ function TarjetaHistorial({ pedido }: TarjetaHistorialProps) {
     <div className="tarjeta-historial">
       <div className="tarjeta-historial-header">
         <span className="th-titulo">
-          {pedido.titulo || pedido.descripcion || `Pedido #${pedido.nroOrden || pedido.id}`}
+          {pedido.titulo || pedido.descripcion || `Incidente #${pedido.nroOrden || pedido.id}`}
         </span>
         <span className={`th-estado-badge ${esCancelado ? "badge-cancelado" : "badge-entregado"}`}>
-          {pedido.estado}
+          {pedido.estado === "Entregado" ? "Resuelto" : pedido.estado}
         </span>
       </div>
 
@@ -61,16 +61,9 @@ function TarjetaHistorial({ pedido }: TarjetaHistorialProps) {
         </div>
 
         <div className="th-info-row">
-          <span className="th-label">🔢 Orden:</span>
+          <span className="th-label">🔢 Ticket:</span>
           <span className="th-value">#{pedido.nroOrden || pedido.id}</span>
         </div>
-
-        {pedido.valor !== undefined && (
-          <div className="th-info-row">
-            <span className="th-label">💵 Total:</span>
-            <span className="th-value font-bold">${pedido.valor}</span>
-          </div>
-        )}
       </div>
 
       <button

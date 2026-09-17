@@ -3,62 +3,127 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "../../styles/auth/Login-Register.css";
 import { API_BASE_URL } from "../../config/api";
+import {
+  calculateExpiration,
+  generatePasscode,
+  saveRegisterSession,
+  sendRegisterCodeEmail,
+} from "../../services/emailService";
 
 function Register() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   const [nombre, setNombre] = useState("");
-
   const [apellido, setApellido] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const [repeatPassword, setRepeatPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    if (password !== repeatPassword) {
-      alert("Las contraseñas no coinciden");
+    const cleanNombre = nombre.trim();
+    const cleanApellido = apellido.trim();
+    const cleanEmail = email.trim().toLowerCase();
 
+    if (!cleanNombre || !cleanApellido) {
+      setError("Por favor completá tu nombre y apellido");
       return;
     }
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/Auth/register`, {
-        method: "POST",
+    if (!cleanEmail) {
+      setError("Por favor ingresá tu correo electrónico");
+      return;
+    }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setError("Ingresá un correo electrónico válido");
+      return;
+    }
+
+    if (!password) {
+      setError("Ingresá una contraseña");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
+
+    if (password !== repeatPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // 1. Comprobar si el correo ya está registrado en el backend
+      const checkRes = await fetch(`${API_BASE_URL}/api/Auth/comprobar-email`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-
-        body: JSON.stringify({
-          nombre,
-          apellido,
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email: cleanEmail }),
       });
 
-      if (response.ok) {
-        alert("Usuario registrado");
-
-        navigate("/login");
-      } else {
-        const error = await response.text();
-
-        alert(error);
+      if (!checkRes.ok) {
+        const errorText = await checkRes.text();
+        setError(errorText || "Ya existe una cuenta con ese correo electrónico");
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error(error);
 
-      alert("Error del servidor");
+      // 2. Generar código de verificación de 6 dígitos con validez de 15 minutos
+      const passcode = generatePasscode();
+      const { expiresAt, timeFormatted } = calculateExpiration(15);
+
+      // 3. Enviar correo usando EmailJS con el template template_4954e4b
+      const emailRes = await sendRegisterCodeEmail(
+        cleanEmail,
+        cleanNombre,
+        cleanApellido,
+        passcode,
+        timeFormatted
+      );
+
+      if (!emailRes.success) {
+        setError(
+          emailRes.error ||
+            "No se pudo enviar el correo de verificación. Intentá nuevamente."
+        );
+        setLoading(false);
+        return;
+      }
+
+      // 4. Guardar datos temporales en la sesión (la cuenta se creará tras confirmar el código)
+      saveRegisterSession({
+        nombre: cleanNombre,
+        apellido: cleanApellido,
+        email: cleanEmail,
+        password,
+        passcode,
+        expiresAt,
+        timeFormatted,
+      });
+
+      // 5. Redirigir a la pantalla de aviso de correo enviado
+      navigate("/register/sent", {
+        state: { email: cleanEmail },
+      });
+    } catch (err: any) {
+      console.error(err);
+      setError("Error de conexión con el servidor. Intentá de nuevo más tarde.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,12 +136,12 @@ function Register() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+            <img src="/logo.svg" alt="Logo Municipio de Morón" />
           </div>
 
-          <h1 className="login-school-name">E.E.S.T. N°6 Chacabuco</h1>
+          <h1 className="login-school-name">Municipio de Morón</h1>
 
-          <p className="login-school-city">MORÓN</p>
+          <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
 
           <div className="login-divider">
             <div className="login-divider-line" />
@@ -90,7 +155,7 @@ function Register() {
 
           <h2 className="login-title">Crear Cuenta</h2>
 
-          <p className="login-subtitle">Completá tus datos para registrarte</p>
+          <p className="login-subtitle">Completá tus datos para registrarte en el sistema de incidentes</p>
 
           <form className="login-form" onSubmit={handleRegister}>
             {/* Nombre + Apellido */}
@@ -209,8 +274,18 @@ function Register() {
               </div>
             </div>
 
-            <button type="submit" className="login-submit-btn">
-              Crear cuenta
+            {error && <p className="forgot-error-text">{error}</p>}
+
+            <button
+              type="submit"
+              className="login-submit-btn"
+              disabled={loading}
+              style={{
+                opacity: loading ? 0.7 : 1,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {loading ? "Enviando código..." : "Crear cuenta"}
             </button>
 
             <p className="login-help-text">
@@ -225,12 +300,12 @@ function Register() {
         <div className="login-footer">
           <span>⇄</span>
 
-          <span>Sistema de Gestión Escolar · E.E.S.T. N°6</span>
+          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
 
       <p className="login-bottom-note">
-        Solo para uso de alumnos, docentes y personal autorizado
+        Sistema oficial de gestión y reporte de incidentes · Morón
       </p>
 
       <br />

@@ -15,8 +15,8 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
           </div>
 
           <div className="sidebar-school">
-            <h1>E.E.S.T. N°6</h1>
-            <p>Chacabuco</p>
+            <h1>Municipio de Morón</h1>
+            <p>Soporte de Incidentes</p>
             <p>MORÓN</p>
           </div>
         </div>
@@ -34,7 +34,7 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
             <span>Inicio</span>
           </button>
 
-          {/* RESERVAR */}
+          {/* REPORTAR INCIDENTE */}
 
           <button
             onClick={() => setActiveSection("reservar")}
@@ -42,11 +42,11 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
               activeSection === "reservar" ? "sidebar-link-active" : ""
             }`}
           >
-            <img src="/food.svg" alt="Reservar" />
-            <span>Reservar</span>
+            <img src="/support.svg" alt="Reportar Incidente" />
+            <span>Reportar incidente</span>
           </button>
 
-          {/* MIS RESERVAS */}
+          {/* MIS INCIDENTES */}
 
           <button
             onClick={() => setActiveSection("reservas")}
@@ -54,8 +54,8 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
               activeSection === "reservas" ? "sidebar-link-active" : ""
             }`}
           >
-            <img src="/calendar.svg" alt="Reservas" />
-            <span>Mis reservas</span>
+            <img src="/calendar.svg" alt="Mis incidentes" />
+            <span>Mis incidentes</span>
           </button>
 
           {/* HISTORIAL */}
@@ -86,17 +86,17 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
 
         <div className="sidebar-bottom">
           <div className="sidebar-reminder-card">
-            <div className="sidebar-reminder-icon">⏰</div>
+            <div className="sidebar-reminder-icon">🛡️</div>
 
             <div>
-              <h4>Recordatorio</h4>
+              <h4>Atención Morón</h4>
 
-              <p>Pedí tu comida antes de las 10:00 hs.</p>
+              <p>Reportá incidentes urbanos las 24 hs.</p>
             </div>
           </div>
 
           <div className="sidebar-footer">
-            <p>Sistema Buffet Escolar</p>
+            <p>Sistema de Incidentes · Morón</p>
           </div>
         </div>
       </aside>
@@ -120,8 +120,8 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
             activeSection === "reservar" ? "mobile-link-active" : ""
           }`}
         >
-          <img src="/food.svg" alt="Reservar" />
-          <span>Reservar</span>
+          <img src="/support.svg" alt="Reportar" />
+          <span>Reportar</span>
         </button>
 
         <button
@@ -130,8 +130,8 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
             activeSection === "reservas" ? "mobile-link-active" : ""
           }`}
         >
-          <img src="/calendar.svg" alt="Reservas" />
-          <span>Reservas</span>
+          <img src="/calendar.svg" alt="Incidentes" />
+          <span>Incidentes</span>
         </button>
 
           <button

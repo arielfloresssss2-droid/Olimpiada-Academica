@@ -81,7 +81,7 @@ function NuevaContrasena() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+            <img src="/logo.svg" alt="Logo Municipio de Morón" />
           </div>
 
           <h2 className="login-title">Nueva contraseña</h2>
@@ -154,9 +154,13 @@ function NuevaContrasena() {
 
         <div className="login-footer">
           <span>⇄</span>
-          <span>Sistema de Gestión Escolar · E.E.S.T. N°6</span>
+          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
+
+      <p className="login-bottom-note">
+        Sistema oficial de reporte y gestión de incidentes · Morón
+      </p>
 
       <br />
     </div>

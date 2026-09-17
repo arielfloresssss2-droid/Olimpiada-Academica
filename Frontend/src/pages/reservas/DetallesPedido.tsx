@@ -137,7 +137,7 @@ function DetallesPedido() {
     pedido.titulo ||
     (pedido.productos && pedido.productos.length > 0
       ? pedido.productos.map((p) => `${p.cantidad}x ${p.nombre}`).join(", ")
-      : "Pedido de buffet escolar");
+      : "Reporte de incidente municipal");
 
   return (
     <section className="dp-section">
@@ -147,25 +147,25 @@ function DetallesPedido() {
         </button>
 
         <div>
-          <h2>Detalles del pedido</h2>
-          <p>Información completa de la reserva</p>
+          <h2>Detalles del incidente</h2>
+          <p>Información completa y estado de la solicitud</p>
         </div>
       </header>
 
       <div className="dp-card">
-        <h1 className="dp-orden">Pedido #{pedido.nroOrden || pedido.id}</h1>
+        <h1 className="dp-orden">Incidente #{pedido.nroOrden || pedido.id}</h1>
 
         <div className="dp-info">
           <div className="dp-info-item">
             <Hash size={24} />
             <div>
-              <strong>Número de orden</strong>
+              <strong>Número de ticket</strong>
               <span>{pedido.nroOrden || pedido.id}</span>
             </div>
           </div>
 
           <div className="dp-info-item">
-            <ChefHat size={24} />
+            <Package size={24} />
             <div>
               <strong>Estado</strong>
               <span>{pedido.estado}</span>
@@ -175,7 +175,7 @@ function DetallesPedido() {
           <div className="dp-info-item">
             <Calendar size={24} />
             <div>
-              <strong>Fecha</strong>
+              <strong>Fecha de reporte</strong>
               <span>{fechaFormateada}</span>
             </div>
           </div>
@@ -192,22 +192,22 @@ function DetallesPedido() {
             <Clock3 size={24} />
             <div>
               <strong>Tiempo estimado</strong>
-              <span>{pedido.tiempoEstimado || "20-25 min"}</span>
+              <span>{pedido.tiempoEstimado || "24-48 hs"}</span>
             </div>
           </div>
 
           <div className="dp-info-item">
             <CircleDollarSign size={24} />
             <div>
-              <strong>Método de pago</strong>
-              <span>{formatoMetodoPago}</span>
+              <strong>Vía de seguimiento</strong>
+              <span>{formatoMetodoPago === "Efectivo" ? "Plataforma" : "Digital"}</span>
             </div>
           </div>
 
           <div className="dp-info-item">
             <Package size={24} />
             <div>
-              <strong>Productos</strong>
+              <strong>Servicios</strong>
               <span>{pedido.productos ? pedido.productos.length : 0}</span>
             </div>
           </div>
@@ -216,7 +216,7 @@ function DetallesPedido() {
         <div className="dp-separador"></div>
 
         <div className="dp-bloque">
-          <h4>Productos del pedido</h4>
+          <h4>Servicios o rubros vinculados</h4>
 
           {pedido.productos && pedido.productos.length > 0 ? (
             pedido.productos.map((producto, index) => (
@@ -225,29 +225,20 @@ function DetallesPedido() {
                   {producto.cantidad} × {producto.nombre}
                 </span>
 
-                <span>${producto.precioUnitario * producto.cantidad}</span>
+                <span>Registrado</span>
               </div>
             ))
           ) : (
-            <p style={{ color: "#5a6490" }}>No hay detalle de productos.</p>
+            <p style={{ color: "#5a6490" }}>No hay detalle de rubros.</p>
           )}
         </div>
 
         <div className="dp-separador"></div>
 
         <div className="dp-bloque">
-          <h4>Descripción</h4>
+          <h4>Descripción del incidente</h4>
 
           <p>{descripcionTexto}</p>
-        </div>
-
-        <div className="dp-separador"></div>
-
-        <div className="dp-footer">
-          <div>
-            <strong>Total</strong>
-            <span>${pedido.valor}</span>
-          </div>
         </div>
       </div>
     </section>

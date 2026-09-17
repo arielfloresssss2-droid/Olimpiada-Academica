@@ -164,15 +164,7 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
             localStorage.removeItem("carrito");
             setCarrito([]);
 
-            if (metodoPago === "efectivo") {
-                alert(
-                    "¡Pedido realizado correctamente! Podés abonar tu pedido en el comedor."
-                );
-            } else {
-                alert(
-                    "¡Pedido registrado con Mercado Pago! Podés ver el estado en Mis Reservas."
-                );
-            }
+            alert("¡Reporte de incidente enviado correctamente! Ya podés hacerle seguimiento en Mis Incidentes.");
 
             if (setActiveSection) {
                 setActiveSection("reservas");
@@ -183,7 +175,7 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
             const mensaje =
                 error instanceof Error
                     ? error.message
-                    : "Error al realizar el pedido";
+                    : "Error al registrar el reporte";
 
             alert(mensaje);
         } finally {
@@ -194,29 +186,21 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
     return (
         <section className="cp-section">
             <div className="cp-header">
-                <h2>Confirmar pedido</h2>
+                <h2>Confirmar reporte de incidente</h2>
 
                 <p>
-                    Seleccioná el método de pago para continuar
+                    Seleccioná la vía de seguimiento para el reporte
                 </p>
             </div>
 
             <div className="cp-card">
-                <h3>Método de pago</h3>
+                <h3>Canal de Notificaciones y Seguimiento</h3>
 
                 {carrito.length > 0 && (
                     <div className="cp-resumen">
                         <p>
-                            Total de productos:{" "}
+                            Servicios / Incidentes seleccionados:{" "}
                             <strong>{carrito.length}</strong>
-                        </p>
-
-                        <p className="cp-total">
-                            Total:{" "}
-                            <strong>
-                                $
-                                {total.toLocaleString("es-AR")}
-                            </strong>
                         </p>
                     </div>
                 )}
@@ -235,13 +219,13 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
                         disabled={cargando}
                     >
                         <span className="cp-metodo-icono">
-                            💵
+                            📱
                         </span>
 
-                        <h4>Efectivo</h4>
+                        <h4>Notificación en Plataforma</h4>
 
                         <p>
-                            Pagá tu pedido en el comedor
+                            Seguimiento en tiempo real desde la web
                         </p>
                     </button>
 
@@ -258,13 +242,13 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
                         disabled={cargando}
                     >
                         <span className="cp-metodo-icono">
-                            💳
+                            📧
                         </span>
 
-                        <h4>Mercado Pago</h4>
+                        <h4>Correo Electrónico</h4>
 
                         <p>
-                            Pagá de forma online
+                            Recibir informes de resolución por mail
                         </p>
                     </button>
                 </div>
@@ -280,8 +264,8 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
                     onClick={manejarContinuar}
                 >
                     {cargando
-                        ? "Guardando pedido..."
-                        : "Continuar"}
+                        ? "Enviando reporte..."
+                        : "Confirmar y enviar incidente"}
                 </button>
 
                 {setActiveSection && (
@@ -293,7 +277,7 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
                         }
                         disabled={cargando}
                     >
-                        ← Volver a modificar mi pedido
+                        ← Volver a modificar mi solicitud
                     </button>
                 )}
             </div>

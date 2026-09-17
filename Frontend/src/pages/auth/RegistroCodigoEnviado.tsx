@@ -1,16 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/auth/Login-Register.css";
-import { getResetSession } from "../../services/emailService";
+import { getRegisterSession } from "../../services/emailService";
 
-function CodigoEnviado() {
+function RegistroCodigoEnviado() {
   const navigate = useNavigate();
   const location = useLocation();
   const stateEmail = (location.state as { email?: string } | null)?.email;
-  const session = getResetSession();
+  const session = getRegisterSession();
   const email = stateEmail || session?.email;
 
   const handleContinuar = () => {
-    navigate("/forgot-password/verify", { state: { email } });
+    navigate("/register/verify", { state: { email } });
   };
 
   return (
@@ -30,8 +30,8 @@ function CodigoEnviado() {
           <h2 className="soporte-success-title">Revisá tu correo</h2>
           <p className="soporte-success-subtitle">
             {email
-              ? `Te enviamos un código de 6 dígitos a ${email}`
-              : "Te enviamos un código de 6 dígitos a tu correo"}
+              ? `Te enviamos un código de 6 dígitos a ${email} para verificar tu correo y habilitar tu cuenta en el sistema de incidentes de Morón.`
+              : "Te enviamos un código de 6 dígitos para verificar tu correo y habilitar tu cuenta en el sistema de incidentes de Morón."}
           </p>
 
           <div className="soporte-buttons-container">
@@ -44,8 +44,8 @@ function CodigoEnviado() {
             </button>
 
             <p className="login-help-text">
-              <Link to="/forgot-password" className="login-help-link">
-                Usar otro correo
+              <Link to="/register" className="login-help-link">
+                ‹ Modificar datos o volver
               </Link>
             </p>
           </div>
@@ -66,4 +66,4 @@ function CodigoEnviado() {
   );
 }
 
-export default CodigoEnviado;
+export default RegistroCodigoEnviado;

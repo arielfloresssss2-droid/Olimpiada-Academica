@@ -5,10 +5,12 @@ import "./index.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import MenuPage from "./pages/menu/Menu";
 import HistorialPage from "./pages/perfil/Historial";
 import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
+import RegistroCodigoEnviado from "./pages/auth/RegistroCodigoEnviado";
+import VerificarRegistro from "./pages/auth/VerificarRegistro";
+import CuentaConfirmada from "./pages/auth/CuentaConfirmada";
 import SoportePage from "./pages/soporte/Soporte";
 import SoporteEnviadoPage from "./pages/soporte/SoporteEnviado";
 import Dashboard from "./pages/home/Dashboard";
@@ -33,9 +35,20 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* MENU */}
+        <Route
+          path="/register/sent"
+          element={<RegistroCodigoEnviado />}
+        />
 
-        <Route path="/menu" element={<MenuPage />} />
+        <Route
+          path="/register/verify"
+          element={<VerificarRegistro />}
+        />
+
+        <Route
+          path="/register/success"
+          element={<CuentaConfirmada />}
+        />
 
         {/* PERFIL */}
 

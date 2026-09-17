@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../../styles/auth/Login-Register.css";
 
-function ContrasenaActualizada() {
+function CuentaConfirmada() {
   const navigate = useNavigate();
 
   return (
@@ -13,15 +13,15 @@ function ContrasenaActualizada() {
 
         <div className="login-body">
           <div className="forgot-icon-circle forgot-icon-circle--success">
-            <span role="img" aria-label="contraseña actualizada">
+            <span role="img" aria-label="cuenta confirmada">
               ✅
             </span>
           </div>
 
-          <h2 className="soporte-success-title">Contraseña actualizada</h2>
+          <h2 className="soporte-success-title">¡Cuenta creada con éxito!</h2>
           <p className="soporte-success-subtitle">
-            Tu contraseña se cambió correctamente. Ya podés ingresar al
-            sistema.
+            Tu correo ha sido verificado y tu cuenta fue activada. Ya podés
+            iniciar sesión con tu correo y contraseña.
           </p>
 
           <div className="soporte-buttons-container">
@@ -30,8 +30,19 @@ function ContrasenaActualizada() {
               className="login-submit-btn"
               onClick={() => navigate("/login")}
             >
-              Ir al inicio de sesión
+              Iniciar sesión
             </button>
+
+            <p className="login-help-text">
+              <button
+                type="button"
+                className="login-help-link"
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                onClick={() => navigate("/login")}
+              >
+                ‹ Volver al inicio de sesión
+              </button>
+            </p>
           </div>
         </div>
 
@@ -50,4 +61,4 @@ function ContrasenaActualizada() {
   );
 }
 
-export default ContrasenaActualizada;
+export default CuentaConfirmada;

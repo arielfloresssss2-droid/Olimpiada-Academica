@@ -63,14 +63,14 @@ function CambiarContra() {
           <div className="cc-logo">
             <img
               src="/logo.svg"
-              alt="Logo E.E.S.T. N°6"
+              alt="Logo Municipio de Morón"
               className="cc-logo-img"
             />
           </div>
 
           {/* School name */}
-          <h1 className="cc-school-name">E.E.S.T. N°6 Chacabuco</h1>
-          <p className="cc-school-sub">MORÓN</p>
+          <h1 className="cc-school-name">Municipio de Morón</h1>
+          <p className="cc-school-sub">GESTIÓN DE INCIDENTES</p>
 
           {/* Divider */}
           <div className="cc-divider">
@@ -133,7 +133,7 @@ function CambiarContra() {
         {/* Footer */}
         <div className="cc-footer">
           <span>⇄</span>
-          <span>Sistema de Gestión Escolar · E.E.S.T. N°6</span>
+          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
 

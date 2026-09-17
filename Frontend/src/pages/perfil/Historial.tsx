@@ -43,12 +43,12 @@ function Historial() {
       <main className="home-content">
         <div className="home-header">
           <h1 className="home-title">Historial</h1>
-          <p className="home-subtitle">Tus pedidos anteriores</p>
+          <p className="home-subtitle">Tus incidentes y reportes anteriores en Morón</p>
         </div>
 
         <div className="home-grid">
           {historial.length === 0 ? (
-            <p style={{ color: "white" }}>No tenés pedidos anteriores.</p>
+            <p style={{ color: "white" }}>No tenés incidentes anteriores registrados.</p>
           ) : (
             historial.map((pedido) => (
               <TarjetaHistorial key={pedido.id} pedido={pedido} />

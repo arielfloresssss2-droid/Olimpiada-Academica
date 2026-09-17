@@ -143,34 +143,34 @@ function Home({ setActiveSection }: InicioProps) {
   const pedidosEntregados = pedidos.filter((p) => p.estado === "Entregado");
   const totalGastado = pedidosEntregados.reduce((sum, p) => sum + p.valor, 0);
 
-  // Obtener texto de la tarjeta de reserva en base al estado real
+  // Obtener texto de la tarjeta de reserva/incidente en base al estado real
   const obtenerTituloReserva = () => {
-    if (!pedidoActivo) return "Sin pedidos activos";
+    if (!pedidoActivo) return "Sin incidentes activos";
     switch (pedidoActivo.estado) {
       case "Pendiente":
-        return "Reserva recibida";
+        return "Incidente recibido";
       case "Aceptado":
-        return "Reserva confirmada";
+        return "Incidente asignado";
       case "Preparando":
-        return "En preparación";
+        return "En resolución";
       case "Listo":
-        return "¡Tu pedido está listo!";
+        return "¡Incidente resuelto!";
       default:
-        return "Estado del pedido";
+        return "Estado del incidente";
     }
   };
 
   const obtenerTextoReserva = () => {
-    if (!pedidoActivo) return "No tenés ningún pedido en proceso en este momento.";
+    if (!pedidoActivo) return "No tenés ningún incidente en proceso en este momento.";
     switch (pedidoActivo.estado) {
       case "Pendiente":
-        return "Tu pedido fue recibido y está aguardando confirmación del buffet.";
+        return "Tu reporte fue recibido y aguarda asignación del área correspondiente de Morón.";
       case "Aceptado":
-        return `Tu pedido fue confirmado. Estará listo en aproximadamente ${pedidoActivo.tiempoEstimado || "20 min"}.`;
+        return `Tu reporte fue asignado a la cuadrilla municipal. Tiempo estimado de intervención: ${pedidoActivo.tiempoEstimado || "24-48 hs"}.`;
       case "Preparando":
-        return `Tu pedido se está preparando. Tiempo estimado restante: ${pedidoActivo.tiempoEstimado || "15 min"}.`;
+        return `La cuadrilla se encuentra interviniendo en la zona. Tiempo estimado: ${pedidoActivo.tiempoEstimado || "en curso"}.`;
       case "Listo":
-        return "¡Ya podés pasar a retirar tu pedido por el buffet!";
+        return "¡El incidente ha sido verificado y resuelto por el equipo técnico!";
       default:
         return "";
     }
@@ -183,23 +183,23 @@ function Home({ setActiveSection }: InicioProps) {
     if (pedidoActivo) {
       if (pedidoActivo.estado === "Listo") {
         list.push({
-          icono: "🎉",
-          texto: `¡Tu pedido #${pedidoActivo.nroOrden} está listo! Podés pasar a retirarlo.`,
+          icono: "✅",
+          texto: `¡Tu incidente #${pedidoActivo.nroOrden} fue resuelto exitosamente!`,
         });
       } else if (pedidoActivo.estado === "Preparando") {
         list.push({
-          icono: "👨‍🍳",
-          texto: `Tu pedido #${pedidoActivo.nroOrden} está en preparación (${pedidoActivo.tiempoEstimado || "falta poco"}).`,
+          icono: "🛠️",
+          texto: `Cuadrilla trabajando en tu incidente #${pedidoActivo.nroOrden} (${pedidoActivo.tiempoEstimado || "en curso"}).`,
         });
       } else if (pedidoActivo.estado === "Aceptado") {
         list.push({
-          icono: "⏰",
-          texto: `Tu pedido #${pedidoActivo.nroOrden} fue aceptado (Est: ${pedidoActivo.tiempoEstimado || "20 min"}).`,
+          icono: "📋",
+          texto: `Incidente #${pedidoActivo.nroOrden} asignado para inspección.`,
         });
       } else if (pedidoActivo.estado === "Pendiente") {
         list.push({
           icono: "⏳",
-          texto: `Tu pedido #${pedidoActivo.nroOrden} ingresó y espera confirmación del buffet.`,
+          texto: `Tu reporte #${pedidoActivo.nroOrden} ingresó y espera revisión municipal.`,
         });
       }
     }
@@ -208,7 +208,7 @@ function Home({ setActiveSection }: InicioProps) {
     if (ultimoEntregado) {
       list.push({
         icono: "✅",
-        texto: `Tu pedido #${ultimoEntregado.nroOrden} fue entregado. ¡Que lo disfrutés!`,
+        texto: `El reporte #${ultimoEntregado.nroOrden} fue finalizado y cerrado.`,
       });
     }
 
@@ -216,20 +216,13 @@ function Home({ setActiveSection }: InicioProps) {
     if (ultimoCancelado) {
       list.push({
         icono: "❌",
-        texto: `Tu pedido #${ultimoCancelado.nroOrden} fue cancelado.`,
-      });
-    }
-
-    if (menu) {
-      list.push({
-        icono: "🍝",
-        texto: `El menú del día hoy es ${menu.nombre}.`,
+        texto: `El reporte #${ultimoCancelado.nroOrden} fue desestimado o cancelado.`,
       });
     }
 
     list.push({
-      icono: "⏰",
-      texto: "Recordá reservar tu comida antes de las 10:00 hs.",
+      icono: "🛡️",
+      texto: "Atención ciudadana Morón activa las 24 hs.",
     });
 
     return list.slice(0, 4);
@@ -243,42 +236,41 @@ function Home({ setActiveSection }: InicioProps) {
         <section className="home-header">
           <div>
             <h1 className="home-title">
-              Buen día, {usuario.nombre || "Usuario"} 👋
+              Buen día, {usuario.nombre || "Ciudadano"} 👋
             </h1>
 
             <p className="home-subtitle">
-              Recordá reservar tu comida antes de las 10:00 hs.
+              Reportá incidentes urbanos y hacé seguimiento de tus solicitudes en Morón.
             </p>
           </div>
         </section>
 
         <section className="home-main-card">
           <div className="home-main-info">
-            <span className="home-badge">MENÚ DEL DÍA</span>
+            <span className="home-badge">ATENCIÓN CIUDADANA</span>
 
             <h2>
-              {menu ? menu.nombre : "No hay menú disponible"}
+              {menu ? menu.nombre : "Centro de Reportes de Morón"}
             </h2>
 
             <p>
               {menu
                 ? menu.descripcion
-                : "Todavía no hay un menú disponible para reservar."}
+                : "Reportá incidentes de alumbrado, bacheo, higiene urbana, arbolado o señales viales en Morón."}
             </p>
 
             <div className="home-main-footer">
               <span className="home-price">
                 {menu
-                  ? `$${menu.precio.toLocaleString("es-AR")}`
-                  : "No disponible"}
+                  ? `Prioridad: ${menu.disponibilidad > 50 ? "Estándar" : "Urgente"}`
+                  : "Servicio Activo"}
               </span>
 
               <button
                 className="home-main-btn"
-                onClick={agregarMenuAlPedido}
-                disabled={!menu}
+                onClick={() => setActiveSection("reservar")}
               >
-                Agregar al pedido
+                Reportar incidente
               </button>
             </div>
 
@@ -291,10 +283,10 @@ function Home({ setActiveSection }: InicioProps) {
 
           <div className="home-main-image">
             <img
-              src="/menu-semanal.svg"
-              width="200"
-              height="150"
-              alt="Menú del día"
+              src="/support.svg"
+              width="180"
+              height="140"
+              alt="Atención de incidentes"
             />
           </div>
         </section>
@@ -326,19 +318,19 @@ function Home({ setActiveSection }: InicioProps) {
             </div>
 
             <p className="home-card-text">
-              {cargandoPedidos ? "Cargando información del pedido..." : obtenerTextoReserva()}
+              {cargandoPedidos ? "Cargando información del incidente..." : obtenerTextoReserva()}
             </p>
 
             {pedidoActivo ? (
               <div className="home-qr">
-                Pedido n° {pedidoActivo.nroOrden}
+                Ticket n° {pedidoActivo.nroOrden}
               </div>
             ) : (
               <button
                 className="home-shortcut-btn w-full"
                 onClick={() => setActiveSection("reservar")}
               >
-                Hacer un pedido ahora
+                Reportar un incidente ahora
               </button>
             )}
           </div>
@@ -366,17 +358,17 @@ function Home({ setActiveSection }: InicioProps) {
             <div className="home-stats">
               <div className="home-stat-box">
                 <h4>{pedidosEntregados.length}</h4>
-                <p>Comidas</p>
-              </div>
-
-              <div className="home-stat-box">
-                <h4>${totalGastado.toLocaleString("es-AR")}</h4>
-                <p>Gastado</p>
+                <p>Resueltos</p>
               </div>
 
               <div className="home-stat-box">
                 <h4>{pedidosActivos.length}</h4>
                 <p>En curso</p>
+              </div>
+
+              <div className="home-stat-box">
+                <h4>{pedidos.length}</h4>
+                <p>Total</p>
               </div>
             </div>
           </div>

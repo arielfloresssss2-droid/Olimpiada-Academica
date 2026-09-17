@@ -54,22 +54,22 @@ function Login() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+            <img src="/logo.svg" alt="Logo Municipio de Morón" />
           </div>
 
-          <h1 className="login-school-name">E.E.S.T. N°6 Chacabuco</h1>
-          <p className="login-school-city">MORÓN</p>
+          <h1 className="login-school-name">Municipio de Morón</h1>
+          <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
 
           <div className="login-divider">
             <div className="login-divider-line" />
-            <span role="img" aria-label="comedor">
-              🍽️
+            <span role="img" aria-label="seguridad">
+              🛡️
             </span>
             <div className="login-divider-line" />
           </div>
 
-          <h2 className="login-title">Sistema de Reporte de Incidentes</h2>
-          <p className="login-subtitle">Ingresá con tu cuenta escolar</p>
+          <h2 className="login-title">Soporte de Incidentes</h2>
+          <p className="login-subtitle">Ingresá con tus credenciales de acceso</p>
 
           <form className="login-form" onSubmit={handleLogin}>
             <div className="login-field">
@@ -80,7 +80,7 @@ function Login() {
                 </span>
                 <input
                   type="email"
-                  placeholder="usuario@escuela.edu"
+                  placeholder="usuario@moron.gob.ar"
                   className="login-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -130,7 +130,7 @@ function Login() {
             </div>
 
             <button type="submit" className="login-submit-btn">
-              Ingresar al Comedor
+              Iniciar Sesión
             </button>
 
             <p className="login-help-text">
@@ -151,12 +151,12 @@ function Login() {
 
         <div className="login-footer">
           <span>⇄</span>
-          <span>Sistema de Gestión Escolar · E.E.S.T. N°6</span>
+          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
 
       <p className="login-bottom-note">
-        Solo para uso de alumnos, docentes y personal autorizado
+        Sistema oficial de gestión y reporte de incidentes · Morón
       </p>
 
       <br />

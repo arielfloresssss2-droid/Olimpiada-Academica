@@ -58,21 +58,21 @@ function Soporte() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
+            <img src="/logo.svg" alt="Logo Municipio de Morón" />
           </div>
 
-          <h1 className="login-school-name">E.E.S.T. N°6 Chacabuco</h1>
+          <h1 className="login-school-name">Municipio de Morón</h1>
 
-          <p className="login-school-city">MORÓN</p>
+          <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
 
           <div className="soporte-divider-top">
             <div className="soporte-divider-line-full" />
           </div>
 
-          <h2 className="soporte-title">Soporte técnico</h2>
+          <h2 className="soporte-title">Soporte y Atención Ciudadana</h2>
 
           <p className="login-subtitle">
-            Describe tu inconveniente y nuestro equipo revisará tu solicitud.
+            Describí tu consulta o inconveniente y el equipo de soporte lo revisará a la brevedad.
           </p>
 
           <form className="login-form" onSubmit={handleSubmit}>

@@ -171,7 +171,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
   const confirmarPedido = () => {
     if (carrito.length === 0) {
       alert(
-        "El carrito está vacío. Agregá productos antes de confirmar."
+        "No seleccionaste ningún servicio o categoría. Seleccioná al menos uno antes de confirmar."
       );
       return;
     }
@@ -179,7 +179,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
     const usuarioRaw = localStorage.getItem("usuario");
 
     if (!usuarioRaw) {
-      alert("Debés iniciar sesión para realizar un pedido.");
+      alert("Debés iniciar sesión para reportar un incidente.");
       return;
     }
 
@@ -194,7 +194,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
   return (
     <section className="reservar-section">
       <div className="reservar-header">
-        <h2>Menú del día</h2>
+        <h2>Reportar Incidente o Solicitud</h2>
 
         <span>
           {new Date().toLocaleDateString("es-AR", {
@@ -205,13 +205,13 @@ function Reservar({ setActiveSection }: ReservasProps) {
         </span>
       </div>
 
-      {/* MENÚ DEL DÍA */}
+      {/* SERVICIO DESTACADO */}
 
       {menuDelDia ? (
         <div className="reservar-card">
           <div className="reservar-left">
             <div className="reservar-icon">
-              <img src="/food.svg" alt="Menú" />
+              <img src="/support.svg" alt="Servicio" />
             </div>
 
             <div className="reservar-info">
@@ -222,12 +222,11 @@ function Reservar({ setActiveSection }: ReservasProps) {
               </ul>
 
               <p>
-                Precio: $
-                {Number(menuDelDia.precio).toLocaleString("es-AR")}
+                Prioridad: {menuDelDia.disponibilidad > 50 ? "Estándar" : "Urgente"}
               </p>
 
               <p>
-                Disponibles: {menuDelDia.disponibilidad}
+                Cupos de cuadrilla: {menuDelDia.disponibilidad}
               </p>
             </div>
           </div>
@@ -243,18 +242,18 @@ function Reservar({ setActiveSection }: ReservasProps) {
             >
               {menuDelDia.disponible &&
               menuDelDia.disponibilidad > 0
-                ? "Reservar menú"
-                : "Agotado"}
+                ? "Solicitar intervención"
+                : "No disponible"}
             </button>
           </div>
         </div>
       ) : (
         <div className="reservar-card">
           <div className="reservar-info">
-            <h3>No hay menú disponible</h3>
+            <h3>Atención y Soporte Municipal</h3>
 
             <p>
-              Todavía no se cargó un menú del día.
+              Seleccioná a continuación el tipo de incidente que necesitás reportar en Morón.
             </p>
           </div>
         </div>
@@ -279,7 +278,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
                   className="reservar-product-card"
                 >
                   <div className="reservar-product-icon">
-                    🍽️
+                    🛠️
                   </div>
 
                   <h3>{producto.nombre}</h3>
@@ -287,7 +286,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
                   <p>{producto.descripcion}</p>
 
                   <p className="reservar-price">
-                    ${producto.precio}
+                    Prioridad: {producto.disponible ? "Activa" : "En pausa"}
                   </p>
 
                   <button
@@ -299,7 +298,7 @@ function Reservar({ setActiveSection }: ReservasProps) {
                       )
                     }
                   >
-                    Agregar
+                    Seleccionar
                   </button>
                 </div>
               ))}
@@ -308,16 +307,16 @@ function Reservar({ setActiveSection }: ReservasProps) {
         )
       )}
 
-      {/* CARRITO */}
+      {/* CARRITO / SOLICITUD */}
 
       <div className="reservar-cart">
         <div className="reservar-cart-header">
-          🛒 Mi Pedido ({carrito.length})
+          📋 Mi Solicitud ({carrito.length})
         </div>
 
         {carrito.length === 0 ? (
           <p className="reservar-empty-cart">
-            No hay productos agregados.
+            No hay servicios o categorías seleccionadas.
           </p>
         ) : (
           <>
@@ -330,12 +329,9 @@ function Reservar({ setActiveSection }: ReservasProps) {
                     {item.tipo === "menu" && (
                       <>
                         <br />
-                        <small>Menú del día</small>
+                        <small>Servicio destacado</small>
                       </>
                     )}
-
-                    <br />
-                    ${Number(item.precio).toLocaleString("es-AR")}
                   </div>
 
                   <button
@@ -350,19 +346,11 @@ function Reservar({ setActiveSection }: ReservasProps) {
               ))}
             </ul>
 
-            <div className="reservar-cart-total">
-              <span>Total</span>
-
-              <span>
-                ${total.toLocaleString("es-AR")}
-              </span>
-            </div>
-
             <button
               className="reservar-confirm-btn"
               onClick={confirmarPedido}
             >
-              Confirmar pedido
+              Confirmar solicitud
             </button>
           </>
         )}

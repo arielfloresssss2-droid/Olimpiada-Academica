@@ -13,92 +13,21 @@ interface Reserva {
   tiempoEstimado: string;
 }
 
-function IconoPlato() {
+function IconoIncidente() {
   return (
     <svg
-      width="82"
-      height="82"
-      viewBox="0 0 64 64"
+      width="72"
+      height="72"
+      viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      stroke="#1a1f36"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      {/* Plato exterior */}
-      <circle cx="32" cy="32" r="18" stroke="#1a1f36" strokeWidth="2.4" />
-
-      {/* Plato interior */}
-      <circle
-        cx="32"
-        cy="32"
-        r="11"
-        stroke="#1a1f36"
-        strokeWidth="1.6"
-        opacity="0.9"
-      />
-
-      {/* Decoración comida */}
-      <path
-        d="M26 33C28 29 36 29 38 33"
-        stroke="#1a1f36"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-
-      <path
-        d="M27 37C30 35 34 35 37 37"
-        stroke="#1a1f36"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-
-      {/* Tenedor */}
-      <line
-        x1="8"
-        y1="12"
-        x2="8"
-        y2="52"
-        stroke="#1a1f36"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-      />
-
-      <line
-        x1="4.5"
-        y1="12"
-        x2="4.5"
-        y2="23"
-        stroke="#1a1f36"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-
-      <line
-        x1="8"
-        y1="12"
-        x2="8"
-        y2="23"
-        stroke="#1a1f36"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-
-      <line
-        x1="11.5"
-        y1="12"
-        x2="11.5"
-        y2="23"
-        stroke="#1a1f36"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-
-      {/* Cuchillo */}
-      <path
-        d="M56 12C53 18 53 28 56 34V52"
-        stroke="#1a1f36"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
     </svg>
   );
 }
@@ -115,11 +44,11 @@ function ReservaCard({
   return (
     <div className="mr-card">
       <div className="mr-card-info">
-        <p className="mr-card-titulo">Reserva: {reserva.titulo}</p>
+        <p className="mr-card-titulo">Incidente: {reserva.titulo || `Ticket #${reserva.nroOrden}`}</p>
         <p className="mr-card-dato">Estado: {reserva.estado}</p>
-        <p className="mr-card-dato">Nro de orden: {reserva.nroOrden}</p>
+        <p className="mr-card-dato">Ticket N°: #{reserva.nroOrden}</p>
         <p className="mr-card-dato">
-          Hora de la reserva:{" "}
+          Hora de reporte:{" "}
           {reserva.hora
             ? reserva.hora
             : reserva.fechaPedido
@@ -130,25 +59,25 @@ function ReservaCard({
             : "Pendiente"}
         </p>
         <p className="mr-card-dato">
-          Tiempo estimado: {reserva.tiempoEstimado}
+          Tiempo estimado: {reserva.tiempoEstimado || "24-48 hs"}
         </p>
 
         <div className="mr-card-acciones">
           <button className="mr-btn" onClick={() => onCancelar(reserva.id)}>
-            Cancelar reserva
+            Cancelar solicitud
           </button>
 
           <button
             className="mr-btn"
             onClick={() => navigate(`/detalles-pedido/${reserva.id}`)}
           >
-            Descripción
+            Ver detalles
           </button>
         </div>
       </div>
 
       <div className="mr-card-icono">
-        <IconoPlato />
+        <IconoIncidente />
       </div>
     </div>
   );
@@ -166,7 +95,7 @@ function MisReservas() {
         const response = await fetch(
           `${API_BASE_URL}/api/pedido/Usuario/${idUsuario}`,
         );
-        if (!response.ok) throw new Error("Error al obtener reservas");
+        if (!response.ok) throw new Error("Error al obtener incidentes");
         const data = await response.json();
         // Solo las activas
         setPedidos(
@@ -191,20 +120,20 @@ function MisReservas() {
       });
       if (!response.ok) throw new Error("Error al cancelar");
       setPedidos((prev) => prev.filter((p) => p.id !== id));
-      alert("Reserva cancelada correctamente");
+      alert("Solicitud de incidente cancelada correctamente");
     } catch (error) {
       console.error(error);
-      alert("Error al cancelar la reserva");
+      alert("Error al cancelar la solicitud de incidente");
     }
   };
 
   return (
     <section className="mr-section">
       <div className="mr-header">
-        <h2>Mis Reservas</h2>
-        <span className="mr-historial">Historial de pedidos</span>
+        <h2>Mis Incidentes</h2>
+        <span className="mr-historial">Incidentes reportados</span>
       </div>
-      <p className="mr-subtitulo">Aquí aparecerán tus reservas activas.</p>
+      <p className="mr-subtitulo">Aquí aparecerán tus incidentes y solicitudes activas en Morón.</p>
       <div className="mr-lista">
         {pedidos.map((reserva) => (
           <ReservaCard

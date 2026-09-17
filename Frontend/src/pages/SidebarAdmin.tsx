@@ -21,8 +21,8 @@ function SidebarAdmin({
             </div>
 
             <div className="sidebar-admin-school">
-              <h1>E.E.S.T. N°6</h1>
-              <p>Chacabuco</p>
+              <h1>Municipio de Morón</h1>
+              <p>Panel de Administración</p>
               <p>MORÓN</p>
             </div>
           </div>
@@ -46,7 +46,7 @@ function SidebarAdmin({
               <span>Inicio</span>
             </button>
 
-            {/* GESTIONAR MENÚ */}
+            {/* GESTIONAR SERVICIOS / CATEGORÍAS */}
 
             <button
               onClick={() => setActiveSection("menu")}
@@ -56,8 +56,8 @@ function SidebarAdmin({
                   : ""
               }`}
             >
-              <img src="/food.svg" alt="Gestionar Menú" />
-              <span>Gestionar Menú</span>
+              <img src="/support.svg" alt="Gestionar Servicios" />
+              <span>Gestionar Servicios</span>
             </button>
 
             {/* ESTADÍSTICAS */}
@@ -74,7 +74,7 @@ function SidebarAdmin({
               <span>Estadísticas</span>
             </button>
 
-            {/* RESERVAS */}
+            {/* INCIDENTES */}
 
             <button
               onClick={() => setActiveSection("reservas")}
@@ -84,8 +84,8 @@ function SidebarAdmin({
                   : ""
               }`}
             >
-              <img src="/calendar.svg" alt="Reservas" />
-              <span>Gestionar Reservas</span>
+              <img src="/calendar.svg" alt="Gestionar Incidentes" />
+              <span>Gestionar Incidentes</span>
             </button>
 
             {/* PERFIL */}
@@ -112,13 +112,13 @@ function SidebarAdmin({
               <h4>Panel Administrativo</h4>
 
               <p>
-                Gestioná menús, reservas y estadísticas del buffet.
+                Gestioná servicios, incidentes reportados y estadísticas de Morón.
               </p>
             </div>
           </div>
 
           <div className="sidebar-admin-footer">
-            <p>Sistema Buffet Escolar</p>
+            <p>Sistema de Incidentes · Morón</p>
           </div>
         </div>
       </aside>
@@ -146,8 +146,8 @@ function SidebarAdmin({
               : ""
           }`}
         >
-          <img src="/food.svg" alt="Menú" />
-          <span>Menú</span>
+          <img src="/support.svg" alt="Servicios" />
+          <span>Servicios</span>
         </button>
 
         <button
@@ -170,8 +170,8 @@ function SidebarAdmin({
               : ""
           }`}
         >
-          <img src="/calendar.svg" alt="Reservas" />
-          <span>Reservas</span>
+          <img src="/calendar.svg" alt="Incidentes" />
+          <span>Incidentes</span>
         </button>
 
         <button

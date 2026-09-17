@@ -1,20 +1,21 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/auth/Login-Register.css";
+import { API_BASE_URL } from "../../config/api";
 import {
   calculateExpiration,
+  clearRegisterSession,
   generatePasscode,
-  getResetSession,
-  markResetSessionVerified,
-  saveResetSession,
-  sendResetCodeEmail,
+  getRegisterSession,
+  saveRegisterSession,
+  sendRegisterCodeEmail,
 } from "../../services/emailService";
 
-function VerificarCodigo() {
+function VerificarRegistro() {
   const navigate = useNavigate();
   const location = useLocation();
   const stateEmail = (location.state as { email?: string } | null)?.email;
-  const session = getResetSession();
+  const session = getRegisterSession();
   const email = stateEmail || session?.email;
 
   const [digits, setDigits] = useState<string[]>(Array(6).fill(""));
@@ -25,11 +26,11 @@ function VerificarCodigo() {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    // Si no hay sesión ni correo, volver al inicio del proceso
-    if (!email && !session) {
-      navigate("/forgot-password");
+    // Si no hay datos de registro temporal, volver al registro
+    if (!session || !session.email) {
+      navigate("/register");
     }
-  }, [email, session, navigate]);
+  }, [session, navigate]);
 
   const handleChange = (index: number, value: string) => {
     if (!/^[0-9]?$/.test(value)) return;
@@ -66,42 +67,65 @@ function VerificarCodigo() {
 
     setLoading(true);
 
-    const currentSession = getResetSession();
+    const currentSession = getRegisterSession();
 
     if (!currentSession) {
-      setError("No se encontró una solicitud activa. Por favor solicitá un nuevo código.");
+      setError("No se encontró una sesión de registro activa. Por favor completá el registro nuevamente.");
       setLoading(false);
       return;
     }
 
-    // Verificar si el código ya expiró (15 minutos)
+    // 1. Verificar si el código expiró (15 minutos)
     if (Date.now() > currentSession.expiresAt) {
-      setError(
-        "El código ha expirado (validez de 15 minutos). Por favor solicitá uno nuevo."
-      );
+      setError("El código ha expirado (validez de 15 minutos). Por favor solicitá uno nuevo.");
       setLoading(false);
       return;
     }
 
-    // Verificar si el código coincide
+    // 2. Verificar si el código ingresado coincide
     if (currentSession.passcode !== code) {
       setError("El código ingresado es incorrecto");
       setLoading(false);
       return;
     }
 
-    // Código válido -> marcar como verificado y continuar
-    markResetSessionVerified();
-    setLoading(false);
+    // 3. Código verificado con éxito -> Ahora sí registramos al usuario en la base de datos
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/Auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: currentSession.nombre,
+          apellido: currentSession.apellido,
+          email: currentSession.email,
+          password: currentSession.password,
+        }),
+      });
 
-    navigate("/forgot-password/reset", {
-      state: { email: currentSession.email, code },
-    });
+      if (response.ok) {
+        // Limpiamos la sesión temporal de registro
+        clearRegisterSession();
+        setLoading(false);
+        alert("¡Tu cuenta ha sido creada con éxito! Ahora podés iniciar sesión.");
+        navigate("/register/success");
+      } else {
+        const errorText = await response.text();
+        setError(errorText || "Error al registrar la cuenta");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Error al conectar con el servidor para crear la cuenta.");
+      setLoading(false);
+    }
   };
 
   const handleReenviarCodigo = async () => {
-    if (!email) {
-      navigate("/forgot-password");
+    const currentSession = getRegisterSession();
+    if (!currentSession) {
+      navigate("/register");
       return;
     }
 
@@ -113,15 +137,20 @@ function VerificarCodigo() {
       const passcode = generatePasscode();
       const { expiresAt, timeFormatted } = calculateExpiration(15);
 
-      const emailRes = await sendResetCodeEmail(email, passcode, timeFormatted);
+      const emailRes = await sendRegisterCodeEmail(
+        currentSession.email,
+        currentSession.nombre,
+        currentSession.apellido,
+        passcode,
+        timeFormatted
+      );
 
       if (emailRes.success) {
-        saveResetSession({
-          email,
+        saveRegisterSession({
+          ...currentSession,
           passcode,
           expiresAt,
           timeFormatted,
-          verified: false,
         });
         setDigits(Array(6).fill(""));
         inputsRef.current[0]?.focus();
@@ -145,10 +174,10 @@ function VerificarCodigo() {
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo Municipio de Morón" />
+            <img src="/logo.svg" alt="Logo E.E.S.T. N°6" />
           </div>
 
-          <h2 className="login-title">Verificá el código</h2>
+          <h2 className="login-title">Confirmá tu correo</h2>
           <p className="login-subtitle">
             {email
               ? `Ingresá el código de 6 dígitos que enviamos a ${email}`
@@ -188,9 +217,12 @@ function VerificarCodigo() {
               type="submit"
               className="login-submit-btn"
               disabled={loading}
-              style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+              style={{
+                opacity: loading ? 0.7 : 1,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
             >
-              {loading ? "Verificando..." : "Continuar"}
+              {loading ? "Confirmando cuenta..." : "Confirmar cuenta"}
             </button>
 
             <div className="login-help-text" style={{ textAlign: "center", marginTop: "4px" }}>
@@ -206,8 +238,8 @@ function VerificarCodigo() {
             </div>
 
             <p className="login-help-text">
-              <Link to="/forgot-password" className="login-help-link">
-                ‹ Usar otro correo
+              <Link to="/register" className="login-help-link">
+                ‹ Volver al registro
               </Link>
             </p>
           </form>
@@ -228,4 +260,4 @@ function VerificarCodigo() {
   );
 }
 
-export default VerificarCodigo;
+export default VerificarRegistro;
