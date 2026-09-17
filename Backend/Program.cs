@@ -1,78 +1,41 @@
-using System.Text;
-using Backend.Data;
-using Backend.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configurar conexión PostgreSQL con Entity Framework Core
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Host=localhost;Port=5432;Database=olimpiada_db;Username=postgres;Password=postgres";
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
-
-// 2. Registrar servicios de la aplicación
-builder.Services.AddScoped<IJwtService, JwtService>();
-
-// 3. Configurar Controladores y OpenAPI
-builder.Services.AddControllers();
+// Add services to the container.
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
-// 4. Configurar Autenticación JWT
-var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "SuperSecretKeyForOlimpiadaAcademicaIncidentsManagementSystem2026!";
-var key = Encoding.UTF8.GetBytes(jwtSecret);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
-builder.Services.AddAuthorization();
-
-// 5. Configurar CORS para permitir solicitudes del Frontend (Vite)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
 
 var app = builder.Build();
 
-// Configurar el pipeline HTTP
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseCors("AllowFrontend");
+app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
 
-app.MapControllers();
-
-// Endpoint de prueba de conectividad
-app.MapGet("/", () => "API Backend Soporte de Incidentes - Municipio de Morón funcionando correctamente.");
+app.MapGet("/weatherforecast", () =>
+{
+    var forecast =  Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+})
+.WithName("GetWeatherForecast");
 
 app.Run();
+
+record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
