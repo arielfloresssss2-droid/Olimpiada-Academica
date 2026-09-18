@@ -88,6 +88,20 @@ function SidebarAdmin({
               <span>Gestionar Incidentes</span>
             </button>
 
+            {/* AUDITORÍA */}
+
+            <button
+              onClick={() => setActiveSection("auditoria")}
+              className={`sidebar-admin-link ${
+                activeSection === "auditoria"
+                  ? "sidebar-admin-link-active"
+                  : ""
+              }`}
+            >
+              <img src="/history.svg" alt="Log de Auditoría" />
+              <span>Log de Auditoría</span>
+            </button>
+
             {/* PERFIL */}
 
             <button

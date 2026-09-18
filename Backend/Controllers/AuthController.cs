@@ -129,7 +129,7 @@ public class AuthController : ControllerBase
             Apellido = request.Apellido.Trim(),
             Email = cleanEmail,
             Contrasena = passwordHash,
-            Rol = string.IsNullOrWhiteSpace(request.Rol) ? "Alumno" : request.Rol.Trim(),
+            Rol = string.IsNullOrWhiteSpace(request.Rol) ? "Ciudadano" : request.Rol.Trim(),
             IdMun = request.IdMun,
             Activo = true,
             CreatedAt = DateTime.UtcNow

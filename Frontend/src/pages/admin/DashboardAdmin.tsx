@@ -8,6 +8,7 @@ import Estadisticas from "./Estadisticas";
 import GestionarReservas_Admin from "./GestionarReservas_Admin";
 
 import Perfil from "../perfil/Perfil";
+import LogAuditoria from "../../components/LogAuditoria";
 
 import "../../styles/home/Dashboard.css";
 
@@ -31,6 +32,9 @@ function DashboardAdmin() {
 
       case "reservas":
         return <GestionarReservas_Admin />;
+
+      case "auditoria":
+        return <LogAuditoria />;
 
       case "perfil":
         return <Perfil />;

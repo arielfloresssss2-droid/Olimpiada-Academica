@@ -4,14 +4,14 @@ import {
   Calendar,
   Clock3,
   Hash,
-  ChefHat,
-  CircleDollarSign,
   Package,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "../../styles/reservas/DetallesPedido.css";
 import { API_BASE_URL } from "../../config/api";
+import TimelineEstado from "../../components/TimelineEstado";
+import MapaIncidente from "../../components/MapaIncidente";
 
 interface ProductoDetalle {
   nombre: string;
@@ -32,7 +32,7 @@ interface PedidoDetalle {
   productos: ProductoDetalle[];
 }
 
-function DetallesPedido() {
+export default function DetallesPedido() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
@@ -44,15 +44,15 @@ function DetallesPedido() {
     const fetchPedido = async () => {
       try {
         setCargando(true);
-        const response = await fetch(`${API_BASE_URL}/api/pedido/${id}`);
+        const response = await fetch(`${API_BASE_URL}/api/Pedido/${id}`);
         if (!response.ok) {
-          throw new Error("No se pudo cargar la información del pedido");
+          throw new Error("No se pudo cargar la información del incidente");
         }
         const data = await response.json();
         setPedido(data);
       } catch (err: any) {
         console.error(err);
-        setError(err.message || "Error al obtener el pedido");
+        setError(err.message || "Error al obtener el incidente");
       } finally {
         setCargando(false);
       }
@@ -71,13 +71,13 @@ function DetallesPedido() {
             <ArrowLeft size={22} />
           </button>
           <div>
-            <h2>Detalles del pedido</h2>
+            <h2>Detalles del incidente</h2>
             <p>Cargando información...</p>
           </div>
         </header>
         <div className="dp-card">
-          <p style={{ textAlign: "center", padding: "2rem", color: "#5a6490" }}>
-            Cargando detalles de tu reserva...
+          <p style={{ textAlign: "center", padding: "2rem", color: "#94a3b8" }}>
+            Cargando detalles del reporte...
           </p>
         </div>
       </section>
@@ -92,28 +92,19 @@ function DetallesPedido() {
             <ArrowLeft size={22} />
           </button>
           <div>
-            <h2>Detalles del pedido</h2>
+            <h2>Detalles del incidente</h2>
             <p>Error</p>
           </div>
         </header>
         <div className="dp-card">
-          <p style={{ textAlign: "center", padding: "2rem", color: "#c0392b" }}>
-            {error || "No se encontró el pedido solicitado."}
+          <p style={{ textAlign: "center", padding: "2rem", color: "#f87171" }}>
+            {error || "No se encontró el reporte solicitado."}
           </p>
         </div>
       </section>
     );
   }
 
-  // Formatear método de pago
-  const formatoMetodoPago =
-    pedido.metodoPago === 0 || pedido.metodoPago === "Efectivo"
-      ? "Efectivo"
-      : pedido.metodoPago === 4 || pedido.metodoPago === "MercadoPago"
-      ? "Mercado Pago"
-      : String(pedido.metodoPago);
-
-  // Formatear fecha y hora
   const fechaObj = pedido.fechaPedido ? new Date(pedido.fechaPedido) : null;
   const fechaValida = fechaObj && !isNaN(fechaObj.getTime());
 
@@ -123,21 +114,21 @@ function DetallesPedido() {
         month: "2-digit",
         year: "numeric",
       })
-    : "Sin fecha";
+    : "Reciente";
 
   const horaFormateada = fechaValida
     ? fechaObj.toLocaleTimeString("es-AR", {
         hour: "2-digit",
         minute: "2-digit",
       }) + " hs"
-    : "Sin hora";
+    : "Pendiente";
 
   const descripcionTexto =
     pedido.descripcion ||
     pedido.titulo ||
     (pedido.productos && pedido.productos.length > 0
-      ? pedido.productos.map((p) => `${p.cantidad}x ${p.nombre}`).join(", ")
-      : "Reporte de incidente municipal");
+      ? pedido.productos.map((p) => p.nombre).join(", ")
+      : "Reporte de incidencia urbana municipal");
 
   return (
     <section className="dp-section">
@@ -147,20 +138,23 @@ function DetallesPedido() {
         </button>
 
         <div>
-          <h2>Detalles del incidente</h2>
-          <p>Información completa y estado de la solicitud</p>
+          <h2>Detalles de la Incidencia</h2>
+          <p>Información completa, estado y mapa de ubicación</p>
         </div>
       </header>
 
       <div className="dp-card">
-        <h1 className="dp-orden">Incidente #{pedido.nroOrden || pedido.id}</h1>
+        <h1 className="dp-orden">Ticket #{pedido.nroOrden || pedido.id}</h1>
+
+        {/* TIMELINE VISUAL DEL ESTADO */}
+        <TimelineEstado estadoActual={pedido.estado} />
 
         <div className="dp-info">
           <div className="dp-info-item">
             <Hash size={24} />
             <div>
               <strong>Número de ticket</strong>
-              <span>{pedido.nroOrden || pedido.id}</span>
+              <span>#{pedido.nroOrden || pedido.id}</span>
             </div>
           </div>
 
@@ -197,18 +191,10 @@ function DetallesPedido() {
           </div>
 
           <div className="dp-info-item">
-            <CircleDollarSign size={24} />
-            <div>
-              <strong>Vía de seguimiento</strong>
-              <span>{formatoMetodoPago === "Efectivo" ? "Plataforma" : "Digital"}</span>
-            </div>
-          </div>
-
-          <div className="dp-info-item">
             <Package size={24} />
             <div>
-              <strong>Servicios</strong>
-              <span>{pedido.productos ? pedido.productos.length : 0}</span>
+              <strong>Notificaciones</strong>
+              <span>Mail & App Activas</span>
             </div>
           </div>
         </div>
@@ -216,33 +202,25 @@ function DetallesPedido() {
         <div className="dp-separador"></div>
 
         <div className="dp-bloque">
-          <h4>Servicios o rubros vinculados</h4>
-
-          {pedido.productos && pedido.productos.length > 0 ? (
-            pedido.productos.map((producto, index) => (
-              <div key={index} className="dp-producto">
-                <span>
-                  {producto.cantidad} × {producto.nombre}
-                </span>
-
-                <span>Registrado</span>
-              </div>
-            ))
-          ) : (
-            <p style={{ color: "#5a6490" }}>No hay detalle de rubros.</p>
-          )}
+          <h4>Descripción y Detalles del Reporte</h4>
+          <p style={{ background: "#0f172a", padding: "14px", borderRadius: "8px", border: "1px solid #1e293b", color: "#f8fafc" }}>
+            {descripcionTexto}
+          </p>
         </div>
 
         <div className="dp-separador"></div>
 
+        {/* MAPA INTERACTIVO DE UBICACIÓN */}
         <div className="dp-bloque">
-          <h4>Descripción del incidente</h4>
-
-          <p>{descripcionTexto}</p>
+          <h4>Ubicación Georreferenciada del Incidente</h4>
+          <MapaIncidente
+            latSeleccionada={-34.6508}
+            lngSeleccionada={-58.6214}
+            readOnly={true}
+            height="280px"
+          />
         </div>
       </div>
     </section>
   );
 }
-
-export default DetallesPedido;

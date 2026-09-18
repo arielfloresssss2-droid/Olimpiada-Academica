@@ -1,7 +1,8 @@
 import {
-  UtensilsCrossed,
+  ShieldAlert,
   CalendarCheck,
   BarChart3,
+  FileText,
 } from "lucide-react";
 
 import "../../styles/admin/Inicio_Admin.css";
@@ -10,43 +11,43 @@ type InicioAdminProps = {
   setActiveSection: (section: string) => void;
 };
 
-function Inicio_Admin({
+export default function Inicio_Admin({
   setActiveSection,
 }: InicioAdminProps) {
+  const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+
   return (
     <section className="admin-home">
       <header className="admin-home-header">
         <div>
           <span className="admin-home-tag">
-            Panel Administrativo
+            Municipalidad de Morón · Panel de Gestión
           </span>
 
-          <h1>Bienvenido, Administrador</h1>
+          <h1>Bienvenido, {usuario.nombre || "Administrador"}</h1>
 
           <p>
-            Gestioná usuarios, menús, reservas y estadísticas
-            desde un único lugar.
+            Gestión centralizada de reportes urbanos, cuadrillas, barrios y métricas de resolución con autorización basada en roles (JWT).
           </p>
         </div>
       </header>
 
       <div className="admin-grid">
 
-        {/* GESTIONAR MENÚ */}
+        {/* GESTIONAR SERVICIOS Y CATEGORÍAS */}
 
         <article
           className="admin-card"
           onClick={() => setActiveSection("menu")}
         >
           <div className="admin-card-icon">
-            <UtensilsCrossed size={42} />
+            <ShieldAlert size={42} />
           </div>
 
-          <h3>Gestionar Menú y Productos</h3>
+          <h3>Gestionar Servicios y Categorías</h3>
 
           <p>
-            Creá, editá y actualizá los menús disponibles.
-            Organizá comidas, precios y disponibilidad.
+            Administrá rubros de incidencias (baches, luminarias, basura, poda, semáforos) y cupos de cuadrillas de intervención.
           </p>
         </article>
 
@@ -60,16 +61,14 @@ function Inicio_Admin({
             <BarChart3 size={42} />
           </div>
 
-          <h3>Panel de Estadísticas</h3>
+          <h3>Panel de Estadísticas y Reportes</h3>
 
           <p>
-            Visualizá métricas del sistema, reservas,
-            asistencia y datos relevantes para la toma de
-            decisiones.
+            Visualizá métricas por barrio, por categoría y tiempo promedio de resolución. Exportación a PDF y CSV.
           </p>
         </article>
 
-        {/* RESERVAS */}
+        {/* INCIDENTES */}
 
         <article
           className="admin-card"
@@ -79,11 +78,27 @@ function Inicio_Admin({
             <CalendarCheck size={42} />
           </div>
 
-          <h3>Gestionar Reservas</h3>
+          <h3>Gestionar Incidentes y Cuadrillas</h3>
 
           <p>
-            Supervisá reservas activas, cancelaciones,
-            historial y disponibilidad de cupos.
+            Supervisá solicitudes recibidas, asigná estados (Pendiente, En revisión, En proceso, Resuelto) y filtrá por zona.
+          </p>
+        </article>
+
+        {/* LOG DE AUDITORÍA */}
+
+        <article
+          className="admin-card"
+          onClick={() => setActiveSection("auditoria")}
+        >
+          <div className="admin-card-icon">
+            <FileText size={42} />
+          </div>
+
+          <h3>Log de Auditoría y Seguridad</h3>
+
+          <p>
+            Histórico inmutable de quién modificó el estado de qué reporte y cuándo (trazabilidad de seguridad para la entrega).
           </p>
         </article>
 
@@ -91,5 +106,3 @@ function Inicio_Admin({
     </section>
   );
 }
-
-export default Inicio_Admin;

@@ -2,6 +2,7 @@ import "../../styles/reservas/MisReservas.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config/api";
+import TimelineEstado from "../../components/TimelineEstado";
 
 interface Reserva {
   id: number;
@@ -11,16 +12,17 @@ interface Reserva {
   hora?: string;
   fechaPedido?: string;
   tiempoEstimado: string;
+  descripcion?: string;
 }
 
 function IconoIncidente() {
   return (
     <svg
-      width="72"
-      height="72"
+      width="64"
+      height="64"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#1a1f36"
+      stroke="#38bdf8"
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -42,62 +44,68 @@ function ReservaCard({
   const navigate = useNavigate();
 
   return (
-    <div className="mr-card">
-      <div className="mr-card-info">
-        <p className="mr-card-titulo">Incidente: {reserva.titulo || `Ticket #${reserva.nroOrden}`}</p>
-        <p className="mr-card-dato">Estado: {reserva.estado}</p>
-        <p className="mr-card-dato">Ticket N°: #{reserva.nroOrden}</p>
-        <p className="mr-card-dato">
-          Hora de reporte:{" "}
-          {reserva.hora
-            ? reserva.hora
-            : reserva.fechaPedido
-            ? new Date(reserva.fechaPedido).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : "Pendiente"}
-        </p>
-        <p className="mr-card-dato">
-          Tiempo estimado: {reserva.tiempoEstimado || "24-48 hs"}
+    <div className="mr-card" style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "20px", marginBottom: "16px" }}>
+      <div className="mr-card-info" style={{ flex: 1 }}>
+        <h3 style={{ margin: "0 0 8px", color: "#f8fafc", fontSize: "16px" }}>
+          Incidencia: {reserva.titulo || `Ticket #${reserva.nroOrden}`}
+        </h3>
+        
+        <p className="mr-card-dato" style={{ color: "#94a3b8", margin: "4px 0" }}>
+          Ticket N°: <strong style={{ color: "#38bdf8" }}>#{reserva.nroOrden}</strong>
         </p>
 
-        <div className="mr-card-acciones">
-          <button className="mr-btn" onClick={() => onCancelar(reserva.id)}>
-            Cancelar solicitud
+        <p className="mr-card-dato" style={{ color: "#94a3b8", margin: "4px 0" }}>
+          Fecha de reporte:{" "}
+          {reserva.fechaPedido
+            ? new Date(reserva.fechaPedido).toLocaleDateString("es-AR")
+            : "Reciente"}
+        </p>
+
+        {/* TIMELINE VISUAL DEL ESTADO */}
+        <TimelineEstado estadoActual={reserva.estado} />
+
+        <div className="mr-card-acciones" style={{ marginTop: "16px", display: "flex", gap: "12px" }}>
+          <button
+            className="mr-btn"
+            onClick={() => onCancelar(reserva.id)}
+            style={{ background: "#334155", color: "#f8fafc", border: "none", padding: "8px 16px", borderRadius: "8px", cursor: "pointer" }}
+          >
+            Cancelar reporte
           </button>
 
           <button
             className="mr-btn"
             onClick={() => navigate(`/detalles-pedido/${reserva.id}`)}
+            style={{ background: "#3b82f6", color: "white", border: "none", padding: "8px 16px", borderRadius: "8px", cursor: "pointer", fontWeight: 600 }}
           >
-            Ver detalles
+            Ver detalles completos ➔
           </button>
         </div>
       </div>
 
-      <div className="mr-card-icono">
+      <div className="mr-card-icono" style={{ marginLeft: "20px" }}>
         <IconoIncidente />
       </div>
     </div>
   );
 }
 
-function MisReservas() {
+export default function MisReservas() {
   const [pedidos, setPedidos] = useState<Reserva[]>([]);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const fetchReservas = async () => {
       try {
+        setCargando(true);
         const idUsuario = JSON.parse(
           localStorage.getItem("usuario") || "{}",
         ).id;
         const response = await fetch(
-          `${API_BASE_URL}/api/pedido/Usuario/${idUsuario}`,
+          `${API_BASE_URL}/api/Pedido/Usuario/${idUsuario}`,
         );
         if (!response.ok) throw new Error("Error al obtener incidentes");
         const data = await response.json();
-        // Solo las activas
         setPedidos(
           data.filter(
             (p: Reserva) =>
@@ -106,6 +114,8 @@ function MisReservas() {
         );
       } catch (error) {
         console.error(error);
+      } finally {
+        setCargando(false);
       }
     };
     fetchReservas();
@@ -113,38 +123,48 @@ function MisReservas() {
 
   const cancelarReserva = async (id: number) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/pedido/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/Pedido/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ estado: 5 }),
       });
       if (!response.ok) throw new Error("Error al cancelar");
       setPedidos((prev) => prev.filter((p) => p.id !== id));
-      alert("Solicitud de incidente cancelada correctamente");
+      alert("Reporte de incidencia cancelado correctamente");
     } catch (error) {
       console.error(error);
-      alert("Error al cancelar la solicitud de incidente");
+      alert("Error al cancelar el reporte de incidencia");
     }
   };
 
   return (
     <section className="mr-section">
       <div className="mr-header">
-        <h2>Mis Incidentes</h2>
-        <span className="mr-historial">Incidentes reportados</span>
+        <h2>📋 Mis Incidentes y Reportes Activos</h2>
+        <span className="mr-historial">Seguimiento Morón</span>
       </div>
-      <p className="mr-subtitulo">Aquí aparecerán tus incidentes y solicitudes activas en Morón.</p>
-      <div className="mr-lista">
-        {pedidos.map((reserva) => (
-          <ReservaCard
-            key={reserva.id}
-            reserva={reserva}
-            onCancelar={cancelarReserva}
-          />
-        ))}
-      </div>
+      <p className="mr-subtitulo" style={{ color: "#94a3b8" }}>
+        Aquí podés consultar el avance en tiempo real de tus incidencias enviadas a la Municipalidad de Morón.
+      </p>
+
+      {cargando ? (
+        <p style={{ color: "#94a3b8", padding: "20px" }}>Cargando tus incidentes...</p>
+      ) : pedidos.length === 0 ? (
+        <div style={{ background: "#0f172a", borderRadius: "12px", padding: "30px", border: "1px solid #1e293b", textAlign: "center" }}>
+          <p style={{ color: "#f8fafc", fontSize: "16px", margin: "0 0 8px" }}>No tenés incidentes o reportes en curso actualmente.</p>
+          <p style={{ color: "#94a3b8", fontSize: "13px" }}>Si tenés un problema en tu barrio, podés reportarlo en cualquier momento.</p>
+        </div>
+      ) : (
+        <div className="mr-lista">
+          {pedidos.map((reserva) => (
+            <ReservaCard
+              key={reserva.id}
+              reserva={reserva}
+              onCancelar={cancelarReserva}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
-
-export default MisReservas;

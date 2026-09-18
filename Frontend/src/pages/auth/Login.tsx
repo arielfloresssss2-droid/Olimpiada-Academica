@@ -34,7 +34,7 @@ function Login() {
 
       if (data.rol === "Admin") {
         navigate("/admin");
-      } else if (data.rol === "Alumno") {
+      } else {
         navigate("/Dashboard");
       }
       } else {

@@ -38,11 +38,6 @@ function ConfirmarPedido({ setActiveSection }: ConfirmarPedidoProps) {
         }
     }, []);
 
-    const total = carrito.reduce(
-        (acc, item) => acc + Number(item.precio),
-        0
-    );
-
     const manejarContinuar = async () => {
         if (!metodoPago) {
             alert("Por favor, seleccioná un método de pago.");

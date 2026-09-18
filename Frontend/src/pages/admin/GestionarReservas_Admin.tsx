@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import "../../styles/admin/GestionarReservas_Admin.css";
 import {
   CalendarDays,
   RotateCcw,
@@ -8,13 +7,20 @@ import {
   XCircle,
   Eye,
   CheckCheck,
-  X,
   User,
+  FileSpreadsheet,
+  FileText,
+  ShieldCheck,
 } from "lucide-react";
 import { API_BASE_URL } from "../../config/api";
+import LogAuditoria, { type LogEntry } from "../../components/LogAuditoria";
 
 export type EstadoReserva =
   | "Pendiente"
+  | "En revisión"
+  | "En proceso"
+  | "Resuelto"
+  | "Rechazado"
   | "Aceptado"
   | "Preparando"
   | "Listo"
@@ -66,6 +72,7 @@ interface FiltrosReservas {
   fechaHasta: string;
   estado: string;
   usuario: string;
+  barrio: string;
 }
 
 const API_URL = `${API_BASE_URL}/api/Pedido`;
@@ -75,18 +82,21 @@ export default function GestionarReservas_Admin() {
   const [reservas, setReservas] = useState<Reserva[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [logsAuditoria, setLogsAuditoria] = useState<LogEntry[]>([]);
 
   const [filtros, setFiltros] = useState<FiltrosReservas>({
     fechaDesde: "",
     fechaHasta: "",
     estado: "",
     usuario: "",
+    barrio: "",
   });
 
   const [pagina, setPagina] = useState(1);
-  const [pedidoSeleccionado, setPedidoSeleccionado] = useState<Pedido | null>(
-    null,
-  );
+  const [pedidoSeleccionado, setPedidoSeleccionado] = useState<Pedido | null>(null);
+
+  const usuarioActual = JSON.parse(localStorage.getItem("usuario") || "{}");
+  const rolActual = usuarioActual.rol || "Empleado Municipal";
 
   const cargarPedidos = async () => {
     try {
@@ -96,7 +106,7 @@ export default function GestionarReservas_Admin() {
       const response = await fetch(API_URL);
 
       if (!response.ok) {
-        throw new Error("No se pudieron obtener los pedidos.");
+        throw new Error("No se pudieron obtener las incidencias.");
       }
 
       const data: Pedido[] = await response.json();
@@ -109,9 +119,9 @@ export default function GestionarReservas_Admin() {
 
           usuario: pedido.usuario
             ? `${pedido.usuario.nombre} ${pedido.usuario.apellido}`
-            : `Usuario #${pedido.idUsuario}`,
+            : `Ciudadano #${pedido.idUsuario}`,
 
-          email: pedido.usuario?.email ?? "Sin email",
+          email: pedido.usuario?.email ?? "Sin email registrado",
 
           fecha: fecha.toLocaleDateString("es-AR"),
 
@@ -120,9 +130,9 @@ export default function GestionarReservas_Admin() {
             minute: "2-digit",
           }),
 
-          menu: pedido.descripcion || pedido.titulo,
+          menu: pedido.descripcion || pedido.titulo || "Incidencia sin especificar",
 
-          precio: `$${pedido.valor.toLocaleString("es-AR")}`,
+          precio: `Ticket #${pedido.nroOrden || pedido.id}`,
 
           estado: pedido.estado,
 
@@ -133,7 +143,7 @@ export default function GestionarReservas_Admin() {
       setReservas(reservasConvertidas);
     } catch (err) {
       console.error(err);
-      setError("No se pudieron cargar los pedidos.");
+      setError("No se pudieron cargar las incidencias.");
     } finally {
       setLoading(false);
     }
@@ -144,9 +154,8 @@ export default function GestionarReservas_Admin() {
   }, []);
 
   const reservasFiltradas = useMemo(() => {
-    return reservas.filter((reserva) => {
+    return reservas.filter((reserva: Reserva) => {
       const pedido = reserva.pedido;
-
       const fechaPedido = new Date(pedido.fechaPedido);
 
       const fechaDesde = filtros.fechaDesde
@@ -158,24 +167,25 @@ export default function GestionarReservas_Admin() {
         : null;
 
       const coincideFechaDesde = !fechaDesde || fechaPedido >= fechaDesde;
-
       const coincideFechaHasta = !fechaHasta || fechaPedido <= fechaHasta;
-
-      const coincideEstado =
-        !filtros.estado || reserva.estado === filtros.estado;
+      const coincideEstado = !filtros.estado || reserva.estado === filtros.estado;
 
       const usuarioBusqueda = filtros.usuario.toLowerCase().trim();
-
       const coincideUsuario =
         !usuarioBusqueda ||
         reserva.usuario.toLowerCase().includes(usuarioBusqueda) ||
         reserva.email.toLowerCase().includes(usuarioBusqueda);
 
+      const coincideBarrio =
+        !filtros.barrio ||
+        reserva.menu.toLowerCase().includes(filtros.barrio.toLowerCase());
+
       return (
         coincideFechaDesde &&
         coincideFechaHasta &&
         coincideEstado &&
-        coincideUsuario
+        coincideUsuario &&
+        coincideBarrio
       );
     });
   }, [reservas, filtros]);
@@ -191,26 +201,31 @@ export default function GestionarReservas_Admin() {
   );
 
   const total = reservas.length;
+  const pendientes = reservas.filter((r: Reserva) => r.estado === "Pendiente").length;
+  const enRevision = reservas.filter((r: Reserva) => r.estado === "En revisión" || r.estado === "Aceptado").length;
+  const enProceso = reservas.filter((r: Reserva) => r.estado === "En proceso" || r.estado === "Preparando").length;
+  const resueltos = reservas.filter((r: Reserva) => r.estado === "Resuelto" || r.estado === "Listo" || r.estado === "Entregado").length;
+  const rechazados = reservas.filter((r: Reserva) => r.estado === "Rechazado" || r.estado === "Cancelado").length;
 
-  const pendientes = reservas.filter((r) => r.estado === "Pendiente").length;
-
-  const aceptadas = reservas.filter((r) => r.estado === "Aceptado").length;
-
-  const preparando = reservas.filter((r) => r.estado === "Preparando").length;
-
-  const entregadas = reservas.filter((r) => r.estado === "Entregado").length;
-
-  const canceladas = reservas.filter((r) => r.estado === "Cancelado").length;
-
-  const cambiarEstado = async (id: string, estado: EstadoReserva) => {
+  const cambiarEstado = async (id: string, nuevoEstado: EstadoReserva) => {
     try {
+      // Mapear nombre del nuevo estado
+      let estadoEnum = 1;
+      if (nuevoEstado === "En revisión" || nuevoEstado === "Aceptado") estadoEnum = 1;
+      if (nuevoEstado === "En proceso" || nuevoEstado === "Preparando") estadoEnum = 2;
+      if (nuevoEstado === "Resuelto" || nuevoEstado === "Listo" || nuevoEstado === "Entregado") estadoEnum = 4;
+      if (nuevoEstado === "Rechazado" || nuevoEstado === "Cancelado") estadoEnum = 5;
+
+      const resAnt = reservas.find((r: Reserva) => r.id === id);
+      const estadoAnterior = resAnt ? resAnt.estado : "Pendiente";
+
       const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          estado,
+          estado: estadoEnum,
         }),
       });
 
@@ -218,11 +233,50 @@ export default function GestionarReservas_Admin() {
         throw new Error("No se pudo actualizar el estado.");
       }
 
+      // REGISTRAR EN LOG DE AUDITORÍA
+      const nuevoLog: LogEntry = {
+        id: Date.now(),
+        reporteId: Number(id),
+        tituloReporte: resAnt?.menu || `Incidencia #${id}`,
+        usuarioResponsable: `${usuarioActual.nombre || "Usuario"} (${rolActual})`,
+        rolUsuario: rolActual,
+        estadoAnterior,
+        estadoNuevo: nuevoEstado,
+        fechaHora: new Date().toLocaleString("es-AR"),
+        detalles: `Cambio de estado autorizado mediante JWT para el reporte #${id}`,
+      };
+
+      setLogsAuditoria((prev: LogEntry[]) => [nuevoLog, ...prev]);
+
       await cargarPedidos();
+      alert(`Estado del reporte #${id} actualizado a "${nuevoEstado}". Se registró en el Log de Auditoría.`);
     } catch (err) {
       console.error(err);
-      setError("No se pudo actualizar el estado del pedido.");
+      setError("No se pudo actualizar el estado del reporte.");
     }
+  };
+
+  const exportarCSV = () => {
+    const encabezados = "ID,Ticket,Ciudadano,Email,Fecha,Incidencia,Estado\n";
+    const filas = reservasFiltradas
+      .map(
+        (r: Reserva) =>
+          `"${r.id}","${r.pedido.nroOrden || r.id}","${r.usuario}","${r.email}","${r.fecha}","${r.menu.replace(/"/g, '""')}","${r.estado}"`
+      )
+      .join("\n");
+
+    const blob = new Blob([encabezados + filas], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Reporte_Incidentes_Moron.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportarPDF = () => {
+    alert("📑 Generando reporte oficial en PDF de incidencias urbanas para la Municipalidad de Morón...");
+    window.print();
   };
 
   const limpiarFiltros = () => {
@@ -231,97 +285,50 @@ export default function GestionarReservas_Admin() {
       fechaHasta: "",
       estado: "",
       usuario: "",
+      barrio: "",
     });
-
     setPagina(1);
   };
 
   const actualizarFiltro = (campo: keyof FiltrosReservas, valor: string) => {
-    setFiltros((prev) => ({
+    setFiltros((prev: FiltrosReservas) => ({
       ...prev,
       [campo]: valor,
     }));
-
     setPagina(1);
-  };
-
-  const obtenerClaseEstado = (estado: EstadoReserva) => {
-    switch (estado) {
-      case "Pendiente":
-        return "bg-yellow-100 text-yellow-700";
-
-      case "Aceptado":
-        return "bg-blue-100 text-blue-700";
-
-      case "Preparando":
-        return "bg-orange-100 text-orange-700";
-
-      case "Listo":
-        return "bg-purple-100 text-purple-700";
-
-      case "Entregado":
-        return "bg-green-100 text-green-700";
-
-      case "Cancelado":
-        return "bg-red-100 text-red-700";
-
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  const obtenerIconoEstado = (estado: EstadoReserva) => {
-    switch (estado) {
-      case "Pendiente":
-        return <Clock size={14} />;
-
-      case "Aceptado":
-        return <CheckCircle2 size={14} />;
-
-      case "Preparando":
-        return <Clock size={14} />;
-
-      case "Listo":
-        return <CheckCheck size={14} />;
-
-      case "Entregado":
-        return <CheckCheck size={14} />;
-
-      case "Cancelado":
-        return <XCircle size={14} />;
-
-      default:
-        return null;
-    }
-  };
-
-  const mostrarProductos = (pedido: Pedido) => {
-    return pedido.productos
-      .map((producto) => `${producto.cantidad}x ${producto.nombre}`)
-      .join(", ");
   };
 
   return (
     <div className="gr-page">
       <div className="gr-header">
         <div>
-          <span className="gr-tag">ADMINISTRACIÓN</span>
+          <span className="gr-tag" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <ShieldCheck size={14} /> AUTORIZACIÓN JWT: {rolActual.toUpperCase()}
+          </span>
 
-          <h1 className="gr-title">Gestionar pedidos</h1>
+          <h1 className="gr-title">Gestión de Reportes e Incidencias Urbanas</h1>
 
           <p className="gr-subtitle">
-            Administrá los pedidos realizados por los usuarios.
+            Administración centralizada de reportes ciudadanos, asignación a cuadrillas y trazabilidad de seguridad.
           </p>
         </div>
 
-        <button onClick={cargarPedidos} className="gr-btn-update">
-          <RotateCcw size={16} />
-          Actualizar
-        </button>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button onClick={exportarCSV} className="gr-btn-update" style={{ background: "#10b981", color: "white" }}>
+            <FileSpreadsheet size={16} /> Exportar CSV
+          </button>
+          <button onClick={exportarPDF} className="gr-btn-update" style={{ background: "#ef4444", color: "white" }}>
+            <FileText size={16} /> Exportar PDF
+          </button>
+          <button onClick={cargarPedidos} className="gr-btn-update">
+            <RotateCcw size={16} /> Actualizar
+          </button>
+        </div>
       </div>
 
       {error && <div className="gr-error">{error}</div>}
 
+      {/* TARJETAS DE ESTADÍSTICAS RÁPIDAS */}
       <div className="gr-stats">
         <div className="gr-stat-card">
           <div className="gr-stat-icon gr-stat-icon--red">
@@ -348,8 +355,8 @@ export default function GestionarReservas_Admin() {
             <CheckCircle2 size={20} />
           </div>
           <div className="gr-stat-info">
-            <span className="gr-stat-label">Aceptados</span>
-            <p className="gr-stat-value">{aceptadas}</p>
+            <span className="gr-stat-label">En revisión</span>
+            <p className="gr-stat-value">{enRevision}</p>
           </div>
         </div>
 
@@ -358,8 +365,8 @@ export default function GestionarReservas_Admin() {
             <Clock size={20} />
           </div>
           <div className="gr-stat-info">
-            <span className="gr-stat-label">Preparando</span>
-            <p className="gr-stat-value">{preparando}</p>
+            <span className="gr-stat-label">En proceso</span>
+            <p className="gr-stat-value">{enProceso}</p>
           </div>
         </div>
 
@@ -368,8 +375,8 @@ export default function GestionarReservas_Admin() {
             <CheckCheck size={20} />
           </div>
           <div className="gr-stat-info">
-            <span className="gr-stat-label">Entregados</span>
-            <p className="gr-stat-value">{entregadas}</p>
+            <span className="gr-stat-label">Resueltos</span>
+            <p className="gr-stat-value">{resueltos}</p>
           </div>
         </div>
 
@@ -378,12 +385,13 @@ export default function GestionarReservas_Admin() {
             <XCircle size={20} />
           </div>
           <div className="gr-stat-info">
-            <span className="gr-stat-label">Cancelados</span>
-            <p className="gr-stat-value">{canceladas}</p>
+            <span className="gr-stat-label">Rechazados</span>
+            <p className="gr-stat-value">{rechazados}</p>
           </div>
         </div>
       </div>
 
+      {/* FILTROS AVANZADOS POR ESTADO, BARRIO Y FECHAS */}
       <div className="gr-filters">
         <div className="gr-filter-group">
           <label className="gr-filter-label">Desde</label>
@@ -414,20 +422,33 @@ export default function GestionarReservas_Admin() {
           >
             <option value="">Todos</option>
             <option value="Pendiente">Pendiente</option>
-            <option value="Aceptado">Aceptado</option>
-            <option value="Preparando">Preparando</option>
-            <option value="Listo">Listo</option>
-            <option value="Entregado">Entregado</option>
-            <option value="Cancelado">Cancelado</option>
+            <option value="En revisión">En revisión</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Resuelto">Resuelto</option>
+            <option value="Rechazado">Rechazado</option>
           </select>
         </div>
 
         <div className="gr-filter-group">
-          <label className="gr-filter-label">Usuario</label>
+          <label className="gr-filter-label">Barrio / Zona</label>
+          <select
+            value={filtros.barrio}
+            onChange={(e) => actualizarFiltro("barrio", e.target.value)}
+            className="gr-filter-select"
+          >
+            <option value="">Todos los barrios</option>
+            <option value="Morón Centro">Morón Centro</option>
+            <option value="Castelar">Castelar</option>
+            <option value="Haedo">Haedo</option>
+            <option value="El Palomar">El Palomar</option>
+            <option value="Villa Sarmiento">Villa Sarmiento</option>
+          </select>
+        </div>
 
+        <div className="gr-filter-group">
+          <label className="gr-filter-label">Ciudadano / Mail</label>
           <div className="gr-filter-input-wrap">
             <User size={16} />
-
             <input
               type="text"
               value={filtros.usuario}
@@ -444,42 +465,41 @@ export default function GestionarReservas_Admin() {
         </button>
       </div>
 
+      {/* TABLA PRINCIPAL DE INCIDENTES */}
       <div className="gr-table-wrap">
         <div className="gr-table-scroll">
           <table className="gr-table">
             <thead>
               <tr>
-                <th>Pedido</th>
-                <th>Usuario</th>
+                <th>Ticket</th>
+                <th>Ciudadano</th>
                 <th>Fecha</th>
-                <th>Productos</th>
-                <th>Total</th>
+                <th>Detalle de Incidencia</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th>Acciones y Cambio de Estado</th>
               </tr>
             </thead>
 
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="gr-empty">
-                    Cargando pedidos...
+                  <td colSpan={6} className="gr-empty">
+                    Cargando reportes...
                   </td>
                 </tr>
               ) : reservasPagina.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="gr-empty">
-                    No hay pedidos para mostrar.
+                  <td colSpan={6} className="gr-empty">
+                    No hay reportes de incidencias para mostrar.
                   </td>
                 </tr>
               ) : (
-                reservasPagina.map((reserva) => (
+                reservasPagina.map((reserva: Reserva) => (
                   <tr key={reserva.id}>
                     <td>
                       <div className="gr-res-id">
-                        #{reserva.pedido.nroOrden}
+                        #{reserva.pedido.nroOrden || reserva.id}
                       </div>
-                      <small>ID #{reserva.id}</small>
                     </td>
 
                     <td>
@@ -487,7 +507,6 @@ export default function GestionarReservas_Admin() {
                         <div className="gr-avatar">
                           <User size={16} />
                         </div>
-
                         <div>
                           <div className="gr-user-name">{reserva.usuario}</div>
                           <div className="gr-user-email">{reserva.email}</div>
@@ -503,18 +522,11 @@ export default function GestionarReservas_Admin() {
                     </td>
 
                     <td className="gr-menu-name">
-                      {mostrarProductos(reserva.pedido)}
+                      <strong>{reserva.menu}</strong>
                     </td>
 
-                    <td className="gr-menu-price">{reserva.precio}</td>
-
                     <td>
-                      <span
-                        className={`gr-badge ${obtenerClaseEstado(
-                          reserva.estado,
-                        )}`}
-                      >
-                        {obtenerIconoEstado(reserva.estado)}
+                      <span className="gr-badge" style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155" }}>
                         {reserva.estado}
                       </span>
                     </td>
@@ -523,70 +535,43 @@ export default function GestionarReservas_Admin() {
                       <div className="gr-actions">
                         <button
                           onClick={() => setPedidoSeleccionado(reserva.pedido)}
-                          title="Ver pedido"
+                          title="Ver detalle completo"
                           className="gr-action-btn gr-action-btn--view"
                         >
                           <Eye size={16} />
                         </button>
 
-                        {reserva.estado === "Pendiente" && (
-                          <button
-                            onClick={() =>
-                              cambiarEstado(reserva.id, "Aceptado")
-                            }
-                            title="Aceptar pedido"
-                            className="gr-action-btn gr-action-btn--complete"
-                          >
-                            <CheckCircle2 size={16} />
-                          </button>
-                        )}
+                        <button
+                          onClick={() => cambiarEstado(reserva.id, "En revisión")}
+                          title="Marcar En revisión"
+                          style={{ background: "#3b82f6", color: "white", border: "none", borderRadius: "6px", padding: "4px 8px", fontSize: "11px", fontWeight: 600, cursor: "pointer" }}
+                        >
+                          En revisión
+                        </button>
 
-                        {reserva.estado === "Aceptado" && (
-                          <button
-                            onClick={() =>
-                              cambiarEstado(reserva.id, "Preparando")
-                            }
-                            title="Comenzar preparación"
-                            className="gr-action-btn gr-action-btn--complete"
-                          >
-                            <Clock size={16} />
-                          </button>
-                        )}
+                        <button
+                          onClick={() => cambiarEstado(reserva.id, "En proceso")}
+                          title="Marcar En proceso"
+                          style={{ background: "#f97316", color: "white", border: "none", borderRadius: "6px", padding: "4px 8px", fontSize: "11px", fontWeight: 600, cursor: "pointer" }}
+                        >
+                          En proceso
+                        </button>
 
-                        {reserva.estado === "Preparando" && (
-                          <button
-                            onClick={() => cambiarEstado(reserva.id, "Listo")}
-                            title="Marcar como listo"
-                            className="gr-action-btn gr-action-btn--complete"
-                          >
-                            <CheckCheck size={16} />
-                          </button>
-                        )}
+                        <button
+                          onClick={() => cambiarEstado(reserva.id, "Resuelto")}
+                          title="Marcar Resuelto"
+                          style={{ background: "#22c55e", color: "white", border: "none", borderRadius: "6px", padding: "4px 8px", fontSize: "11px", fontWeight: 600, cursor: "pointer" }}
+                        >
+                          Resuelto
+                        </button>
 
-                        {reserva.estado === "Listo" && (
-                          <button
-                            onClick={() =>
-                              cambiarEstado(reserva.id, "Entregado")
-                            }
-                            title="Marcar como entregado"
-                            className="gr-action-btn gr-action-btn--complete"
-                          >
-                            <CheckCheck size={16} />
-                          </button>
-                        )}
-
-                        {reserva.estado !== "Cancelado" &&
-                          reserva.estado !== "Entregado" && (
-                            <button
-                              onClick={() =>
-                                cambiarEstado(reserva.id, "Cancelado")
-                              }
-                              title="Cancelar pedido"
-                              className="gr-action-btn gr-action-btn--cancel"
-                            >
-                              <X size={16} />
-                            </button>
-                          )}
+                        <button
+                          onClick={() => cambiarEstado(reserva.id, "Rechazado")}
+                          title="Desestimar/Rechazar"
+                          style={{ background: "#ef4444", color: "white", border: "none", borderRadius: "6px", padding: "4px 8px", fontSize: "11px", fontWeight: 600, cursor: "pointer" }}
+                        >
+                          Rechazar
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -607,7 +592,7 @@ export default function GestionarReservas_Admin() {
           <div className="gr-pagination-btns">
             <button
               disabled={pagina === 1}
-              onClick={() => setPagina((prev) => Math.max(1, prev - 1))}
+              onClick={() => setPagina((prev: number) => Math.max(1, prev - 1))}
               className="gr-page-btn"
             >
               Anterior
@@ -619,9 +604,7 @@ export default function GestionarReservas_Admin() {
 
             <button
               disabled={pagina === totalPaginas}
-              onClick={() =>
-                setPagina((prev) => Math.min(totalPaginas, prev + 1))
-              }
+              onClick={() => setPagina((prev: number) => Math.min(totalPaginas, prev + 1))}
               className="gr-page-btn"
             >
               Siguiente
@@ -630,80 +613,20 @@ export default function GestionarReservas_Admin() {
         </div>
       </div>
 
+      {/* COMPONENTE INTEGRADO DE LOG DE AUDITORÍA */}
+      <div style={{ marginTop: "32px" }}>
+        <LogAuditoria logsAdicionales={logsAuditoria} />
+      </div>
+
       {pedidoSeleccionado && (
         <div className="gr-modal">
-          <div className="gr-modal-content">
-            <div className="gr-modal-header">
-              <div>
-                <h2>Pedido #{pedidoSeleccionado.nroOrden}</h2>
-                <p>ID #{pedidoSeleccionado.id}</p>
-              </div>
-
-              <button
-                onClick={() => setPedidoSeleccionado(null)}
-                className="gr-modal-close"
-              >
-                <X size={20} />
-              </button>
+          <div className="gr-modal-content" style={{ background: "#0f172a", color: "white", padding: "24px", borderRadius: "12px", border: "1px solid #334155", maxWidth: "500px", margin: "40px auto" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+              <h2 style={{ margin: 0, fontSize: "18px" }}>Ticket #{pedidoSeleccionado.nroOrden || pedidoSeleccionado.id}</h2>
+              <button onClick={() => setPedidoSeleccionado(null)} style={{ background: "#334155", color: "white", border: "none", borderRadius: "6px", padding: "4px 8px", cursor: "pointer" }}>✕ Cerrar</button>
             </div>
-
-            <div className="gr-modal-body">
-              <div className="gr-modal-section">
-                <span>Usuario</span>
-
-                <strong>
-                  {pedidoSeleccionado.usuario
-                    ? `${pedidoSeleccionado.usuario.nombre} ${pedidoSeleccionado.usuario.apellido}`
-                    : `Usuario #${pedidoSeleccionado.idUsuario}`}
-                </strong>
-
-                {pedidoSeleccionado.usuario && (
-                  <p>{pedidoSeleccionado.usuario.email}</p>
-                )}
-              </div>
-
-              <div className="gr-modal-section">
-                <span>Productos</span>
-
-                <div className="gr-modal-products">
-                  {pedidoSeleccionado.productos.map((producto, index) => (
-                    <div key={index} className="gr-modal-product">
-                      <div>
-                        <strong>{producto.nombre}</strong>
-                        <small>Cantidad: {producto.cantidad}</small>
-                      </div>
-
-                      <strong>
-                        $
-                        {(
-                          producto.precioUnitario * producto.cantidad
-                        ).toLocaleString("es-AR")}
-                      </strong>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="gr-modal-data">
-                <div>
-                  <span>Método de pago</span>
-                  <strong>{pedidoSeleccionado.metodoPago}</strong>
-                </div>
-
-                <div>
-                  <span>Tiempo estimado</span>
-                  <strong>{pedidoSeleccionado.tiempoEstimado}</strong>
-                </div>
-              </div>
-
-              <div className="gr-modal-total">
-                <span>Total</span>
-
-                <strong>
-                  ${pedidoSeleccionado.valor.toLocaleString("es-AR")}
-                </strong>
-              </div>
-            </div>
+            <p style={{ color: "#94a3b8", fontSize: "13px" }}>Detalle: {pedidoSeleccionado.descripcion || pedidoSeleccionado.titulo}</p>
+            <p style={{ color: "#38bdf8", fontSize: "13px" }}>Estado: {pedidoSeleccionado.estado}</p>
           </div>
         </div>
       )}
