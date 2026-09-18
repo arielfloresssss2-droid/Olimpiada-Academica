@@ -2,16 +2,23 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/auth/Login-Register.css";
 import { API_BASE_URL } from "../../config/api";
+import Captcha from "../../components/Captcha";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const navigate = useNavigate();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!captchaVerified) {
+      alert("Por favor completa la verificación de seguridad (Captcha) antes de continuar.");
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/Auth/login`, {
@@ -129,7 +136,10 @@ function Login() {
               </Link>
             </div>
 
-            <button type="submit" className="login-submit-btn">
+            {/* Verificación de Seguridad Anti-Spam / Captcha */}
+            <Captcha onVerify={setCaptchaVerified} title="Verificación Anti-Bot" />
+
+            <button type="submit" className="login-submit-btn" disabled={!captchaVerified}>
               Iniciar Sesión
             </button>
 

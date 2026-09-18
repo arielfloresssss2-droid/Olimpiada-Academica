@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../../styles/reservas/Reservas.css";
 import MapaIncidente from "../../components/MapaIncidente";
+import Captcha from "../../components/Captcha";
 
 interface ReservasProps {
   setActiveSection: (section: string) => void;
@@ -41,6 +42,7 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
   const [longitud, setLongitud] = useState<number>(-58.6214);
   const [fotoNombre, setFotoNombre] = useState<string>("");
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+  const [captchaVerified, setCaptchaVerified] = useState<boolean>(false);
 
   const manejarUbicacionMapa = (lat: number, lng: number, dirTexto: string) => {
     setLatitud(lat);
@@ -63,6 +65,11 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
   const confirmarIncidencia = () => {
     if (!titulo.trim() || !descripcion.trim()) {
       alert("Por favor completá el título y la descripción del incidente.");
+      return;
+    }
+
+    if (!captchaVerified) {
+      alert("Por favor completá la verificación de seguridad (Captcha) para proteger el sistema.");
       return;
     }
 
@@ -279,6 +286,11 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
         </div>
       </div>
 
+      {/* VERIFICACIÓN ANTI-SPAM / CAPTCHA */}
+      <div style={{ marginBottom: "20px" }}>
+        <Captcha onVerify={setCaptchaVerified} title="Verificación Anti-Spam para Envío de Reporte" />
+      </div>
+
       {/* BOTÓN FINAL DE CONFIRMACIÓN */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#0f172a", padding: "20px", borderRadius: "12px", border: "1px solid #1e293b" }}>
         <div>
@@ -290,16 +302,18 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
         <button
           type="button"
           onClick={confirmarIncidencia}
+          disabled={!captchaVerified}
           style={{
-            background: "#ef4444",
+            background: captchaVerified ? "#ef4444" : "#64748b",
             color: "white",
             border: "none",
             borderRadius: "8px",
             padding: "12px 24px",
             fontSize: "15px",
             fontWeight: 700,
-            cursor: "pointer",
-            boxShadow: "0 4px 14px rgba(239, 68, 68, 0.4)",
+            cursor: captchaVerified ? "pointer" : "not-allowed",
+            boxShadow: captchaVerified ? "0 4px 14px rgba(239, 68, 68, 0.4)" : "none",
+            transition: "all 0.2s ease",
           }}
         >
           Enviar Reporte de Incidencia ➔

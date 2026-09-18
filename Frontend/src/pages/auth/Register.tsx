@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "../../styles/auth/Login-Register.css";
 import { API_BASE_URL } from "../../config/api";
+import Captcha from "../../components/Captcha";
 import {
   calculateExpiration,
   generatePasscode,
@@ -24,10 +25,16 @@ function Register() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!captchaVerified) {
+      setError("Por favor completá la verificación de seguridad (Captcha).");
+      return;
+    }
 
     const cleanNombre = nombre.trim();
     const cleanApellido = apellido.trim();
@@ -276,13 +283,16 @@ function Register() {
 
             {error && <p className="forgot-error-text">{error}</p>}
 
+            {/* Verificación Anti-Bot Captcha */}
+            <Captcha onVerify={setCaptchaVerified} title="Verificación Anti-Bot Registro" />
+
             <button
               type="submit"
               className="login-submit-btn"
-              disabled={loading}
+              disabled={loading || !captchaVerified}
               style={{
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading || !captchaVerified ? 0.7 : 1,
+                cursor: loading || !captchaVerified ? "not-allowed" : "pointer",
               }}
             >
               {loading ? "Enviando código..." : "Crear cuenta"}
