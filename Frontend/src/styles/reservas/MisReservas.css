@@ -3,7 +3,7 @@
 .mr-section {
   @apply min-h-screen p-6 flex flex-col gap-6;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #cdd7e3;
 
   width: 100%;
   box-sizing: border-box;
@@ -13,7 +13,7 @@
 .mr-header {
   @apply flex items-center justify-between pb-3;
 
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid #8496ad;
 
   gap: 1rem;
 }
@@ -21,22 +21,27 @@
 .mr-header h2 {
   @apply text-3xl font-bold;
 
-  color: white;
+  color: #0f172a;
 }
 
 .mr-historial {
   @apply text-base font-semibold;
 
-  color: #e74c3c;
+  color: #b91c1c;
   cursor: pointer;
 
   white-space: nowrap;
+  transition: 0.2s;
+}
+
+.mr-historial:hover {
+  color: #991b1b;
 }
 
 .mr-subtitulo {
   @apply text-sm;
 
-  color: #aeb8d4;
+  color: #334155;
 }
 
 .mr-lista {
@@ -48,8 +53,9 @@
 .mr-card {
   @apply flex items-center justify-between gap-4 rounded-2xl p-5;
 
-  background: #f0f2f8;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
 
   width: 100%;
   box-sizing: border-box;
@@ -65,7 +71,7 @@
 .mr-card-titulo {
   @apply text-base font-bold mb-1;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -73,7 +79,7 @@
 .mr-card-dato {
   @apply text-sm;
 
-  color: #5a6490;
+  color: #334155;
 
   overflow-wrap: break-word;
 }
@@ -87,7 +93,7 @@
 .mr-btn {
   @apply px-4 py-2 rounded-lg text-sm font-semibold;
 
-  background: #c0392b;
+  background: #b91c1c;
   color: white;
 
   transition: all 0.2s ease;
@@ -96,7 +102,7 @@
 }
 
 .mr-btn:hover {
-  background: #e74c3c;
+  background: #991b1b;
 }
 
 .mr-card-icono {

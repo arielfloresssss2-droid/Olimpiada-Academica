@@ -3,7 +3,7 @@
 .dp-section {
   @apply min-h-screen p-6 flex flex-col gap-6;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #cdd7e3;
 
   width: 100%;
   box-sizing: border-box;
@@ -19,21 +19,22 @@
 .dp-volver {
   @apply w-12 h-12 rounded-xl flex items-center justify-center;
 
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  color: #0f172a;
   transition: 0.2s;
 
   flex-shrink: 0;
 }
 
 .dp-volver:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #d8e2ed;
 }
 
 .dp-header h2 {
   @apply text-3xl font-bold;
 
-  color: white;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -41,7 +42,7 @@
 .dp-header p {
   @apply text-base;
 
-  color: #aeb8d4;
+  color: #334155;
 
   overflow-wrap: break-word;
 }
@@ -49,7 +50,9 @@
 .dp-card {
   @apply rounded-3xl p-8 flex flex-col gap-7;
 
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 
   width: 100%;
   box-sizing: border-box;
@@ -59,7 +62,7 @@
 .dp-orden {
   @apply text-5xl font-extrabold;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -73,7 +76,8 @@
 .dp-info-item {
   @apply rounded-2xl p-5 flex items-center gap-4;
 
-  background: white;
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
   min-height: 95px;
 
   min-width: 0;
@@ -81,7 +85,7 @@
 }
 
 .dp-info-item svg {
-  color: #c0392b;
+  color: #b91c1c;
 
   flex-shrink: 0;
 }
@@ -95,7 +99,7 @@
 .dp-info-item strong {
   @apply text-base;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -103,7 +107,7 @@
 .dp-info-item span {
   @apply text-lg font-semibold;
 
-  color: #5a6490;
+  color: #334155;
 
   overflow-wrap: break-word;
 }
@@ -111,7 +115,7 @@
 .dp-separador {
   height: 1px;
 
-  background: #d7dceb;
+  background: #93a4b8;
 
   width: 100%;
 }
@@ -125,7 +129,7 @@
 .dp-bloque h4 {
   @apply text-2xl font-bold;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -133,7 +137,7 @@
 .dp-bloque p {
   @apply text-base;
 
-  color: #5a6490;
+  color: #334155;
   line-height: 1.8;
 
   overflow-wrap: break-word;
@@ -142,7 +146,8 @@
 .dp-producto {
   @apply flex justify-between items-center rounded-2xl p-5;
 
-  background: white;
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
 
   width: 100%;
   box-sizing: border-box;
@@ -154,7 +159,7 @@
 .dp-producto span:first-child {
   @apply text-lg;
 
-  color: #1a1f36;
+  color: #0f172a;
   font-weight: 600;
 
   overflow-wrap: break-word;
@@ -163,7 +168,7 @@
 .dp-producto span:last-child {
   @apply text-xl;
 
-  color: #c0392b;
+  color: #b91c1c;
   font-weight: 700;
 
   white-space: nowrap;
@@ -179,7 +184,8 @@
 .dp-footer div {
   @apply flex-1 rounded-2xl p-5 flex flex-col;
 
-  background: white;
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
 
   min-width: 0;
 }
@@ -187,7 +193,7 @@
 .dp-footer strong {
   @apply text-lg;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -195,7 +201,7 @@
 .dp-footer span {
   @apply text-3xl mt-2;
 
-  color: #c0392b;
+  color: #b91c1c;
   font-weight: 700;
 
   overflow-wrap: break-word;

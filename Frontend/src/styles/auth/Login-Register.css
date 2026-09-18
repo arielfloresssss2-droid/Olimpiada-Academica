@@ -3,7 +3,8 @@
 .login-page {
   @apply min-h-screen flex flex-col items-center justify-center;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  /* Fondo gris unificado */
+  background: #cdd7e3;
 
   padding: 20px;
   box-sizing: border-box;
@@ -12,14 +13,16 @@
 .login-card {
   @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
 
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
   max-width: 100%;
 }
 
 .login-accent-bar {
   @apply h-2 w-full;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 50%, #c0392b 100%);
+  background: linear-gradient(90deg, #b91c1c 0%, #dc2626 50%, #b91c1c 100%);
 }
 
 .login-body {
@@ -40,13 +43,13 @@
 .login-school-name {
   @apply text-xl font-bold text-center;
 
-  color: #1a1f36;
+  color: #0f172a;
 }
 
 .login-school-city {
   @apply text-xs font-semibold tracking-widest mb-5;
 
-  color: #7b8ab8;
+  color: #475569;
 }
 
 .login-divider {
@@ -56,21 +59,21 @@
 .login-divider-line {
   @apply flex-1 h-px;
 
-  background: #c8cde0;
+  background: #93a4b8;
 }
 
 .login-title {
   @apply text-2xl font-bold mb-1 tracking-tight;
 
   text-align: center;
-  color: #c0392b;
+  color: #b91c1c;
   font-family: "Georgia", serif;
 }
 
 .login-subtitle {
   @apply text-sm mb-6;
 
-  color: #7b8ab8;
+  color: #475569;
 }
 
 .login-form {
@@ -86,7 +89,7 @@
 .login-label {
   @apply text-xs font-bold tracking-widest;
 
-  color: #7b8ab8;
+  color: #475569;
 }
 
 .iconos {
@@ -96,28 +99,29 @@
 .login-input-wrapper {
   @apply flex items-center gap-2 rounded-xl px-4 py-3 transition-all duration-200;
 
-  background: #fff;
-  border: 1.5px solid #c8cde0;
-  color: #ff5722;
+  background: #ffffff;
+  border: 1.5px solid #93a4b8;
+  color: #0f172a;
 
   min-width: 0;
 }
 
 .login-input-wrapper:focus-within {
-  border-color: #f87171;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
 }
 
 .login-input-icon {
   @apply text-base;
 
-  color: #7b8ab8;
+  color: #475569;
   flex-shrink: 0;
 }
 
 .login-input {
   @apply flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400;
 
-  color: #1a1f36;
+  color: #0f172a;
   min-width: 0;
 }
 
@@ -142,14 +146,18 @@
 .login-remember-text {
   @apply text-sm;
 
-  color: black;
+  color: #334155;
 }
 
 .login-forgot {
   @apply text-sm font-semibold transition-colors hover:underline;
 
-  color: #c0392b;
+  color: #b91c1c;
   white-space: nowrap;
+}
+
+.login-forgot:hover {
+  color: #991b1b;
 }
 
 .login-eye-btn {
@@ -168,13 +176,13 @@
 .login-submit-btn {
   @apply mt-2 w-full py-3 rounded-xl font-bold text-white text-base shadow-md transition-all duration-200 active:scale-[0.98];
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
 
   letter-spacing: 0.03em;
 }
 
 .login-submit-btn:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
 }
 
 .login-submit-btn:disabled {
@@ -184,32 +192,34 @@
 .login-help-text {
   @apply text-sm text-center mt-1;
 
-  color: #7b8ab8;
+  color: #475569;
 }
 
 .login-help-link {
   @apply font-semibold hover:underline;
 
-  color: #2d3561;
+  color: #b91c1c;
 }
 
 .login-footer {
   @apply flex items-center justify-center gap-2 py-3 text-xs;
 
-  background: #e2e5f0;
-  color: #9aa0bb;
+  background: #d8e2ed;
+  border-top: 1px solid #93a4b8;
+  color: #475569;
 }
 
 .login-bottom-note {
   @apply mt-4 text-xs;
 
-  color: #5a6490;
+  color: #475569;
 }
 
 .register-logo {
-  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 border-white overflow-hidden;
+  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 overflow-hidden;
 
-  background: #fff;
+  background: #ffffff;
+  border-color: #8496ad;
 }
 
 .register-logo img {
@@ -233,24 +243,24 @@
 .register-select {
   @apply flex-1 text-sm outline-none cursor-pointer;
 
-  color: #1a1f36;
+  color: #0f172a;
   min-width: 0;
 }
 
 .login-input-wrapper .register-select {
   background-color: transparent;
-  color: #1a1f36;
+  color: #0f172a;
 
   @apply flex-1 text-sm outline-none cursor-pointer;
 }
 
 .register-login-link {
-  color: #c0392b;
+  color: #b91c1c;
 }
 
 .login-input-wrapper select {
   background: transparent;
-  color: #1a1f36;
+  color: #0f172a;
 }
 
 /* Soporte */
@@ -258,13 +268,17 @@
 .soporte-card {
   @apply w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl;
 
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 }
 
 .soporte-enviado-card {
   @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
 
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
   max-width: 100%;
 }
 
@@ -275,33 +289,33 @@
 .soporte-divider-line-full {
   @apply w-full h-px;
 
-  background: #c8cde0;
+  background: #93a4b8;
 }
 
 .soporte-title {
   @apply text-3xl font-bold mb-2 tracking-tight text-center;
 
-  color: #1a1f36;
+  color: #0f172a;
   font-family: "Georgia", serif;
 }
 
 .soporte-textarea {
   @apply w-full min-h-32 bg-transparent text-sm outline-none resize-y;
 
-  color: #1a1f36;
+  color: #0f172a;
   font-family: inherit;
 }
 
 .soporte-success-title {
   @apply text-2xl font-bold text-center mt-2;
 
-  color: #1a1f36;
+  color: #0f172a;
 }
 
 .soporte-success-subtitle {
   @apply text-sm text-center mt-2 mb-6;
 
-  color: #7b8ab8;
+  color: #475569;
 }
 
 .soporte-buttons-container {
@@ -312,22 +326,23 @@
   @apply w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 border;
 
   background: #ffffff;
-  border-color: #c8cde0;
-  color: #4a5578;
+  border-color: #8496ad;
+  color: #475569;
 }
 
 .soporte-btn-secondary:hover {
-  background: #f3f4f8;
+  background: #d8e2ed;
+  color: #0f172a;
 }
 
 .soporte-btn-primary {
   @apply w-full py-3 rounded-xl font-bold text-white text-sm shadow-md transition-all duration-200;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
 }
 
 .soporte-btn-primary:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
 }
 
 /* Recuperar contraseña */
@@ -335,7 +350,7 @@
 .forgot-error-text {
   @apply text-xs font-semibold text-center -mt-1;
 
-  color: #c0392b;
+  color: #b91c1c;
 }
 
 .forgot-icon-circle {
@@ -345,11 +360,13 @@
 }
 
 .forgot-icon-circle--info {
-  background: #dbe4f7;
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .forgot-icon-circle--success {
-  background: #dcf3e3;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .forgot-code-inputs {
@@ -361,13 +378,14 @@
 .forgot-code-box {
   @apply w-11 h-14 rounded-xl text-center text-xl font-bold outline-none transition-all duration-200;
 
-  background: #fff;
-  border: 1.5px solid #c8cde0;
-  color: #1a1f36;
+  background: #ffffff;
+  border: 1.5px solid #93a4b8;
+  color: #0f172a;
 }
 
 .forgot-code-box:focus {
-  border-color: #f87171;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
 }
 
 /* Tablet */

@@ -11,10 +11,10 @@
   right: 0;
   z-index: 100;
 
-  background: #0d1420;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
-  box-shadow: 0 1px 0 rgba(231, 76, 60, 0.25);
+  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.32);
 }
 
 .topbar-inner {
@@ -35,7 +35,7 @@
 .topbar-logo {
   @apply w-11 h-11 rounded-xl flex items-center justify-center;
 
-  background: #f3f4f6;
+  background: #ffffff;
   flex-shrink: 0;
 }
 
@@ -58,13 +58,14 @@
 .topbar-brand-text p {
   @apply text-xs;
 
-  color: #8b93a3;
+  color: #fecaca;
   white-space: nowrap;
 }
 
 .topbar-nav {
   @apply flex items-center gap-1;
 
+  position: relative;
   flex: 1;
   justify-content: center;
   overflow-x: auto;
@@ -75,16 +76,33 @@
   display: none;
 }
 
+/* Píldora deslizante con transición suave en desktop */
+.topbar-indicator {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: left 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              width 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              top 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              height 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .topbar-link {
   @apply flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200;
 
-  color: #b6bcc8;
+  position: relative;
+  z-index: 2;
+  color: #fecaca;
   white-space: nowrap;
   flex-shrink: 0;
+  background: transparent;
 }
 
 .topbar-link:hover {
-  background: rgba(255, 255, 255, 0.06);
   color: white;
 }
 
@@ -92,31 +110,37 @@
   @apply w-4 h-4;
 
   filter: brightness(0) invert(1);
-  opacity: 0.85;
+  opacity: 0.9;
   flex-shrink: 0;
+  transition: filter 0.25s ease, opacity 0.25s ease;
 }
 
 .topbar-link span {
   @apply text-sm font-medium;
+
+  transition: color 0.25s ease;
 }
 
 .topbar-link-active {
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
-  color: white;
+  color: #b91c1c;
+  font-weight: 700;
+}
 
-  box-shadow: 0 6px 16px rgba(192, 57, 43, 0.35);
+.topbar-link-active:hover {
+  color: #b91c1c;
 }
 
 .topbar-link-active img {
+  filter: brightness(0);
   opacity: 1;
 }
 
 .topbar-status {
   @apply hidden lg:flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium;
 
-  background: rgba(231, 76, 60, 0.1);
-  border: 1px solid rgba(231, 76, 60, 0.2);
-  color: #f3a29a;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
 
   flex-shrink: 0;
   white-space: nowrap;
@@ -125,8 +149,8 @@
 .topbar-status-dot {
   @apply w-1.5 h-1.5 rounded-full;
 
-  background: #2ecc71;
-  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
   flex-shrink: 0;
 }
 
@@ -139,26 +163,41 @@
   right: 16px;
   bottom: 18px;
 
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 24px;
 
   padding: 12px 8px;
-
   z-index: 999;
 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(185, 28, 28, 0.35);
 
   box-sizing: border-box;
   max-width: calc(100% - 32px);
 }
 
+/* Píldora deslizante animada en mobile */
+.mobile-indicator {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: left 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              width 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              top 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              height 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .mobile-link {
   @apply flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200;
 
-  color: #6b7280;
+  position: relative;
+  z-index: 2;
+  color: #fecaca;
+  background: transparent;
 
   min-width: 0;
   flex: 1;
@@ -167,10 +206,11 @@
 .mobile-link img {
   @apply w-5 h-5;
 
-  filter: brightness(0.25);
+  filter: brightness(0) invert(1);
   opacity: 0.85;
 
   flex-shrink: 0;
+  transition: filter 0.25s ease, opacity 0.25s ease;
 }
 
 .mobile-link span {
@@ -178,15 +218,16 @@
 
   text-align: center;
   white-space: nowrap;
+  transition: color 0.25s ease;
 }
 
 .mobile-link-active {
-  background: rgba(231, 76, 60, 0.12);
-
-  color: #c0392b;
+  color: #b91c1c;
+  font-weight: 700;
 }
 
 .mobile-link-active img {
+  filter: brightness(0);
   opacity: 1;
 }
 
@@ -229,6 +270,10 @@
     padding: 8px 5px;
   }
 
+  .mobile-indicator {
+    border-radius: 14px;
+  }
+
   .mobile-link {
     @apply px-2 py-2;
 
@@ -256,6 +301,10 @@
 
     padding: 7px 3px;
     border-radius: 18px;
+  }
+
+  .mobile-indicator {
+    border-radius: 12px;
   }
 
   .mobile-link {
@@ -321,6 +370,7 @@
 .topbar-nav {
   @apply flex items-center gap-1;
 
+  position: relative;
   flex: 1;
   min-width: 0;
   justify-content: center;

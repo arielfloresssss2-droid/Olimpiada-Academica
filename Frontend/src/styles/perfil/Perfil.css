@@ -1,3 +1,5 @@
+body {
+}
 @import "tailwindcss";
 
 /* Perfil page */
@@ -7,7 +9,8 @@
 
   min-height: calc(100vh - 75px);
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  /* Mismo fondo del dashboard */
+  background: #cdd7e3;
 
   width: 100%;
   box-sizing: border-box;
@@ -17,7 +20,11 @@
 .perfil-card {
   @apply flex flex-col items-center rounded-3xl shadow-xl;
 
-  background: #e8eaf2;
+  /* Tarjeta blanca con borde a tono */
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+
   padding: 2.5rem 2.5rem 1rem;
 
   width: 100%;
@@ -30,7 +37,8 @@
 .perfil-avatar {
   @apply w-30 h-30 rounded-full flex items-center justify-center mb-4;
 
-  background: none;
+  background: #d8e2ed;
+  border: 2px solid #8496ad;
 
   flex-shrink: 0;
 }
@@ -39,8 +47,8 @@
   width: 100%;
   height: 100%;
 
-  filter: brightness(0) saturate(100%) invert(10%) sepia(30%) saturate(500%)
-    hue-rotate(190deg);
+  filter: brightness(0);
+  opacity: 0.75;
 }
 
 /* Nombre y email */
@@ -48,7 +56,7 @@
 .perfil-nombre {
   @apply text-2xl font-bold mb-1 text-center;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   max-width: 100%;
   overflow-wrap: break-word;
@@ -57,7 +65,7 @@
 .perfil-email {
   @apply text-sm text-center mb-8;
 
-  color: #7b8ab8;
+  color: #334155;
 
   max-width: 100%;
   overflow-wrap: break-word;
@@ -76,7 +84,9 @@
 .perfil-stat {
   @apply flex flex-col items-center justify-center rounded-2xl py-5 px-3 text-center gap-1;
 
-  background: #d4d8ec;
+  /* Mismo estilo que los stat-boxes de inicio */
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
 
   min-width: 0;
   box-sizing: border-box;
@@ -85,7 +95,7 @@
 .perfil-stat-label {
   @apply text-xs font-semibold leading-tight;
 
-  color: #4a5578;
+  color: #475569;
 
   overflow-wrap: break-word;
 }
@@ -93,7 +103,7 @@
 .perfil-stat-value {
   @apply text-xl font-bold;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -118,31 +128,31 @@
 .perfil-btn-primary {
   @apply text-white;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
 }
 
 .perfil-btn-primary:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
 }
 
 .perfil-btn-danger {
   @apply text-white;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
 }
 
 .perfil-btn-danger:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
 }
 
 .perfil-btn-secondary {
   @apply text-white;
 
-  background: #7b8ab8;
+  background: #475569;
 }
 
 .perfil-btn-secondary:hover {
-  background: #5a6490;
+  background: #334155;
 }
 
 /* Modal */
@@ -150,7 +160,7 @@
 .perfil-modal-overlay {
   @apply fixed inset-0 flex items-center justify-center z-50;
 
-  background: rgba(10, 13, 28, 0.5);
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
 
   padding: 1rem;
@@ -160,7 +170,9 @@
 .perfil-modal {
   @apply rounded-2xl p-8 flex flex-col gap-5 shadow-2xl;
 
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
 
   width: 100%;
   max-width: 20rem;
@@ -170,7 +182,7 @@
 .perfil-modal-text {
   @apply text-sm text-center;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -192,7 +204,7 @@
   margin-top: 1rem;
   padding-top: 1rem;
 
-  border-top: 1px solid #c7cde2;
+  border-top: 1px solid #93a4b8;
 
   text-align: center;
 }
@@ -208,7 +220,7 @@
 .login-help-link {
   @apply font-semibold hover:underline;
 
-  color: #2d3561;
+  color: #b91c1c;
 }
 
 /* ================= TABLET ================= */

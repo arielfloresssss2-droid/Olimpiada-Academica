@@ -3,7 +3,7 @@
 .dashboard-layout {
   @apply min-h-screen;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #cdd7e3;
 
   width: 100%;
   overflow-x: hidden;

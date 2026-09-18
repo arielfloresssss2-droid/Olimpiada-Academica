@@ -48,7 +48,7 @@ function Historial() {
 
         <div className="home-grid">
           {historial.length === 0 ? (
-            <p style={{ color: "white" }}>No tenés incidentes anteriores registrados.</p>
+            <p className="historial-vacio">No tenés incidentes anteriores registrados.</p>
           ) : (
             historial.map((pedido) => (
               <TarjetaHistorial key={pedido.id} pedido={pedido} />
