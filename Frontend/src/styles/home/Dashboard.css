@@ -12,30 +12,22 @@
 /* DESKTOP */
 
 .dashboard-content {
-  @apply ml-[270px] min-h-screen;
+  @apply min-h-screen;
 
-  width: calc(100% - 270px);
+  width: 100%;
+  padding-top: 76px;
   box-sizing: border-box;
-}
-
-/* TABLET */
-
-@media (max-width: 1024px) {
-  .dashboard-content {
-    @apply ml-[240px];
-
-    width: calc(100% - 240px);
-  }
 }
 
 /* MOBILE */
 
 @media (max-width: 768px) {
   .dashboard-content {
-    @apply ml-0 min-h-screen pb-28;
+    @apply min-h-screen pb-28;
 
     width: 100%;
     max-width: 100%;
+    padding-top: 0;
   }
 }
 

@@ -1,154 +1,133 @@
 @import "tailwindcss";
 
-.sidebar-desktop {
-  @apply hidden md:flex flex-col justify-between;
+/* ================= TOPBAR (desktop/tablet) ================= */
 
-  width: 270px;
-  min-height: 100vh;
-
-  background: #111827;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-
-  padding: 24px 18px;
+.topbar {
+  @apply hidden md:block;
 
   position: fixed;
-  left: 0;
   top: 0;
-
-  box-sizing: border-box;
+  left: 0;
+  right: 0;
   z-index: 100;
-  overflow-y: auto;
+
+  background: #0d1420;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  box-shadow: 0 1px 0 rgba(231, 76, 60, 0.25);
 }
 
-.sidebar-top {
-  @apply flex items-center gap-4 mb-10;
+.topbar-inner {
+  @apply flex items-center justify-between gap-6;
 
+  width: 100%;
+  padding: 12px 28px;
+  box-sizing: border-box;
+}
+
+.topbar-brand {
+  @apply flex items-center gap-3;
+
+  flex-shrink: 0;
   min-width: 0;
 }
 
-.sidebar-logo {
-  @apply w-20 h-20 rounded-2xl flex items-center justify-center;
+.topbar-logo {
+  @apply w-11 h-11 rounded-xl flex items-center justify-center;
 
   background: #f3f4f6;
-
   flex-shrink: 0;
 }
 
-.sidebar-logo img {
-  @apply w-15 h-15 object-contain;
-
-  max-width: 100%;
+.topbar-logo img {
+  @apply w-8 h-8 object-contain;
 }
 
-.sidebar-school {
+.topbar-brand-text {
   min-width: 0;
+  line-height: 1.15;
 }
 
-.sidebar-school h1 {
-  @apply text-base font-bold;
+.topbar-brand-text h1 {
+  @apply text-sm font-bold;
 
   color: white;
-
-  overflow-wrap: break-word;
+  white-space: nowrap;
 }
 
-.sidebar-school p {
-  @apply text-sm;
+.topbar-brand-text p {
+  @apply text-xs;
 
-  color: #9ca3af;
-
-  overflow-wrap: break-word;
+  color: #8b93a3;
+  white-space: nowrap;
 }
 
-.sidebar-nav {
-  @apply flex flex-col gap-3;
+.topbar-nav {
+  @apply flex items-center gap-1;
 
-  width: 100%;
+  flex: 1;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.sidebar-link {
-  @apply flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200;
-
-  color: #d1d5db;
-
-  width: 100%;
-  box-sizing: border-box;
+.topbar-nav::-webkit-scrollbar {
+  display: none;
 }
 
-.sidebar-link:hover {
+.topbar-link {
+  @apply flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200;
+
+  color: #b6bcc8;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.topbar-link:hover {
   background: rgba(255, 255, 255, 0.06);
+  color: white;
 }
 
-.sidebar-link img {
-  @apply w-5 h-5;
+.topbar-link img {
+  @apply w-4 h-4;
 
   filter: brightness(0) invert(1);
-  opacity: 0.9;
-
+  opacity: 0.85;
   flex-shrink: 0;
 }
 
-.sidebar-link span {
+.topbar-link span {
   @apply text-sm font-medium;
-
-  overflow-wrap: break-word;
 }
 
-.sidebar-link-active {
+.topbar-link-active {
   background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
-
   color: white;
 
-  box-shadow: 0 10px 20px rgba(192, 57, 43, 0.2);
+  box-shadow: 0 6px 16px rgba(192, 57, 43, 0.35);
 }
 
-.sidebar-bottom {
-  @apply flex flex-col gap-4;
-
-  width: 100%;
+.topbar-link-active img {
+  opacity: 1;
 }
 
-.sidebar-reminder-card {
-  @apply rounded-2xl p-4 flex gap-3 items-start;
+.topbar-status {
+  @apply hidden lg:flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium;
 
-  background: linear-gradient(
-    135deg,
-    rgba(231, 76, 60, 0.18),
-    rgba(192, 57, 43, 0.1)
-  );
-
-  border: 1px solid rgba(231, 76, 60, 0.15);
-
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-.sidebar-reminder-icon {
-  @apply w-10 h-10 rounded-xl flex items-center justify-center text-lg;
-
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  color: #f3a29a;
 
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.sidebar-reminder-card h4 {
-  @apply text-sm font-bold mb-1;
+.topbar-status-dot {
+  @apply w-1.5 h-1.5 rounded-full;
 
-  color: white;
-}
-
-.sidebar-reminder-card p {
-  @apply text-xs leading-relaxed;
-
-  color: #d1d5db;
-
-  overflow-wrap: break-word;
-}
-
-.sidebar-footer {
-  @apply text-center text-xs mt-2;
-
-  color: #6b7280;
+  background: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+  flex-shrink: 0;
 }
 
 /* ================= MOBILE NAVBAR ================= */
@@ -214,37 +193,25 @@
 /* ================= TABLET ================= */
 
 @media (max-width: 1100px) and (min-width: 769px) {
-  .sidebar-desktop {
-    width: 240px;
-    padding: 20px 14px;
+  .topbar-inner {
+    padding: 10px 18px;
+    gap: 14px;
   }
 
-  .sidebar-top {
-    gap: 12px;
+  .topbar-brand-text h1 {
+    font-size: 0.8rem;
   }
 
-  .sidebar-logo {
-    width: 64px;
-    height: 64px;
+  .topbar-brand-text p {
+    font-size: 0.7rem;
   }
 
-  .sidebar-logo img {
-    width: 48px;
-    height: 48px;
+  .topbar-link span {
+    font-size: 0.8rem;
   }
 
-  .sidebar-school h1 {
-    font-size: 0.9rem;
-  }
-
-  .sidebar-school p {
-    font-size: 0.75rem;
-  }
-
-  .sidebar-link {
-    @apply px-3 py-3;
-
-    gap: 12px;
+  .topbar-link {
+    @apply px-3 py-2;
   }
 }
 
@@ -303,4 +270,60 @@
   .mobile-link span {
     font-size: 8px;
   }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  .topbar-inner {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .topbar-brand {
+    gap: 8px;
+  }
+
+  .topbar-logo {
+    @apply w-10 h-10;
+  }
+
+  .topbar-logo img {
+    @apply w-7 h-7;
+  }
+
+  .topbar-brand-text h1 {
+    font-size: 0.75rem;
+  }
+
+  .topbar-brand-text p {
+    font-size: 0.65rem;
+  }
+
+  .topbar-nav {
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .topbar-link {
+    @apply px-2 py-2;
+
+    gap: 6px;
+  }
+
+  .topbar-link span {
+    font-size: 0.72rem;
+  }
+
+  .topbar-link img {
+    @apply w-3.5 h-3.5;
+  }
+}
+
+.topbar-nav {
+  @apply flex items-center gap-1;
+
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
 }

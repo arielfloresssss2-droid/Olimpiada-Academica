@@ -3,7 +3,9 @@
 /* Perfil page */
 
 .perfil-wrapper {
-  @apply min-h-screen flex items-center justify-center p-8;
+  @apply flex items-center justify-center p-8;
+
+  min-height: calc(100vh - 75px);
 
   background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
 
