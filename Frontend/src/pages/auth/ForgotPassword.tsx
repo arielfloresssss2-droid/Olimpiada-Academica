@@ -95,86 +95,89 @@ function ForgotPassword() {
 
   return (
     <div className="login-page">
-      <br />
-
-      <div className="login-card">
-        <div className="login-accent-bar" />
-
-        <div className="login-body">
-          <div className="login-logo">
-            <img src="/logo.svg" alt="Logo Municipio de Morón" />
-          </div>
-
-          <h1 className="login-school-name">Municipio de Morón</h1>
-          <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
-
-          <div className="login-divider">
-            <div className="login-divider-line" />
-            <span role="img" aria-label="recuperar contraseña">
-              🔑
-            </span>
-            <div className="login-divider-line" />
-          </div>
-
-          <h2 className="login-title">Recuperar contraseña</h2>
-
-          <p className="login-subtitle">
-            Ingresá tu correo y te enviamos un código para continuar
-          </p>
-
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-field">
-              <label className="login-label">CORREO ELECTRÓNICO</label>
-
-              <div className="login-input-wrapper">
-                <span className="login-input-icon">
-                  <img
-                    src="/person-log.svg"
-                    className="iconos"
-                    alt="correo"
-                  />
-                </span>
-
-                <input
-                  type="email"
-                  placeholder="usuario@moron.gob.ar"
-                  className="login-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {error && <p className="forgot-error-text">{error}</p>}
-
-            <button
-              type="submit"
-              className="login-submit-btn"
-              disabled={loading}
-              style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
-            >
-              {loading ? "Enviando código..." : "Continuar"}
-            </button>
-
-            <p className="login-help-text">
-              <Link to="/login" className="login-help-link">
-                ‹ Volver al inicio de sesión
-              </Link>
-            </p>
-          </form>
-        </div>
-
-        <div className="login-footer">
-          <span>⇄</span>
-          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
-        </div>
+      {/* MARCA EN ESQUINA INFERIOR IZQUIERDA */}
+      <div className="login-brand-corner">
+        <p className="login-hero-label">MUNICIPIO DE</p>
+        <h2 className="login-hero-city">MORÓN</h2>
       </div>
 
-      <p className="login-bottom-note">
-        Sistema oficial de reporte y gestión de incidentes · Morón
-      </p>
+      {/* PANEL CENTRADO */}
+      <div className="login-panel">
+        <div className="login-card">
+          <div className="login-accent-bar" />
 
-      <br />
+          <div className="login-body">
+            <div className="login-logo">
+              <img src="/logoLogin.png" alt="Logo Municipio de Morón" />
+            </div>
+            <p className="login-school-city">GESTIÓN DE INCIDENTES</p>
+
+            <div className="login-divider">
+              <div className="login-divider-line" />
+              <span role="img" aria-label="recuperar contraseña">
+                🔑
+              </span>
+              <div className="login-divider-line" />
+            </div>
+
+            <h2 className="login-title">Recuperar contraseña</h2>
+
+            <p className="login-subtitle">
+              Ingresá tu correo y te enviamos un código para continuar
+            </p>
+
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="login-field">
+                <label className="login-label">CORREO ELECTRÓNICO</label>
+
+                <div className="login-input-wrapper">
+                  <span className="login-input-icon">
+                    <img
+                      src="/person-log.svg"
+                      className="iconos"
+                      alt="correo"
+                    />
+                  </span>
+
+                  <input
+                    type="email"
+                    placeholder="usuario@moron.gob.ar"
+                    className="login-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {error && <p className="forgot-error-text">{error}</p>}
+
+              <button
+                type="submit"
+                className="login-submit-btn"
+                disabled={loading}
+                style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+              >
+                {loading ? "Enviando código..." : "Continuar"}
+              </button>
+
+              <p className="login-help-text">
+                <Link to="/login" className="login-help-link">
+                  ‹ Volver al inicio de sesión
+                </Link>
+              </p>
+            </form>
+          </div>
+
+          <div className="login-footer">
+            <span>⇄</span>
+            <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
+          </div>
+        </div>
+
+        <p className="login-bottom-note">
+          Sistema oficial de reporte y gestión de incidentes · Morón
+        </p>
+      </div>
     </div>
   );
 }

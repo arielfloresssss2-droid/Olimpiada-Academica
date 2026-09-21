@@ -74,95 +74,100 @@ function NuevaContrasena() {
 
   return (
     <div className="login-page">
-      <br />
-
-      <div className="login-card">
-        <div className="login-accent-bar" />
-
-        <div className="login-body">
-          <div className="login-logo">
-            <img src="/logo.svg" alt="Logo Municipio de Morón" />
-          </div>
-
-          <h2 className="login-title">Nueva contraseña</h2>
-
-          <p className="login-subtitle">
-            Elegí una contraseña nueva para tu cuenta
-          </p>
-
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-field">
-              <label className="login-label">CONTRASEÑA NUEVA</label>
-
-              <div className="login-input-wrapper">
-                <span className="login-input-icon">
-                  <img src="/lock.svg" alt="contraseña" />
-                </span>
-
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  className="login-input"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="login-eye-btn"
-                  tabIndex={-1}
-                >
-                  <img
-                    src={showPassword ? "/EyeClose.svg" : "/EyeOpen.svg"}
-                    alt={showPassword ? "Ocultar" : "Mostrar"}
-                  />
-                </button>
-              </div>
-            </div>
-
-            <div className="login-field">
-              <label className="login-label">CONFIRMAR CONTRASEÑA</label>
-
-              <div className="login-input-wrapper">
-                <span className="login-input-icon">
-                  <img src="/lock.svg" alt="confirmar contraseña" />
-                </span>
-
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  className="login-input"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {error && <p className="forgot-error-text">{error}</p>}
-
-            <button
-              type="submit"
-              className="login-submit-btn"
-              disabled={loading}
-              style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
-            >
-              {loading ? "Actualizando contraseña..." : "Cambiar contraseña"}
-            </button>
-          </form>
-        </div>
-
-        <div className="login-footer">
-          <span>⇄</span>
-          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
-        </div>
+      {/* MARCA EN ESQUINA INFERIOR IZQUIERDA */}
+      <div className="login-brand-corner">
+        <p className="login-hero-label">MUNICIPIO DE</p>
+        <h2 className="login-hero-city">MORÓN</h2>
       </div>
 
-      <p className="login-bottom-note">
-        Sistema oficial de reporte y gestión de incidentes · Morón
-      </p>
+      {/* PANEL CENTRADO */}
+      <div className="login-panel">
+        <div className="login-card">
+          <div className="login-accent-bar" />
 
-      <br />
+          <div className="login-body">
+            <div className="login-logo">
+              <img src="/logoLogin.png" alt="Logo Municipio de Morón" />
+            </div>
+
+            <h2 className="login-title">Nueva contraseña</h2>
+
+            <p className="login-subtitle">
+              Elegí una contraseña nueva para tu cuenta
+            </p>
+
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="login-field">
+                <label className="login-label">CONTRASEÑA NUEVA</label>
+
+                <div className="login-input-wrapper">
+                  <span className="login-input-icon">
+                    <img src="/lock.svg" alt="contraseña" />
+                  </span>
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="login-input"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="login-eye-btn"
+                    tabIndex={-1}
+                  >
+                    <img
+                      src={showPassword ? "/EyeClose.svg" : "/EyeOpen.svg"}
+                      alt={showPassword ? "Ocultar" : "Mostrar"}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className="login-field">
+                <label className="login-label">CONFIRMAR CONTRASEÑA</label>
+
+                <div className="login-input-wrapper">
+                  <span className="login-input-icon">
+                    <img src="/lock.svg" alt="confirmar contraseña" />
+                  </span>
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="login-input"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {error && <p className="forgot-error-text">{error}</p>}
+
+              <button
+                type="submit"
+                className="login-submit-btn"
+                disabled={loading}
+                style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+              >
+                {loading ? "Actualizando contraseña..." : "Cambiar contraseña"}
+              </button>
+            </form>
+          </div>
+
+          <div className="login-footer">
+            <span>⇄</span>
+            <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
+          </div>
+        </div>
+
+        <p className="login-bottom-note">
+          Sistema oficial de reporte y gestión de incidentes · Morón
+        </p>
+      </div>
     </div>
   );
 }

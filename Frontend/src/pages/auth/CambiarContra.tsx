@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../styles/auth/Login-Register.css";
 import "../../styles/auth/CambiarContra.css";
 import { API_BASE_URL } from "../../config/api";
 
@@ -15,126 +16,123 @@ function CambiarContra() {
   const toggle = (field: "actual" | "nueva" | "repetir") =>
     setShow((prev) => ({ ...prev, [field]: !prev[field] }));
 
-    const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [passwordActual, setPasswordActual] = useState("");
+  const [passwordNueva, setPasswordNueva] = useState("");
+  const [repetirPassword, setRepetirPassword] = useState("");
 
-    const [passwordActual, setPasswordActual] = useState("");
-    const [passwordNueva, setPasswordNueva] = useState("");
-    const [repetirPassword, setRepetirPassword] = useState("");
+  const handleCambiarPassword = async () => {
+    const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
 
-    const handleCambiarPassword = async () => {
-        const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+    if (passwordNueva !== repetirPassword) {
+      alert("Las contraseñas nuevas no coinciden");
+      return;
+    }
 
-        if (passwordNueva !== repetirPassword) {
-            alert("Las contraseñas nuevas no coinciden");
-            return;
-        }
+    const response = await fetch(
+      `${API_BASE_URL}/api/Usuario/cambiar-password`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idUsuario: usuario.id,
+          passwordActual,
+          passwordNueva,
+        }),
+      }
+    );
 
-        const response = await fetch(
-            `${API_BASE_URL}/api/Usuario/cambiar-password`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    idUsuario: usuario.id,
-                    passwordActual,
-                    passwordNueva
-                })
-            }
-        );
-
-        if (response.ok) {
-            setShowSuccess(true);
-        } else {
-            const mensaje = await response.text();
-            alert(mensaje);
-        }
-    };
+    if (response.ok) {
+      setShowSuccess(true);
+    } else {
+      const mensaje = await response.text();
+      alert(mensaje);
+    }
+  };
 
   return (
-    <div className="cc-wrapper">
-      <div className="cc-card">
-        {/* Top accent bar */}
-        <div className="cc-accent-bar" />
+    <div className="login-page">
+      {/* MARCA EN ESQUINA INFERIOR IZQUIERDA (Opcional) */}
+      <div className="login-brand-corner">
+        <p className="login-hero-label">MUNICIPIO DE</p>
+        <h2 className="login-hero-city">MORÓN</h2>
+      </div>
 
-        <div className="cc-content">
-          {/* Logo */}
-          <div className="cc-logo">
-            <img
-              src="/logo.svg"
-              alt="Logo Municipio de Morón"
-              className="cc-logo-img"
-            />
-          </div>
+      {/* PANEL CENTRADO */}
+      <div className="login-panel">
+        <div className="cc-card">
+          <div className="cc-accent-bar" />
 
-          {/* School name */}
-          <h1 className="cc-school-name">Municipio de Morón</h1>
-          <p className="cc-school-sub">GESTIÓN DE INCIDENTES</p>
+          <div className="cc-content">
+            <div className="cc-logo">
+              <img src="/logoLogin.png" alt="Logo Municipio de Morón" />
+            </div>
 
-          {/* Divider */}
-          <div className="cc-divider">
-            <div className="cc-divider-line" />
-            <span role="img" aria-label="candado">
-              🔐
-            </span>
-            <div className="cc-divider-line" />
-          </div>
+            <h1 className="cc-school-name">Municipio de Morón</h1>
+            <p className="cc-school-sub">GESTIÓN DE INCIDENTES</p>
 
-          {/* Title */}
-          <h2 className="cc-title">Cambiar contraseña</h2>
-          <p className="cc-subtitle">Ingresá tu contraseña actual y la nueva</p>
+            <div className="cc-divider">
+              <div className="cc-divider-line" />
+              <span role="img" aria-label="candado">🔐</span>
+              <div className="cc-divider-line" />
+            </div>
 
-          {/* Form */}
-          <form className="cc-form">
-            <PasswordField
-              label="CONTRASEÑA ACTUAL"
-              placeholder="••••••••"
-              show={show.actual}
-              onToggle={() => toggle("actual")}
-              value={passwordActual}
-              onChange={setPasswordActual}
-            />
-            <PasswordField
-              label="NUEVA CONTRASEÑA"
-              placeholder="••••••••"
-              show={show.nueva}
-              onToggle={() => toggle("nueva")}
-              value={passwordNueva}
-              onChange={setPasswordNueva}
-            />
-            <PasswordField
-              label="REPETIR NUEVA CONTRASEÑA"
-              placeholder="••••••••"
-              show={show.repetir}
-              onToggle={() => toggle("repetir")}
-              value={repetirPassword}
-              onChange={setRepetirPassword}
-            />
+            <h2 className="cc-title">Cambiar contraseña</h2>
+            <p className="cc-subtitle">Ingresá tu contraseña actual y la nueva</p>
 
-            <button
+            <form className="cc-form">
+              <PasswordField
+                label="CONTRASEÑA ACTUAL"
+                placeholder="••••••••"
+                show={show.actual}
+                onToggle={() => toggle("actual")}
+                value={passwordActual}
+                onChange={setPasswordActual}
+              />
+              <PasswordField
+                label="NUEVA CONTRASEÑA"
+                placeholder="••••••••"
+                show={show.nueva}
+                onToggle={() => toggle("nueva")}
+                value={passwordNueva}
+                onChange={setPasswordNueva}
+              />
+              <PasswordField
+                label="REPETIR NUEVA CONTRASEÑA"
+                placeholder="••••••••"
+                show={show.repetir}
+                onToggle={() => toggle("repetir")}
+                value={repetirPassword}
+                onChange={setRepetirPassword}
+              />
+
+              <button
                 type="button"
                 className="cc-btn-primary"
                 onClick={handleCambiarPassword}
-            >
+              >
                 Confirmar cambio
-            </button>
+              </button>
 
-            <button
-              type="button"
-              className="cc-btn-secondary"
-              onClick={() => navigate("/dashboard")}
-            >
-              Volver
-            </button>
-          </form>
+              <button
+                type="button"
+                className="cc-btn-secondary"
+                onClick={() => navigate("/dashboard")}
+              >
+                Volver
+              </button>
+            </form>
+          </div>
+
+          <div className="cc-footer">
+            <span>⇄</span>
+            <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
+          </div>
         </div>
 
-        {/* Footer */}
-        <div className="cc-footer">
-          <span>⇄</span>
-          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
-        </div>
+        <p className="login-bottom-note">
+          Sistema oficial de gestión y reporte de incidentes · Morón
+        </p>
       </div>
 
       {/* Modal éxito */}
@@ -156,19 +154,19 @@ function CambiarContra() {
 }
 
 function PasswordField({
-    label,
-    placeholder,
-    show,
-    onToggle,
-    value,
-    onChange,
+  label,
+  placeholder,
+  show,
+  onToggle,
+  value,
+  onChange,
 }: {
-    label: string;
-    placeholder: string;
-    show: boolean;
-    onToggle: () => void;
-    value: string;
-    onChange: (value: string) => void;
+  label: string;
+  placeholder: string;
+  show: boolean;
+  onToggle: () => void;
+  value: string;
+  onChange: (value: string) => void;
 }) {
   return (
     <div className="cc-field">
