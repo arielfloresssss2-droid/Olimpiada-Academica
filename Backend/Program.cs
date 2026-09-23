@@ -4,6 +4,11 @@ using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using System.Text.Json.Serialization;
+
+// Configurar compatibilidad de tipos TIMESTAMP (sin timezone) para PostgreSQL / Npgsql
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +22,41 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 2. Registrar servicios de la aplicación
 builder.Services.AddScoped<IJwtService, JwtService>();
 
-// 3. Configurar Controladores y OpenAPI
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+// 3. Configurar Controladores y serialización JSON (evitando ciclos)
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
 
-// 4. Configurar Autenticación JWT
+// 4. Configurar Swagger UI / OpenAPI con soporte para JWT Bearer
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API Municipio de Morón - Gestión de Incidentes",
+        Version = "v1",
+        Description = "API REST para el reporte, seguimiento y gestión de incidentes urbanos del Municipio de Morón."
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Autenticación JWT. Ingresá el token de la siguiente forma: Bearer {token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
+
+// 5. Configurar Autenticación JWT
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "SuperSecretKeyForOlimpiadaAcademicaIncidentsManagementSystem2026!";
 var key = Encoding.UTF8.GetBytes(jwtSecret);
 
@@ -46,7 +81,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// 5. Configurar CORS para permitir solicitudes del Frontend (Vite)
+// 6. Configurar CORS para permitir solicitudes de cualquier origen o IP local
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -59,11 +94,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configurar el pipeline HTTP
-if (app.Environment.IsDevelopment())
+// 7. Habilitar Swagger y Swagger UI tanto en desarrollo como por defecto
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.MapOpenApi();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Morón v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseCors("AllowFrontend");
 
@@ -72,7 +109,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Endpoint de prueba de conectividad
-app.MapGet("/", () => "API Backend Soporte de Incidentes - Municipio de Morón funcionando correctamente.");
+// Redirigir la raíz ("/") directamente a Swagger UI
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();

@@ -8,7 +8,7 @@ public class Usuario
     public string Apellido { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Contrasena { get; set; } = string.Empty;
-    public string Rol { get; set; } = "Alumno";
+    public string Rol { get; set; } = "Ciudadano";
     public bool Activo { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

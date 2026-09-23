@@ -1,5 +1,5 @@
 -- Script DDL para la creación de la base de datos en PostgreSQL
--- Generado a partir del diagrama entidad-relación
+-- Generado a partir del diagrama entidad-relación del Sistema de Gestión de Incidentes (Municipio de Morón)
 
 -- Eliminar tablas si ya existen (orden inverso a las dependencias)
 DROP TABLE IF EXISTS historial_estados CASCADE;
@@ -28,7 +28,7 @@ CREATE TABLE usuarios (
     apellido VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    rol VARCHAR(20) NOT NULL,
+    rol VARCHAR(20) NOT NULL DEFAULT 'Ciudadano',
     activo BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_usuarios_municipio FOREIGN KEY (id_mun) REFERENCES municipio(id) ON DELETE SET NULL
@@ -115,3 +115,31 @@ CREATE TABLE historial_estados (
     CONSTRAINT fk_historial_reporte FOREIGN KEY (id_reporte) REFERENCES reportes(id) ON DELETE CASCADE,
     CONSTRAINT fk_historial_usuario FOREIGN KEY (id_user) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+
+-- ==========================================
+-- 11. Datos Semilla (Seeds iniciales obligatorios)
+-- ==========================================
+INSERT INTO municipio (id, nombre, direccion_oficina) VALUES 
+(1, 'Municipio de Morón', 'Brown 946, Morón, Provincia de Buenos Aires')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO estados (id, nombre) VALUES 
+(1, 'Pendiente'),
+(2, 'En Proceso'),
+(3, 'Resuelto'),
+(4, 'Cancelado')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO incidente (id, nombre, descripcion) VALUES 
+(1, 'Bacheo y Calzada', 'Pozos, baches o rotura de pavimento en la vía pública'),
+(2, 'Luminarias y Alumbrado', 'Luminarias apagadas, postes caídos o fallas eléctricas en la calle'),
+(3, 'Higiene Urbana y Basura', 'Acumulación de residuos, microbasurales o ramas'),
+(4, 'Poda y Arbolado', 'Ramas caídas, árboles en riesgo o corte de visibilidad'),
+(5, 'Agua y Cloacas', 'Pérdidas de agua potable o desbordes cloacales'),
+(6, 'Semáforos y Señalización', 'Semáforos intermitentes, fuera de servicio o señalética caída')
+ON CONFLICT (id) DO NOTHING;
+
+-- Sincronizar secuencias para los próximos INSERTs automáticos
+SELECT setval('municipio_id_seq', COALESCE((SELECT MAX(id) FROM municipio), 1));
+SELECT setval('estados_id_seq', COALESCE((SELECT MAX(id) FROM estados), 1));
+SELECT setval('incidente_id_seq', COALESCE((SELECT MAX(id) FROM incidente), 1));

@@ -12,6 +12,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.4",
           "Microsoft.AspNetCore.OpenApi": "10.0.12",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.3",
+          "Swashbuckle.AspNetCore": "10.2.3",
           "System.IdentityModel.Tokens.Jwt": "8.6.0"
         },
         "runtime": {
@@ -171,6 +172,43 @@
           }
         }
       },
+      "Swashbuckle.AspNetCore/10.2.3": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "10.2.3",
+          "Swashbuckle.AspNetCore.SwaggerGen": "10.2.3",
+          "Swashbuckle.AspNetCore.SwaggerUI": "10.2.3"
+        }
+      },
+      "Swashbuckle.AspNetCore.Swagger/10.2.3": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.12.0"
+        },
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.Swagger.dll": {
+            "assemblyVersion": "10.2.3.0",
+            "fileVersion": "10.2.3.2721"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerGen/10.2.3": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "10.2.3"
+        },
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "assemblyVersion": "10.2.3.0",
+            "fileVersion": "10.2.3.2721"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerUI/10.2.3": {
+        "runtime": {
+          "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
+            "assemblyVersion": "10.2.3.0",
+            "fileVersion": "10.2.3.2721"
+          }
+        }
+      },
       "System.IdentityModel.Tokens.Jwt/8.6.0": {
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "8.6.0",
@@ -295,6 +333,34 @@
       "sha512": "sha512-IPGrrZnRkuW7OlHDhUESZz4G5DLkW7Nej/O3Cx+0iTsgyU5XJxBgpsvTHLloo3WWuAKKbDHXBvWPVkX1deRh1Q==",
       "path": "npgsql.entityframeworkcore.postgresql/10.0.3",
       "hashPath": "npgsql.entityframeworkcore.postgresql.10.0.3.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore/10.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8KNh1RWvofdU6DVLyBs4Z/OpUMnmf8oNvJQc0QxpwySRbi42bwLfdVMMrXZWANg5U5KQGQq1xW6r/hlcqw99tQ==",
+      "path": "swashbuckle.aspnetcore/10.2.3",
+      "hashPath": "swashbuckle.aspnetcore.10.2.3.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.Swagger/10.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1jUUs3WQnrS0FUtaZPLSy1yYMEwS1zlvDmvQ2/eldPHUANX0LJSLVZecCMgSMdeGiRqeaRrIXLtSz++TCiTMww==",
+      "path": "swashbuckle.aspnetcore.swagger/10.2.3",
+      "hashPath": "swashbuckle.aspnetcore.swagger.10.2.3.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerGen/10.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-y7t4coDRAeFYChmvlMRiH2OjbiRrm9AVIDgt17fQfs3x9PVAI5PiwWYOhg+4F13R4Q36WDc9lqfoOnNa3tNbGg==",
+      "path": "swashbuckle.aspnetcore.swaggergen/10.2.3",
+      "hashPath": "swashbuckle.aspnetcore.swaggergen.10.2.3.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerUI/10.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nthWONRs/FJ4yyG206g1cC52WEG8EqrjuMWjGdR+5XG7lbjFto6NqcI9EMICgVFom/UivIjUVwI76ZHbHwTPfQ==",
+      "path": "swashbuckle.aspnetcore.swaggerui/10.2.3",
+      "hashPath": "swashbuckle.aspnetcore.swaggerui.10.2.3.nupkg.sha512"
     },
     "System.IdentityModel.Tokens.Jwt/8.6.0": {
       "type": "package",
