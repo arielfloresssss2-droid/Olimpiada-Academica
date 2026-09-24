@@ -349,17 +349,10 @@ export default function Home({ setActiveSection }: InicioProps) {
               {obtenerTextoIncidente()}
             </p>
 
-            {pedidoActivo ? (
+            {pedidoActivo && (
               <div className="home-qr">
                 Ticket # {pedidoActivo.nroOrden || pedidoActivo.id}
               </div>
-            ) : (
-              <button
-                className="home-shortcut-btn w-full"
-                onClick={() => setActiveSection("reservar")}
-              >
-                Reportar una incidencia ahora
-              </button>
             )}
           </div>
 

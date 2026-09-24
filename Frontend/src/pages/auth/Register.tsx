@@ -138,12 +138,17 @@ function Register() {
     <div className="login-page">
       <br />
 
+      <div className="login-brand-corner">
+        <p className="login-hero-label">MUNICIPIO DE</p>
+        <h2 className="login-hero-city">MORÓN</h2>
+      </div>
+
       <div className="login-card">
         <div className="login-accent-bar" />
 
         <div className="login-body">
           <div className="login-logo">
-            <img src="/logo.svg" alt="Logo Municipio de Morón" />
+            <img src="/logoLogin.png" alt="Logo Municipio de Morón" />
           </div>
 
           <h1 className="login-school-name">Municipio de Morón</h1>
@@ -313,10 +318,6 @@ function Register() {
           <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
         </div>
       </div>
-
-      <p className="login-bottom-note">
-        Sistema oficial de gestión y reporte de incidentes · Morón
-      </p>
 
       <br />
     </div>

@@ -98,7 +98,7 @@ function Perfil() {
     <div className="perfil-wrapper">
       <div className="perfil-card">
         <div className="perfil-avatar">
-          <img src="/user.svg" alt="user" />
+          <span className="perfil-avatar-icon" role="img" aria-label="user" />
         </div>
 
         <h1 className="perfil-nombre">

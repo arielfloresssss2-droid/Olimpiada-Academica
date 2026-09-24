@@ -129,10 +129,6 @@ function CambiarContra() {
             <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
           </div>
         </div>
-
-        <p className="login-bottom-note">
-          Sistema oficial de gestión y reporte de incidentes · Morón
-        </p>
       </div>
 
       {/* Modal éxito */}

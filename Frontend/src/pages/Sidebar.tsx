@@ -79,7 +79,7 @@ function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
         <div className="topbar-inner">
           <div className="topbar-brand">
             <div className="topbar-logo">
-              <img src="/logo.svg" alt="Logo" />
+              <img src="/logoLogin.png" alt="Logo" />
             </div>
 
             <div className="topbar-brand-text">

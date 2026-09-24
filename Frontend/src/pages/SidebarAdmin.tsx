@@ -17,7 +17,7 @@ function SidebarAdmin({
         <div>
           <div className="sidebar-admin-top">
             <div className="sidebar-admin-logo">
-              <img src="/logo.svg" alt="Logo" />
+              <img src="/logoLogin.png" alt="Logo" />
             </div>
 
             <div className="sidebar-admin-school">
