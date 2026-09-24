@@ -21,8 +21,9 @@ public class UsuarioController : ControllerBase
     }
 
     /// <summary>
-    /// Cambiar la contraseña del usuario autenticado.
+    /// Cambiar la contraseña del usuario. Soporta autenticación por token o validación con password actual.
     /// </summary>
+    [AllowAnonymous]
     [HttpPut("cambiar-password")]
     public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDto request)
     {
@@ -30,7 +31,6 @@ public class UsuarioController : ControllerBase
         int targetUserId = request.IdUsuario;
         if (int.TryParse(claimId, out int authUserId) && authUserId > 0)
         {
-            // El usuario autenticado solo puede cambiar su propia contraseña salvo que sea admin
             var esAdmin = User.IsInRole("Admin");
             if (!esAdmin && authUserId != targetUserId)
             {
@@ -72,8 +72,54 @@ public class UsuarioController : ControllerBase
     }
 
     /// <summary>
-    /// Cerrar sesión (opcional para el cliente).
+    /// Eliminar cuenta de usuario tras confirmar la contraseña.
     /// </summary>
+    [HttpDelete("eliminar/{id}")]
+    public async Task<IActionResult> EliminarCuenta(int id, [FromBody] EliminarCuentaDto request)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("Id de usuario inválido.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest("Debe ingresar su contraseña para confirmar la eliminación de la cuenta.");
+        }
+
+        var usuario = await _context.Usuarios.FindAsync(id);
+        if (usuario == null)
+        {
+            return NotFound("Usuario no encontrado.");
+        }
+
+        // Verificar contraseña
+        bool isValid = false;
+        if (usuario.Contrasena.StartsWith("$2a$") || usuario.Contrasena.StartsWith("$2b$") || usuario.Contrasena.StartsWith("$2y$"))
+        {
+            isValid = BCrypt.Net.BCrypt.Verify(request.Password, usuario.Contrasena);
+        }
+        else
+        {
+            isValid = usuario.Contrasena == request.Password;
+        }
+
+        if (!isValid)
+        {
+            return BadRequest("Contraseña incorrecta.");
+        }
+
+        // Eliminar usuario en cascada según configuración de base de datos
+        _context.Usuarios.Remove(usuario);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { mensaje = "Cuenta eliminada exitosamente." });
+    }
+
+    /// <summary>
+    /// Cerrar sesión (accesible anónimamente).
+    /// </summary>
+    [AllowAnonymous]
     [HttpPost("logout")]
     public IActionResult Logout()
     {
