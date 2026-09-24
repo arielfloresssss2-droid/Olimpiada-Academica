@@ -8,4 +8,5 @@ public class RegisterDto
     public string Password { get; set; } = string.Empty;
     public string? Rol { get; set; }
     public int? IdMun { get; set; }
+    public string? Code { get; set; }
 }

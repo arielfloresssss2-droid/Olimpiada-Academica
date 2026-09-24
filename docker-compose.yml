@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: moron-postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: olimpiada_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Backend .NET 10 API REST
+  backend-api:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: moron-backend-api
+    restart: always
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=olimpiada_db;Username=postgres;Password=postgrespassword
+      - JwtSettings__Secret=SuperSecretKeyForOlimpiadaAcademicaIncidentsManagementSystem2026!
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5006:5006"
+    depends_on:
+      - postgres-db
+
+volumes:
+  postgres_data:

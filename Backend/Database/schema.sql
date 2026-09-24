@@ -2,6 +2,7 @@
 -- Generado a partir del diagrama entidad-relación
 
 -- Eliminar tablas si ya existen (orden inverso a las dependencias)
+DROP TABLE IF EXISTS apoyo_reporte CASCADE;
 DROP TABLE IF EXISTS historial_estados CASCADE;
 DROP TABLE IF EXISTS archivos_adjuntos CASCADE;
 DROP TABLE IF EXISTS respuesta CASCADE;
@@ -114,4 +115,14 @@ CREATE TABLE historial_estados (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_historial_reporte FOREIGN KEY (id_reporte) REFERENCES reportes(id) ON DELETE CASCADE,
     CONSTRAINT fk_historial_usuario FOREIGN KEY (id_user) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- 11. Tabla: apoyo_reporte (Votos de apoyo con clave compuesta unica)
+CREATE TABLE apoyo_reporte (
+    id_reporte INT NOT NULL,
+    id_usuario INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_reporte, id_usuario),
+    CONSTRAINT fk_apoyo_reporte FOREIGN KEY (id_reporte) REFERENCES reportes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_apoyo_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );

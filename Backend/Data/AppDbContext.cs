@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<Respuesta> Respuestas { get; set; } = null!;
     public DbSet<ArchivoAdjunto> ArchivosAdjuntos { get; set; } = null!;
     public DbSet<HistorialEstado> HistorialesEstados { get; set; } = null!;
+    public DbSet<ApoyoReporte> ApoyosReportes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -188,6 +189,25 @@ public class AppDbContext : DbContext
             entity.HasOne(e => e.Usuario)
                 .WithMany(u => u.Historiales)
                 .HasForeignKey(e => e.IdUser)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ApoyoReporte>(entity =>
+        {
+            entity.ToTable("apoyo_reporte");
+            entity.HasKey(e => new { e.IdReporte, e.IdUsuario });
+            entity.Property(e => e.IdReporte).HasColumnName("id_reporte");
+            entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+            entity.Property(e => e.Fecha).HasColumnName("fecha").HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(e => e.Reporte)
+                .WithMany(r => r.Apoyos)
+                .HasForeignKey(e => e.IdReporte)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Usuario)
+                .WithMany()
+                .HasForeignKey(e => e.IdUsuario)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }

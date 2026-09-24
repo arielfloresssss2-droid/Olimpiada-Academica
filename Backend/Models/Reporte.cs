@@ -23,4 +23,5 @@ public class Reporte
     public ICollection<Respuesta> Respuestas { get; set; } = new List<Respuesta>();
     public ICollection<ArchivoAdjunto> Archivos { get; set; } = new List<ArchivoAdjunto>();
     public ICollection<HistorialEstado> Historiales { get; set; } = new List<HistorialEstado>();
+    public ICollection<ApoyoReporte> Apoyos { get; set; } = new List<ApoyoReporte>();
 }

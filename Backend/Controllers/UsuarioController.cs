@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.DTOs.Usuario;
 using BCrypt.Net;
+using System.Security.Claims;
 
 namespace Backend.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsuarioController : ControllerBase
@@ -23,12 +26,24 @@ public class UsuarioController : ControllerBase
     [HttpPut("cambiar-password")]
     public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDto request)
     {
-        if (request.IdUsuario <= 0)
+        var claimId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int targetUserId = request.IdUsuario;
+        if (int.TryParse(claimId, out int authUserId) && authUserId > 0)
+        {
+            // El usuario autenticado solo puede cambiar su propia contraseña salvo que sea admin
+            var esAdmin = User.IsInRole("Admin");
+            if (!esAdmin && authUserId != targetUserId)
+            {
+                targetUserId = authUserId;
+            }
+        }
+
+        if (targetUserId <= 0)
         {
             return BadRequest("Id de usuario inválido.");
         }
 
-        var usuario = await _context.Usuarios.FindAsync(request.IdUsuario);
+        var usuario = await _context.Usuarios.FindAsync(targetUserId);
         if (usuario == null)
         {
             return NotFound("Usuario no encontrado.");

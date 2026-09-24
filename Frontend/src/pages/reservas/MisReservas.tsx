@@ -13,6 +13,8 @@ interface Reserva {
   fechaPedido?: string;
   tiempoEstimado: string;
   descripcion?: string;
+  prioridad?: string;
+  apoyosCount?: number;
 }
 
 function IconoIncidente() {
@@ -46,20 +48,46 @@ function ReservaCard({
   return (
     <div className="mr-card" style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "20px", marginBottom: "16px" }}>
       <div className="mr-card-info" style={{ flex: 1 }}>
-        <h3 style={{ margin: "0 0 8px", color: "#f8fafc", fontSize: "16px" }}>
-          Incidencia: {reserva.titulo || `Ticket #${reserva.nroOrden}`}
-        </h3>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
+          <h3 style={{ margin: 0, color: "#f8fafc", fontSize: "16px" }}>
+            {reserva.titulo || `Reporte #${reserva.nroOrden || reserva.id}`}
+          </h3>
+          {reserva.prioridad && (
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                padding: "2px 8px",
+                borderRadius: "12px",
+                background: reserva.prioridad === "Alta" ? "#ef4444" : reserva.prioridad === "Media" ? "#f59e0b" : "#3b82f6",
+                color: "white",
+              }}
+            >
+              Prioridad {reserva.prioridad}
+            </span>
+          )}
+        </div>
         
         <p className="mr-card-dato" style={{ color: "#94a3b8", margin: "4px 0" }}>
-          Ticket N°: <strong style={{ color: "#38bdf8" }}>#{reserva.nroOrden}</strong>
+          Ticket N°: <strong style={{ color: "#38bdf8" }}>#{reserva.nroOrden || reserva.id}</strong>
         </p>
 
         <p className="mr-card-dato" style={{ color: "#94a3b8", margin: "4px 0" }}>
           Fecha de reporte:{" "}
           {reserva.fechaPedido
-            ? new Date(reserva.fechaPedido).toLocaleDateString("es-AR")
+            ? new Date(reserva.fechaPedido).toLocaleDateString("es-AR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
             : "Reciente"}
         </p>
+
+        {reserva.descripcion && (
+          <p style={{ color: "#cbd5e1", fontSize: "13px", margin: "6px 0 12px", background: "#1e293b", padding: "8px 12px", borderRadius: "6px" }}>
+            {reserva.descripcion}
+          </p>
+        )}
 
         {/* TIMELINE VISUAL DEL ESTADO */}
         <TimelineEstado estadoActual={reserva.estado} />
@@ -98,20 +126,21 @@ export default function MisReservas() {
     const fetchReservas = async () => {
       try {
         setCargando(true);
-        const idUsuario = JSON.parse(
-          localStorage.getItem("usuario") || "{}",
-        ).id;
-        const response = await fetch(
-          `${API_BASE_URL}/api/Pedido/Usuario/${idUsuario}`,
-        );
+        const usuarioRaw = localStorage.getItem("usuario");
+        const token = localStorage.getItem("token");
+        if (!usuarioRaw) return;
+
+        const usuario = JSON.parse(usuarioRaw);
+        const idUsuario = usuario.id || usuario.Id;
+
+        // Conectar a endpoint real de reportes de usuario
+        const response = await fetch(`${API_BASE_URL}/api/Reportes/usuario/${idUsuario}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
         if (!response.ok) throw new Error("Error al obtener incidentes");
         const data = await response.json();
-        setPedidos(
-          data.filter(
-            (p: Reserva) =>
-              p.estado !== "Cancelado" && p.estado !== "Entregado",
-          ),
-        );
+        setPedidos(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -123,14 +152,19 @@ export default function MisReservas() {
 
   const cancelarReserva = async (id: number) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/Pedido/${id}`, {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/Reportes/${id}/estado`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ estado: 5 }),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ nuevoEstado: "Cancelado" }),
       });
+
       if (!response.ok) throw new Error("Error al cancelar");
       setPedidos((prev) => prev.filter((p) => p.id !== id));
-      alert("Reporte de incidencia cancelado correctamente");
+      alert("Reporte de incidencia cancelado correctamente.");
     } catch (error) {
       console.error(error);
       alert("Error al cancelar el reporte de incidencia");

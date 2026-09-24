@@ -1,287 +1,225 @@
 import { useEffect, useState } from "react";
 import {
   PlusCircle,
-  Package,
-  Wrench,
+  Tag,
+  Trash2,
+  CheckCircle,
 } from "lucide-react";
 
 import "../../styles/admin/GestionarMenu.css";
 import { API_BASE_URL } from "../../config/api";
 
-interface ServicioMunicipal {
+interface CategoriaIncidente {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
-  disponibilidad: number;
-  fecha: string;
-  disponible: boolean;
-}
-
-interface CategoriaIncidencia {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  categoria: string;
-  disponible: boolean;
+  totalReportes?: number;
 }
 
 export default function GestionarMenu() {
-  const [servicios, setServicios] = useState<ServicioMunicipal[]>([]);
-  const [categorias, setCategorias] = useState<CategoriaIncidencia[]>([]);
-
-  const [nombreServicio, setNombreServicio] = useState("");
-  const [descripcionServicio, setDescripcionServicio] = useState("");
-  const [cuposCuadrilla, setCuposCuadrilla] = useState("50");
-
+  const [categorias, setCategorias] = useState<CategoriaIncidente[]>([]);
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [descCategoria, setDescCategoria] = useState("");
-  const [rubroNombre, setRubroNombre] = useState("Vía Pública");
-
   const [cargando, setCargando] = useState(false);
+  const [creando, setCreando] = useState(false);
+
+  const token = localStorage.getItem("token") || "";
 
   useEffect(() => {
-    cargarServicios();
+    cargarCategorias();
   }, []);
 
-  const cargarServicios = async () => {
+  const cargarCategorias = async () => {
     try {
       setCargando(true);
-      const resServ = await fetch(`${API_BASE_URL}/api/Menu`);
-      if (resServ.ok) {
-        const data = await resServ.json();
-        setServicios(data);
-      }
-
-      const resCat = await fetch(`${API_BASE_URL}/api/Producto`);
-      if (resCat.ok) {
-        const data = await resCat.json();
+      const res = await fetch(`${API_BASE_URL}/api/Incidente`);
+      if (res.ok) {
+        const data = await res.json();
         setCategorias(data);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error al cargar categorías de incidentes:", err);
     } finally {
       setCargando(false);
     }
   };
 
-  const guardarServicio = async (e: React.FormEvent) => {
+  const handleCrearCategoria = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nombreServicio.trim() || !descripcionServicio.trim()) {
-      alert("Completá el nombre y la descripción del servicio municipal.");
+
+    if (!nombreCategoria.trim()) {
+      alert("Por favor ingrese el nombre del rubro / categoría.");
       return;
     }
 
     try {
-      const datos = {
-        nombre: nombreServicio,
-        descripcion: descripcionServicio,
-        precio: 0,
-        disponibilidad: Number(cuposCuadrilla) || 50,
-      };
-
-      await fetch(`${API_BASE_URL}/api/Menu`, {
+      setCreando(true);
+      const response = await fetch(`${API_BASE_URL}/api/Incidente`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          nombre: nombreCategoria.trim(),
+          descripcion: descCategoria.trim() || undefined,
+        }),
       });
 
-      setNombreServicio("");
-      setDescripcionServicio("");
-      cargarServicios();
-      alert("Servicio municipal registrado correctamente.");
-    } catch (err) {
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Error al crear la categoría.");
+      }
+
+      alert("¡Nueva categoría de incidencia registrada con éxito!");
+      setNombreCategoria("");
+      setDescCategoria("");
+      await cargarCategorias();
+    } catch (err: any) {
       console.error(err);
+      alert(err.message || "Error al registrar la categoría.");
+    } finally {
+      setCreando(false);
     }
   };
 
-  const guardarCategoria = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nombreCategoria.trim() || !descCategoria.trim()) {
-      alert("Completá el nombre y la descripción del tipo de incidencia.");
-      return;
-    }
+  const handleEliminarCategoria = async (id: number) => {
+    if (!confirm("¿Desea eliminar esta categoría de incidente?")) return;
 
     try {
-      const datos = {
-        nombre: nombreCategoria,
-        descripcion: descCategoria,
-        precio: 0,
-        categoria: rubroNombre,
-        disponible: true,
-      };
-
-      await fetch(`${API_BASE_URL}/api/Producto`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
+      const response = await fetch(`${API_BASE_URL}/api/Incidente/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      setNombreCategoria("");
-      setDescCategoria("");
-      cargarServicios();
-      alert("Tipo de incidencia registrado correctamente.");
-    } catch (err) {
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "No se pudo eliminar la categoría.");
+      }
+
+      alert("Categoría eliminada con éxito.");
+      await cargarCategorias();
+    } catch (err: any) {
       console.error(err);
+      alert(err.message || "Error al eliminar.");
     }
   };
 
   return (
-    <section className="menu-admin">
-      <header className="menu-header">
-        <span className="menu-tag">Panel Administrativo Morón</span>
-        <h1>Gestionar Servicios y Categorías Municipales</h1>
-        <p>
-          Configurá los rubros de incidentes (baches, alumbrado, higiene, semáforos, poda) y la capacidad de atención de las cuadrillas.
-        </p>
-      </header>
-
-      {/* SECCIÓN 1: SERVICIOS Y CUADRILLAS */}
-      <div className="menu-grid">
-        <section className="menu-card">
-          <div className="menu-card-title">
-            <PlusCircle size={28} />
-            <h2>Crear Servicio Municipal</h2>
-          </div>
-
-          <form className="menu-form" onSubmit={guardarServicio}>
-            <div className="menu-input">
-              <label>Nombre del Servicio</label>
-              <input
-                type="text"
-                value={nombreServicio}
-                onChange={(e) => setNombreServicio(e.target.value)}
-                placeholder="Ej: Inspección y Reparación de Baches"
-              />
-            </div>
-
-            <div className="menu-input">
-              <label>Descripción del Área / Alcance</label>
-              <textarea
-                value={descripcionServicio}
-                onChange={(e) => setDescripcionServicio(e.target.value)}
-                rows={3}
-                placeholder="Descripción del servicio y tareas a ejecutar..."
-              />
-            </div>
-
-            <div className="menu-input">
-              <label>Capacidad diaria de atención (Cuadrillas)</label>
-              <input
-                type="number"
-                value={cuposCuadrilla}
-                onChange={(e) => setCuposCuadrilla(e.target.value)}
-                placeholder="50"
-              />
-            </div>
-
-            <button type="submit" className="menu-button">
-              Guardar Servicio Municipal
-            </button>
-          </form>
-        </section>
-
-        <section className="menu-card">
-          <div className="menu-card-title">
-            <Wrench size={28} />
-            <h2>Servicios Activos Morón</h2>
-          </div>
-
-          <div className="menu-history">
-            {cargando ? (
-              <p>Cargando servicios...</p>
-            ) : servicios.length === 0 ? (
-              <p>No hay servicios cargados actualmente.</p>
-            ) : (
-              servicios.map((s: ServicioMunicipal) => (
-                <article className="history-item" key={s.id}>
-                  <div>
-                    <h4>{s.nombre}</h4>
-                    <p style={{ color: "#94a3b8", fontSize: "12px" }}>{s.descripcion}</p>
-                    <span style={{ color: "#38bdf8", fontSize: "12px" }}>
-                      Capacidad: {s.disponibilidad} solicitudes/día
-                    </span>
-                  </div>
-                </article>
-              ))
-            )}
-          </div>
-        </section>
+    <div className="gm-page">
+      <div className="gm-header">
+        <div>
+          <span className="gm-tag">MUNICIPALIDAD DE MORÓN · ADMINISTRACIÓN</span>
+          <h1 className="gm-title">Rubros y Categorías de Incidencias</h1>
+          <p className="gm-subtitle">
+            Gestione las tipologías de problemas urbanos disponibles para que los vecinos reporten (baches, alumbrado, poda, etc.).
+          </p>
+        </div>
       </div>
 
-      {/* SECCIÓN 2: TIPOS DE INCIDENCIA */}
-      <div className="menu-section-divider" style={{ marginTop: "32px" }}>
-        <h1>Gestión de Tipos de Incidencia</h1>
-      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "24px", marginTop: "24px" }}>
+        {/* FORMULARIO AGREGAR CATEGORÍA */}
+        <section style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "24px", height: "fit-content" }}>
+          <h3 style={{ margin: "0 0 16px", color: "#f8fafc", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <PlusCircle size={20} color="#38bdf8" /> Nueva Categoría
+          </h3>
 
-      <div className="menu-grid">
-        <section className="menu-card">
-          <div className="menu-card-title">
-            <Package size={28} />
-            <h2>Crear Tipo de Incidencia</h2>
-          </div>
-
-          <form className="menu-form" onSubmit={guardarCategoria}>
-            <div className="menu-input">
-              <label>Nombre del Sub-tipo</label>
+          <form onSubmit={handleCrearCategoria} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            <div>
+              <label style={{ display: "block", color: "#cbd5e1", fontSize: "13px", marginBottom: "6px" }}>Nombre del Rubro</label>
               <input
                 type="text"
+                placeholder="Ej: Semáforos y Señalización"
                 value={nombreCategoria}
                 onChange={(e) => setNombreCategoria(e.target.value)}
-                placeholder="Ej: Luminaria LED en cortocircuito"
+                style={{ width: "100%", background: "#1e293b", border: "1px solid #334155", color: "white", padding: "10px", borderRadius: "8px", fontSize: "14px" }}
               />
             </div>
 
-            <div className="menu-input">
-              <label>Rubro General</label>
-              <input
-                type="text"
-                value={rubroNombre}
-                onChange={(e) => setRubroNombre(e.target.value)}
-                placeholder="Ej: Alumbrado Público"
-              />
-            </div>
-
-            <div className="menu-input">
-              <label>Descripción de verificación</label>
+            <div>
+              <label style={{ display: "block", color: "#cbd5e1", fontSize: "13px", marginBottom: "6px" }}>Descripción / Cuadrilla encargada</label>
               <textarea
+                rows={3}
+                placeholder="Ej: Intervenciones de mantenimiento de red semafórica y cartelería vial..."
                 value={descCategoria}
                 onChange={(e) => setDescCategoria(e.target.value)}
-                rows={3}
-                placeholder="Instrucciones para el inspector municipal..."
+                style={{ width: "100%", background: "#1e293b", border: "1px solid #334155", color: "white", padding: "10px", borderRadius: "8px", fontSize: "14px" }}
               />
             </div>
 
-            <button type="submit" className="menu-button">
-              Guardar Tipo de Incidencia
+            <button
+              type="submit"
+              disabled={creando}
+              style={{
+                background: "#3b82f6",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px",
+                fontSize: "14px",
+                fontWeight: 600,
+                cursor: creando ? "wait" : "pointer",
+                marginTop: "8px",
+              }}
+            >
+              {creando ? "Guardando..." : "Guardar Categoría"}
             </button>
           </form>
         </section>
 
-        <section className="menu-card">
-          <div className="menu-card-title">
-            <Package size={28} />
-            <h2>Tipos Existentes</h2>
-          </div>
+        {/* LISTADO DE CATEGORÍAS */}
+        <section style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "24px" }}>
+          <h3 style={{ margin: "0 0 16px", color: "#f8fafc", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <Tag size={20} color="#22c55e" /> Categorías Habilitadas en el Sistema
+          </h3>
 
-          <div className="menu-history">
-            {categorias.length === 0 ? (
-              <p>No hay tipos de incidencia registrados.</p>
-            ) : (
-              categorias.map((c: CategoriaIncidencia) => (
-                <article className="history-item" key={c.id}>
+          {cargando ? (
+            <p style={{ color: "#94a3b8" }}>Cargando rubros...</p>
+          ) : categorias.length === 0 ? (
+            <p style={{ color: "#94a3b8" }}>No hay categorías registradas.</p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {categorias.map((cat) => (
+                <div
+                  key={cat.id}
+                  style={{
+                    background: "#1e293b",
+                    border: "1px solid #334155",
+                    borderRadius: "8px",
+                    padding: "14px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <div>
-                    <h4>{c.nombre}</h4>
-                    <span style={{ color: "#38bdf8", fontSize: "12px" }}>Rubro: {c.categoria}</span>
-                    <p style={{ color: "#94a3b8", fontSize: "12px" }}>{c.descripcion}</p>
+                    <h4 style={{ margin: 0, color: "#f8fafc", fontSize: "15px" }}>{cat.nombre}</h4>
+                    {cat.descripcion && (
+                      <p style={{ margin: "4px 0 0", color: "#94a3b8", fontSize: "13px" }}>{cat.descripcion}</p>
+                    )}
                   </div>
-                </article>
-              ))
-            )}
-          </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <span style={{ fontSize: "12px", background: "rgba(34, 197, 94, 0.15)", color: "#22c55e", padding: "4px 8px", borderRadius: "6px", display: "flex", alignItems: "center", gap: "4px" }}>
+                      <CheckCircle size={12} /> Habilitado
+                    </span>
+
+                    <button
+                      onClick={() => handleEliminarCategoria(cat.id)}
+                      title="Eliminar categoría"
+                      style={{ background: "#ef4444", border: "none", color: "white", padding: "6px 8px", borderRadius: "6px", cursor: "pointer" }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </div>
-    </section>
+    </div>
   );
 }

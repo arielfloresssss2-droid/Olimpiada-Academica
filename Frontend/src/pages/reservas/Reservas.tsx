@@ -2,6 +2,8 @@ import { useState } from "react";
 import "../../styles/reservas/Reservas.css";
 import MapaIncidente from "../../components/MapaIncidente";
 import Captcha from "../../components/Captcha";
+import ModalDuplicadoIA, { type ReporteSimilar } from "../../components/ModalDuplicadoIA";
+import { API_BASE_URL } from "../../config/api";
 
 interface ReservasProps {
   setActiveSection: (section: string) => void;
@@ -13,15 +15,16 @@ interface CategoriaIncidente {
   icono: string;
   descripcion: string;
   tiempoResolucion: string;
+  idIncidenteBd: number;
 }
 
 const categorias: CategoriaIncidente[] = [
-  { id: "bache", nombre: "Bache / Asfalto", icono: "🕳️", descripcion: "Pozo o rotura en la calzada", tiempoResolucion: "24-48 hs" },
-  { id: "luminaria", nombre: "Alumbrado Público", icono: "💡", descripcion: "Luminaria apagada o en corto", tiempoResolucion: "24-48 hs" },
-  { id: "basura", nombre: "Higiene / Basura", icono: "🗑️", descripcion: "Acumulación de residuos o microbasural", tiempoResolucion: "24 hs" },
-  { id: "semaforo", nombre: "Semáforo / Vial", icono: "🚦", descripcion: "Semáforo descompuesto o señal rota", tiempoResolucion: "12-24 hs" },
-  { id: "poda", nombre: "Poda / Arbolado", icono: "🌳", descripcion: "Ramas caídas o interferencia de cables", tiempoResolucion: "48-72 hs" },
-  { id: "agua", nombre: "Agua / Cloacas", icono: "💧", descripcion: "Pérdida de agua potable o desborde", tiempoResolucion: "24 hs" },
+  { id: "bache", idIncidenteBd: 1, nombre: "Bache / Asfalto", icono: "🕳️", descripcion: "Pozo o rotura en la calzada", tiempoResolucion: "24-48 hs" },
+  { id: "luminaria", idIncidenteBd: 2, nombre: "Alumbrado Público", icono: "💡", descripcion: "Luminaria apagada o en corto", tiempoResolucion: "24-48 hs" },
+  { id: "basura", idIncidenteBd: 3, nombre: "Higiene / Basura", icono: "🗑️", descripcion: "Acumulación de residuos o microbasural", tiempoResolucion: "24 hs" },
+  { id: "semaforo", idIncidenteBd: 4, nombre: "Semáforo / Vial", icono: "🚦", descripcion: "Semáforo descompuesto o señal rota", tiempoResolucion: "12-24 hs" },
+  { id: "poda", idIncidenteBd: 5, nombre: "Poda / Arbolado", icono: "🌳", descripcion: "Ramas caídas o interferencia de cables", tiempoResolucion: "48-72 hs" },
+  { id: "agua", idIncidenteBd: 6, nombre: "Agua / Cloacas", icono: "💧", descripcion: "Pérdida de agua potable o desborde", tiempoResolucion: "24 hs" },
 ];
 
 const barriosMoron = [
@@ -42,7 +45,14 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
   const [longitud, setLongitud] = useState<number>(-58.6214);
   const [fotoNombre, setFotoNombre] = useState<string>("");
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+  const [fotoArchivo, setFotoArchivo] = useState<File | null>(null);
   const [captchaVerified, setCaptchaVerified] = useState<boolean>(false);
+  const [enviando, setEnviando] = useState<boolean>(false);
+
+  // Estados para Moderación IA de Duplicados
+  const [modalAbierto, setModalAbierto] = useState<boolean>(false);
+  const [mensajeIA, setMensajeIA] = useState<string>("");
+  const [reportesSimilares, setReportesSimilares] = useState<ReporteSimilar[]>([]);
 
   const manejarUbicacionMapa = (lat: number, lng: number, dirTexto: string) => {
     setLatitud(lat);
@@ -53,6 +63,7 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
   const manejarFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setFotoArchivo(file);
       setFotoNombre(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -62,7 +73,7 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
     }
   };
 
-  const confirmarIncidencia = () => {
+  const enviarReporteApi = async (forzar: boolean = false) => {
     if (!titulo.trim() || !descripcion.trim()) {
       alert("Por favor completá el título y la descripción del incidente.");
       return;
@@ -74,30 +85,119 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
     }
 
     const usuarioRaw = localStorage.getItem("usuario");
-    if (!usuarioRaw) {
+    const token = localStorage.getItem("token");
+    if (!usuarioRaw || !token) {
       alert("Debés iniciar sesión para reportar un incidente.");
       return;
     }
 
     const catObj = categorias.find((c) => c.id === categoriaSeleccionada);
+    const idIncidente = catObj?.idIncidenteBd || 1;
 
-    const datosReporte = [
-      {
-        id: Date.now(),
-        nombre: `${catObj?.icono || "⚠️"} ${titulo}`,
-        descripcion: `${descripcion} | Barrio: ${barrioSeleccionado} | Ubicación: ${direccionManual || "Coordenadas seleccionadas"}`,
-        precio: 0,
-        tipo: "producto",
-        foto: fotoNombre || null,
-        lat: latitud,
-        lng: longitud,
-        barrio: barrioSeleccionado,
-        categoria: catObj?.nombre || "Incidencia general",
-      },
-    ];
+    setEnviando(true);
+    try {
+      const payload = {
+        titulo: titulo.trim(),
+        descripcion: `${descripcion.trim()} (Barrio: ${barrioSeleccionado})`,
+        idIncidente: idIncidente,
+        direccionTexto: direccionManual || `${barrioSeleccionado}, Morón`,
+        latitud: latitud,
+        longitud: longitud,
+        prioridad: "Media",
+        hora: new Date().toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" }),
+        forzarCreacion: forzar,
+      };
 
-    localStorage.setItem("carrito", JSON.stringify(datosReporte));
-    setActiveSection("confirmar-pedido");
+      const response = await fetch(`${API_BASE_URL}/api/Reportes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Error al enviar el reporte.");
+      }
+
+      const data = await response.json();
+
+      // =======================================================================
+      // MODERACIÓN CON IA: Detectó duplicado a <= 50 metros
+      // =======================================================================
+      if (data.esDuplicadoPotencial && !forzar) {
+        setMensajeIA(data.mensajeIA || "Se detectaron reportes en un radio de 50 metros.");
+        setReportesSimilares(data.reportesSimilares || []);
+        setModalAbierto(true);
+        setEnviando(false);
+        return;
+      }
+      // =======================================================================
+
+      // Si se adjuntó una foto de evidencia, subirla al reporte recién creado
+      if (fotoArchivo && data.id) {
+        const formData = new FormData();
+        formData.append("archivo", fotoArchivo);
+        try {
+          await fetch(`${API_BASE_URL}/api/Reportes/${data.id}/archivos`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+        } catch (fotoErr) {
+          console.warn("No se pudo adjuntar la fotografía al reporte:", fotoErr);
+        }
+      }
+
+      setModalAbierto(false);
+      alert(`¡Reporte #${data.id} creado con éxito! Ya fue asignado para inspección municipal.`);
+
+      // Limpiar formulario y redirigir a Mis Incidentes
+      setTitulo("");
+      setDescripcion("");
+      setFotoPreview(null);
+      setFotoArchivo(null);
+      setActiveSection("reservas");
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Ocurrió un error al procesar tu solicitud.");
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const apoyarReporteExistente = async (reporteId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Iniciá sesión para sumar tu apoyo.");
+      return;
+    }
+
+    setEnviando(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/Reportes/${reporteId}/apoyo`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Error al apoyar la incidencia.");
+
+      const data = await response.json();
+      setModalAbierto(false);
+      alert(`¡Excelente! Sumaste tu apoyo al reporte #${reporteId}. ${data.mensaje}`);
+      setActiveSection("inicio");
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Error al apoyar el incidente.");
+    } finally {
+      setEnviando(false);
+    }
   };
 
   const catActual = categorias.find((c) => c.id === categoriaSeleccionada);
@@ -158,7 +258,7 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
         </div>
 
         <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: 0, marginBottom: "16px" }}>
-          Marcá dónde está la incidencia en el mapa en vez de escribir la dirección a mano.
+          Marcá dónde está la incidencia en el mapa para activar la detección inteligente de proximidad.
         </p>
 
         <MapaIncidente
@@ -256,7 +356,7 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
         </div>
 
         {/* ADJUNTAR FOTO COMO EVIDENCIA */}
-        <div style={{ background: "#1e293b", padding: "16px", borderRadius: "8px", border: "1px stroke #334155" }}>
+        <div style={{ background: "#1e293b", padding: "16px", borderRadius: "8px", border: "1px solid #334155" }}>
           <label style={{ color: "#f8fafc", fontSize: "14px", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px", cursor: "pointer" }}>
             <span>📸 Adjuntar Foto como Evidencia</span>
           </label>
@@ -301,8 +401,8 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
 
         <button
           type="button"
-          onClick={confirmarIncidencia}
-          disabled={!captchaVerified}
+          onClick={() => enviarReporteApi(false)}
+          disabled={!captchaVerified || enviando}
           style={{
             background: captchaVerified ? "#ef4444" : "#64748b",
             color: "white",
@@ -311,14 +411,25 @@ export default function Reservar({ setActiveSection }: ReservasProps) {
             padding: "12px 24px",
             fontSize: "15px",
             fontWeight: 700,
-            cursor: captchaVerified ? "pointer" : "not-allowed",
+            cursor: captchaVerified && !enviando ? "pointer" : "not-allowed",
             boxShadow: captchaVerified ? "0 4px 14px rgba(239, 68, 68, 0.4)" : "none",
             transition: "all 0.2s ease",
           }}
         >
-          Enviar Reporte de Incidencia ➔
+          {enviando ? "Verificando con IA..." : "Enviar Reporte de Incidencia ➔"}
         </button>
       </div>
+
+      {/* MODAL INTELIGENTE DE MODERACIÓN CON IA (<= 50 METROS) */}
+      <ModalDuplicadoIA
+        isOpen={modalAbierto}
+        mensajeIA={mensajeIA}
+        reportesSimilares={reportesSimilares}
+        onApoyarExistente={apoyarReporteExistente}
+        onForzarCreacion={() => enviarReporteApi(true)}
+        onCancelar={() => setModalAbierto(false)}
+        cargando={enviando}
+      />
     </section>
   );
 }

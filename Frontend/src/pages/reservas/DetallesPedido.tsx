@@ -13,43 +13,54 @@ import { API_BASE_URL } from "../../config/api";
 import TimelineEstado from "../../components/TimelineEstado";
 import MapaIncidente from "../../components/MapaIncidente";
 
-interface ProductoDetalle {
-  nombre: string;
-  cantidad: number;
-  precioUnitario: number;
-}
-
-interface PedidoDetalle {
+interface ReporteDetalle {
   id: number;
-  nroOrden: number;
-  estado: string;
-  fechaPedido: string;
-  tiempoEstimado: string;
-  metodoPago: string | number;
-  valor: number;
+  idUser: number;
   titulo: string;
   descripcion?: string;
-  productos: ProductoDetalle[];
+  estado: string;
+  prioridad?: string;
+  hora?: string;
+  fechaCreacion: string;
+  apoyosCount?: number;
+  direccion?: {
+    id: number;
+    direccionTexto: string;
+    latitud?: number;
+    longitud?: number;
+  } | null;
+  usuario?: {
+    nombre: string;
+    apellido: string;
+    email: string;
+  } | null;
+  incidente?: {
+    nombre: string;
+  } | null;
 }
 
 export default function DetallesPedido() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const [pedido, setPedido] = useState<PedidoDetalle | null>(null);
+  const [reporte, setReporte] = useState<ReporteDetalle | null>(null);
   const [cargando, setCargando] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPedido = async () => {
+    const fetchReporte = async () => {
       try {
         setCargando(true);
-        const response = await fetch(`${API_BASE_URL}/api/Pedido/${id}`);
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_BASE_URL}/api/Reportes/${id}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
         if (!response.ok) {
           throw new Error("No se pudo cargar la información del incidente");
         }
         const data = await response.json();
-        setPedido(data);
+        setReporte(data);
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Error al obtener el incidente");
@@ -59,7 +70,7 @@ export default function DetallesPedido() {
     };
 
     if (id) {
-      fetchPedido();
+      fetchReporte();
     }
   }, [id]);
 
@@ -84,7 +95,7 @@ export default function DetallesPedido() {
     );
   }
 
-  if (error || !pedido) {
+  if (error || !reporte) {
     return (
       <section className="dp-section">
         <header className="dp-header">
@@ -105,7 +116,7 @@ export default function DetallesPedido() {
     );
   }
 
-  const fechaObj = pedido.fechaPedido ? new Date(pedido.fechaPedido) : null;
+  const fechaObj = reporte.fechaCreacion ? new Date(reporte.fechaCreacion) : null;
   const fechaValida = fechaObj && !isNaN(fechaObj.getTime());
 
   const fechaFormateada = fechaValida
@@ -116,19 +127,15 @@ export default function DetallesPedido() {
       })
     : "Reciente";
 
-  const horaFormateada = fechaValida
+  const horaFormateada = reporte.hora || (fechaValida
     ? fechaObj.toLocaleTimeString("es-AR", {
         hour: "2-digit",
         minute: "2-digit",
       }) + " hs"
-    : "Pendiente";
+    : "Pendiente");
 
-  const descripcionTexto =
-    pedido.descripcion ||
-    pedido.titulo ||
-    (pedido.productos && pedido.productos.length > 0
-      ? pedido.productos.map((p) => p.nombre).join(", ")
-      : "Reporte de incidencia urbana municipal");
+  const latNum = reporte.direccion?.latitud ? Number(reporte.direccion.latitud) : -34.6508;
+  const lngNum = reporte.direccion?.longitud ? Number(reporte.direccion.longitud) : -58.6214;
 
   return (
     <section className="dp-section">
@@ -144,17 +151,17 @@ export default function DetallesPedido() {
       </header>
 
       <div className="dp-card">
-        <h1 className="dp-orden">Ticket #{pedido.nroOrden || pedido.id}</h1>
+        <h1 className="dp-orden">Ticket #{reporte.id}</h1>
 
         {/* TIMELINE VISUAL DEL ESTADO */}
-        <TimelineEstado estadoActual={pedido.estado} />
+        <TimelineEstado estadoActual={reporte.estado} />
 
         <div className="dp-info">
           <div className="dp-info-item">
             <Hash size={24} />
             <div>
               <strong>Número de ticket</strong>
-              <span>#{pedido.nroOrden || pedido.id}</span>
+              <span>#{reporte.id}</span>
             </div>
           </div>
 
@@ -162,7 +169,7 @@ export default function DetallesPedido() {
             <Package size={24} />
             <div>
               <strong>Estado</strong>
-              <span>{pedido.estado}</span>
+              <span>{reporte.estado}</span>
             </div>
           </div>
 
@@ -185,8 +192,8 @@ export default function DetallesPedido() {
           <div className="dp-info-item">
             <Clock3 size={24} />
             <div>
-              <strong>Tiempo estimado</strong>
-              <span>{pedido.tiempoEstimado || "24-48 hs"}</span>
+              <strong>Prioridad</strong>
+              <span>{reporte.prioridad || "Media"}</span>
             </div>
           </div>
 
@@ -202,20 +209,29 @@ export default function DetallesPedido() {
         <div className="dp-separador"></div>
 
         <div className="dp-bloque">
-          <h4>Descripción y Detalles del Reporte</h4>
-          <p style={{ background: "#0f172a", padding: "14px", borderRadius: "8px", border: "1px solid #1e293b", color: "#f8fafc" }}>
-            {descripcionTexto}
+          <h4>Título e Incidencia</h4>
+          <p style={{ background: "#0f172a", padding: "14px", borderRadius: "8px", border: "1px solid #1e293b", color: "#f8fafc", fontWeight: 600 }}>
+            {reporte.titulo} {reporte.incidente?.nombre ? `(${reporte.incidente.nombre})` : ""}
           </p>
         </div>
+
+        {reporte.descripcion && (
+          <div className="dp-bloque" style={{ marginTop: "16px" }}>
+            <h4>Descripción del Reporte</h4>
+            <p style={{ background: "#0f172a", padding: "14px", borderRadius: "8px", border: "1px solid #1e293b", color: "#cbd5e1" }}>
+              {reporte.descripcion}
+            </p>
+          </div>
+        )}
 
         <div className="dp-separador"></div>
 
         {/* MAPA INTERACTIVO DE UBICACIÓN */}
         <div className="dp-bloque">
-          <h4>Ubicación Georreferenciada del Incidente</h4>
+          <h4>Ubicación Georreferenciada: {reporte.direccion?.direccionTexto || "Morón"}</h4>
           <MapaIncidente
-            latSeleccionada={-34.6508}
-            lngSeleccionada={-58.6214}
+            latSeleccionada={latNum}
+            lngSeleccionada={lngNum}
             readOnly={true}
             height="280px"
           />

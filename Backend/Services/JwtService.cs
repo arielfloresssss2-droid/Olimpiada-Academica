@@ -17,7 +17,8 @@ public class JwtService : IJwtService
 
     public string GenerateToken(Usuario usuario)
     {
-        var secretKey = _config["JwtSettings:Secret"] ?? "SuperSecretKeyForOlimpiadaAcademicaIncidentsManagementSystem2026!";
+        var secretKey = _config["JwtSettings:Secret"] 
+            ?? throw new InvalidOperationException("La clave secreta JwtSettings:Secret no está configurada en las variables de entorno ni en appsettings.");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
