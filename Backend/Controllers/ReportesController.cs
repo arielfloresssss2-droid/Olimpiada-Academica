@@ -47,31 +47,46 @@ public class ReportesController : ControllerBase
     }
 
     /// <summary>
-    /// Obtener todos los reportes de incidentes para el mapa y listados.
+    /// Obtener todos los reportes de incidentes para el mapa y listados con filtros opcionales.
     /// Permite acceso anónimo para visualización en mapa público municipal.
     /// </summary>
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetReportes()
+    public async Task<IActionResult> GetReportes([FromQuery] int? idEstado, [FromQuery] int? idIncidente)
     {
-        var reportes = await _context.Reportes
+        var query = _context.Reportes
             .Include(r => r.Usuario)
             .Include(r => r.Estado)
             .Include(r => r.Incidente)
             .Include(r => r.DireccionRef)
             .Include(r => r.FechaRef)
             .Include(r => r.Apoyos)
+            .Include(r => r.Respuestas)
+            .Include(r => r.Archivos)
             .Include(r => r.Historiales)
+            .AsQueryable();
+
+        if (idEstado.HasValue)
+            query = query.Where(r => r.IdEstado == idEstado.Value);
+
+        if (idIncidente.HasValue)
+            query = query.Where(r => r.IdIncidente == idIncidente.Value);
+
+        var reportes = await query
             .OrderByDescending(r => r.FechaCreacion)
             .Select(r => new
             {
                 r.Id,
                 r.IdUser,
                 Usuario = r.Usuario != null ? new { r.Usuario.Id, r.Usuario.Nombre, r.Usuario.Apellido, r.Usuario.Email } : null,
+                UsuarioNombre = r.Usuario != null ? $"{r.Usuario.Nombre} {r.Usuario.Apellido}".Trim() : string.Empty,
+                UsuarioEmail = r.Usuario != null ? r.Usuario.Email : string.Empty,
                 IdEstado = r.IdEstado,
                 Estado = r.Estado != null ? r.Estado.Nombre : "Pendiente",
+                EstadoNombre = r.Estado != null ? r.Estado.Nombre : "Pendiente",
                 IdIncidente = r.IdIncidente,
                 Incidente = r.Incidente != null ? new { r.Incidente.Id, r.Incidente.Nombre, r.Incidente.Descripcion } : null,
+                IncidenteNombre = r.Incidente != null ? r.Incidente.Nombre : string.Empty,
                 r.Titulo,
                 r.Descripcion,
                 r.Hora,
@@ -84,7 +99,14 @@ public class ReportesController : ControllerBase
                     r.DireccionRef.Latitud,
                     r.DireccionRef.Longitud
                 } : null,
+                DireccionTexto = r.DireccionRef != null ? r.DireccionRef.DireccionTexto : null,
+                Latitud = r.DireccionRef != null ? r.DireccionRef.Latitud : null,
+                Longitud = r.DireccionRef != null ? r.DireccionRef.Longitud : null,
+                FechaInicio = r.FechaRef != null ? r.FechaRef.FechaInicio : null,
+                FechaFin = r.FechaRef != null ? r.FechaRef.FechaFin : null,
                 ApoyosCount = r.Apoyos.Count,
+                TotalRespuestas = r.Respuestas.Count,
+                TotalArchivos = r.Archivos.Count,
                 UltimoHistorial = r.Historiales.OrderByDescending(h => h.Fecha).FirstOrDefault()
             })
             .ToListAsync();
@@ -162,10 +184,14 @@ public class ReportesController : ControllerBase
             reporte.Id,
             reporte.IdUser,
             Usuario = reporte.Usuario != null ? new { reporte.Usuario.Id, reporte.Usuario.Nombre, reporte.Usuario.Apellido, reporte.Usuario.Email } : null,
+            UsuarioNombre = reporte.Usuario != null ? $"{reporte.Usuario.Nombre} {reporte.Usuario.Apellido}".Trim() : string.Empty,
+            UsuarioEmail = reporte.Usuario != null ? reporte.Usuario.Email : string.Empty,
             IdEstado = reporte.IdEstado,
             Estado = reporte.Estado != null ? reporte.Estado.Nombre : "Pendiente",
+            EstadoNombre = reporte.Estado != null ? reporte.Estado.Nombre : "Pendiente",
             IdIncidente = reporte.IdIncidente,
             Incidente = reporte.Incidente != null ? new { reporte.Incidente.Id, reporte.Incidente.Nombre, reporte.Incidente.Descripcion } : null,
+            IncidenteNombre = reporte.Incidente != null ? reporte.Incidente.Nombre : string.Empty,
             reporte.Titulo,
             reporte.Descripcion,
             reporte.Hora,
@@ -178,12 +204,20 @@ public class ReportesController : ControllerBase
                 reporte.DireccionRef.Latitud,
                 reporte.DireccionRef.Longitud
             } : null,
+            DireccionTexto = reporte.DireccionRef?.DireccionTexto,
+            Latitud = reporte.DireccionRef?.Latitud,
+            Longitud = reporte.DireccionRef?.Longitud,
+            FechaInicio = reporte.FechaRef?.FechaInicio,
+            FechaFin = reporte.FechaRef?.FechaFin,
             ApoyosCount = reporte.Apoyos.Count,
+            TotalRespuestas = reporte.Respuestas.Count,
+            TotalArchivos = reporte.Archivos.Count,
             Respuestas = reporte.Respuestas.OrderBy(resp => resp.Fecha).Select(resp => new
             {
                 resp.Id,
                 resp.IdUser,
-                Usuario = resp.Usuario != null ? $"{resp.Usuario.Nombre} {resp.Usuario.Apellido}" : "Usuario",
+                Usuario = resp.Usuario != null ? $"{resp.Usuario.Nombre} {resp.Usuario.Apellido}".Trim() : "Usuario",
+                UsuarioNombre = resp.Usuario != null ? $"{resp.Usuario.Nombre} {resp.Usuario.Apellido}".Trim() : "Usuario",
                 resp.Comentario,
                 resp.Fecha
             }),
@@ -195,14 +229,27 @@ public class ReportesController : ControllerBase
                 a.NombreOriginal,
                 a.FechaSubida
             }),
+            Historial = reporte.Historiales.OrderByDescending(h => h.Fecha).Select(h => new
+            {
+                h.Id,
+                h.IdReporte,
+                h.IdUser,
+                Usuario = h.Usuario != null ? $"{h.Usuario.Nombre} {h.Usuario.Apellido} ({h.Usuario.Rol})".Trim() : "Sistema",
+                UsuarioNombre = h.Usuario != null ? $"{h.Usuario.Nombre} {h.Usuario.Apellido}".Trim() : null,
+                h.EstadoAnterior,
+                h.EstadoNuevo,
+                h.Fecha
+            }),
             Historiales = reporte.Historiales.OrderByDescending(h => h.Fecha).Select(h => new
             {
                 h.Id,
                 h.IdReporte,
+                h.IdUser,
+                Usuario = h.Usuario != null ? $"{h.Usuario.Nombre} {h.Usuario.Apellido} ({h.Usuario.Rol})".Trim() : "Sistema",
+                UsuarioNombre = h.Usuario != null ? $"{h.Usuario.Nombre} {h.Usuario.Apellido}".Trim() : null,
                 h.EstadoAnterior,
                 h.EstadoNuevo,
-                h.Fecha,
-                Usuario = h.Usuario != null ? $"{h.Usuario.Nombre} {h.Usuario.Apellido} ({h.Usuario.Rol})" : "Sistema"
+                h.Fecha
             })
         });
     }
@@ -214,9 +261,13 @@ public class ReportesController : ControllerBase
     public async Task<IActionResult> GetReportesByUsuario(int idUsuario)
     {
         var reportes = await _context.Reportes
+            .Include(r => r.Usuario)
             .Include(r => r.Estado)
             .Include(r => r.Incidente)
             .Include(r => r.DireccionRef)
+            .Include(r => r.FechaRef)
+            .Include(r => r.Respuestas)
+            .Include(r => r.Archivos)
             .Include(r => r.Apoyos)
             .Where(r => r.IdUser == idUsuario)
             .OrderByDescending(r => r.FechaCreacion)
@@ -225,9 +276,15 @@ public class ReportesController : ControllerBase
                 r.Id,
                 nroOrden = r.Id,
                 r.IdUser,
+                UsuarioNombre = r.Usuario != null ? $"{r.Usuario.Nombre} {r.Usuario.Apellido}".Trim() : string.Empty,
+                UsuarioEmail = r.Usuario != null ? r.Usuario.Email : string.Empty,
+                IdEstado = r.IdEstado,
                 Estado = r.Estado != null ? r.Estado.Nombre : "Pendiente",
                 estado = r.Estado != null ? r.Estado.Nombre : "Pendiente",
+                EstadoNombre = r.Estado != null ? r.Estado.Nombre : "Pendiente",
+                IdIncidente = r.IdIncidente,
                 Incidente = r.Incidente != null ? r.Incidente.Nombre : "Incidente",
+                IncidenteNombre = r.Incidente != null ? r.Incidente.Nombre : "Incidente",
                 r.Titulo,
                 titulo = r.Titulo,
                 r.Descripcion,
@@ -241,8 +298,15 @@ public class ReportesController : ControllerBase
                 fechaReporte = r.FechaCreacion,
                 tiempoEstimado = "24-48 hs",
                 Direccion = r.DireccionRef != null ? r.DireccionRef.DireccionTexto : "",
+                DireccionTexto = r.DireccionRef != null ? r.DireccionRef.DireccionTexto : null,
+                Latitud = r.DireccionRef != null ? r.DireccionRef.Latitud : null,
+                Longitud = r.DireccionRef != null ? r.DireccionRef.Longitud : null,
+                FechaInicio = r.FechaRef != null ? r.FechaRef.FechaInicio : null,
+                FechaFin = r.FechaRef != null ? r.FechaRef.FechaFin : null,
                 ApoyosCount = r.Apoyos.Count,
-                apoyos = r.Apoyos.Count
+                apoyos = r.Apoyos.Count,
+                TotalRespuestas = r.Respuestas.Count,
+                TotalArchivos = r.Archivos.Count
             })
             .ToListAsync();
 
@@ -250,7 +314,7 @@ public class ReportesController : ControllerBase
     }
 
     /// <summary>
-    /// Crear un reporte nuevo de incidente ciudadano con MODERACIÓN DE IA POR PROXIMIDAD GEOESPACIAL (50m).
+    /// Registrar un nuevo reporte de incidente ciudadano con moderación de IA geoespacial (50m).
     /// </summary>
     [HttpPost]
     public async Task<IActionResult> CrearReporte([FromBody] CrearReporteDto dto)
@@ -258,12 +322,20 @@ public class ReportesController : ControllerBase
         if (string.IsNullOrWhiteSpace(dto.Titulo))
             return BadRequest("El título del incidente es obligatorio.");
 
-        // Obtener usuario autenticado desde Claims
-        var claimId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(claimId, out int userId) || userId <= 0)
+        // Obtener usuario autenticado desde Claims o request
+        int userId = 0;
+        if (dto.IdUser.HasValue && dto.IdUser.Value > 0)
         {
-            var primerUsuario = await _context.Usuarios.FirstOrDefaultAsync();
-            userId = primerUsuario?.Id ?? 1;
+            userId = dto.IdUser.Value;
+        }
+        else
+        {
+            var claimId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(claimId, out userId) || userId <= 0)
+            {
+                var primerUsuario = await _context.Usuarios.FirstOrDefaultAsync();
+                userId = primerUsuario?.Id ?? 1;
+            }
         }
 
         // =========================================================================
@@ -303,7 +375,9 @@ public class ReportesController : ControllerBase
         {
             var direccion = new Direccion
             {
-                DireccionTexto = string.IsNullOrWhiteSpace(dto.DireccionTexto) ? "Morón, Buenos Aires" : dto.DireccionTexto.Trim(),
+                DireccionTexto = !string.IsNullOrWhiteSpace(dto.DireccionTexto)
+                    ? dto.DireccionTexto.Trim()
+                    : $"Lat: {dto.Latitud}, Lng: {dto.Longitud}",
                 Latitud = dto.Latitud,
                 Longitud = dto.Longitud
             };
@@ -313,7 +387,8 @@ public class ReportesController : ControllerBase
         }
 
         // 2. Resolver Estado inicial "Pendiente"
-        var estadoPendiente = await _context.Estados.FirstOrDefaultAsync(e => e.Nombre.ToLower() == "pendiente");
+        var estadoPendiente = await _context.Estados.FirstOrDefaultAsync(e => e.Nombre.ToLower() == "pendiente")
+            ?? await _context.Estados.FirstOrDefaultAsync();
         if (estadoPendiente == null)
         {
             estadoPendiente = new Estado { Nombre = "Pendiente" };
@@ -336,14 +411,18 @@ public class ReportesController : ControllerBase
         }
 
         // 4. Crear Fecha si aplica
-        var fechaEntity = new Fecha
+        int? idFecha = null;
+        if (dto.FechaInicio.HasValue || dto.FechaFin.HasValue)
         {
-            FechaInicio = DateOnly.FromDateTime(dto.FechaInicio ?? DateTime.UtcNow),
-            FechaFin = null
-        };
-        _context.Fechas.Add(fechaEntity);
-        await _context.SaveChangesAsync();
-        int? idFecha = fechaEntity.Id;
+            var fechaEntity = new Fecha
+            {
+                FechaInicio = dto.FechaInicio ?? DateOnly.FromDateTime(DateTime.UtcNow),
+                FechaFin = dto.FechaFin
+            };
+            _context.Fechas.Add(fechaEntity);
+            await _context.SaveChangesAsync();
+            idFecha = fechaEntity.Id;
+        }
 
         // 5. Crear Reporte
         var nuevoReporte = new Reporte
@@ -355,8 +434,8 @@ public class ReportesController : ControllerBase
             IdFecha = idFecha,
             Titulo = dto.Titulo.Trim(),
             Descripcion = dto.Descripcion?.Trim(),
-            Hora = string.IsNullOrWhiteSpace(dto.Hora) ? DateTime.Now.ToString("HH:mm") : dto.Hora,
-            Prioridad = string.IsNullOrWhiteSpace(dto.Prioridad) ? "Media" : dto.Prioridad,
+            Hora = string.IsNullOrWhiteSpace(dto.Hora) ? DateTime.Now.ToString("HH:mm") : dto.Hora.Trim(),
+            Prioridad = string.IsNullOrWhiteSpace(dto.Prioridad) ? "Media" : dto.Prioridad.Trim(),
             FechaCreacion = DateTime.UtcNow
         };
 
@@ -377,7 +456,7 @@ public class ReportesController : ControllerBase
 
         return CreatedAtAction(nameof(GetReporte), new { id = nuevoReporte.Id }, new
         {
-            nuevoReporte.Id,
+            id = nuevoReporte.Id,
             nroOrden = nuevoReporte.Id,
             nuevoReporte.Titulo,
             nuevoReporte.Descripcion,
@@ -390,8 +469,8 @@ public class ReportesController : ControllerBase
     }
 
     /// <summary>
-    /// Cambiar el estado de un reporte con registro inmutable en HistorialEstado y NOTIFICACIÓN POR EMAIL AL CIUDADANO.
-    /// Accesible para administradores y empleados municipales.
+    /// Cambiar el estado de un reporte por nombre con trazabilidad y notificación por email.
+    /// Usado por la interfaz administrativa web.
     /// </summary>
     [HttpPut("{id}/estado")]
     public async Task<IActionResult> ActualizarEstado(int id, [FromBody] ActualizarEstadoDto dto)
@@ -443,9 +522,7 @@ public class ReportesController : ControllerBase
             await _context.SaveChangesAsync();
             await trans.CommitAsync();
 
-            // =========================================================================
-            // REQUISITO: NOTIFICACIÓN POR EMAIL DE CUANDO CAMBIA EL REPORTE PROPIO
-            // =========================================================================
+            // Notificación por correo al ciudadano si tiene email registrado
             if (reporte.Usuario != null && !string.IsNullOrWhiteSpace(reporte.Usuario.Email))
             {
                 _ = _emailService.EnviarNotificacionCambioEstado(
@@ -457,7 +534,6 @@ public class ReportesController : ControllerBase
                     targetEstado.Nombre
                 );
             }
-            // =========================================================================
 
             return Ok(new
             {
@@ -476,8 +552,71 @@ public class ReportesController : ControllerBase
     }
 
     /// <summary>
+    /// Cambiar el estado de un reporte mediante ID de estado y registrar en historial.
+    /// </summary>
+    [HttpPatch("{id}/estado")]
+    public async Task<IActionResult> CambiarEstado(int id, [FromBody] CambiarEstadoDto request)
+    {
+        var reporte = await _context.Reportes
+            .Include(r => r.Estado)
+            .Include(r => r.Usuario)
+            .FirstOrDefaultAsync(r => r.Id == id);
+
+        if (reporte == null)
+        {
+            return NotFound("Reporte no encontrado.");
+        }
+
+        var nuevoEstado = await _context.Estados.FindAsync(request.NuevoIdEstado);
+        if (nuevoEstado == null)
+        {
+            return BadRequest("El nuevo estado especificado no existe.");
+        }
+
+        var usuarioExiste = await _context.Usuarios.AnyAsync(u => u.Id == request.IdUser);
+        if (!usuarioExiste)
+        {
+            return BadRequest("Usuario no encontrado.");
+        }
+
+        var estadoAnterior = reporte.Estado?.Nombre ?? "Desconocido";
+        reporte.IdEstado = request.NuevoIdEstado;
+
+        var historial = new HistorialEstado
+        {
+            IdReporte = id,
+            IdUser = request.IdUser,
+            EstadoAnterior = estadoAnterior,
+            EstadoNuevo = nuevoEstado.Nombre,
+            Fecha = DateTime.UtcNow
+        };
+
+        _context.HistorialesEstados.Add(historial);
+        await _context.SaveChangesAsync();
+
+        if (reporte.Usuario != null && !string.IsNullOrWhiteSpace(reporte.Usuario.Email))
+        {
+            _ = _emailService.EnviarNotificacionCambioEstado(
+                reporte.Usuario.Email,
+                $"{reporte.Usuario.Nombre} {reporte.Usuario.Apellido}".Trim(),
+                reporte.Id,
+                reporte.Titulo,
+                estadoAnterior,
+                nuevoEstado.Nombre
+            );
+        }
+
+        return Ok(new
+        {
+            mensaje = "Estado actualizado con éxito.",
+            estadoAnterior,
+            estadoNuevo = nuevoEstado.Nombre
+        });
+    }
+
+    /// <summary>
     /// Registrar o alternar un voto de apoyo ciudadano a una incidencia ("Esto también me afecta").
-    /// REQUISITO: SI SUPERA UMBRALES DE APOYOS, ESCALA LA PRIORIDAD AUTOMÁTICAMENTE A MEDIA O ALTA.
+    /// Escala automáticamente la prioridad del reclamo según el volumen de apoyos.
     /// </summary>
     [HttpPost("{id}/apoyo")]
     public async Task<IActionResult> AlternarApoyo(int id)
@@ -515,11 +654,6 @@ public class ReportesController : ControllerBase
 
         var totalApoyos = await _context.ApoyosReportes.CountAsync(a => a.IdReporte == id);
 
-        // =========================================================================
-        // REQUISITO: ESCALADO DE PRIORIDAD POR CONTADOR DE APOYOS
-        // Si hay muchos apoyos (>= 10) -> Prioridad Alta
-        // Si hay apoyos medios (>= 5) y estaba en Baja -> Prioridad Media
-        // =========================================================================
         string prioridadOriginal = reporte.Prioridad ?? "Baja";
         string nuevaPrioridad = prioridadOriginal;
 
@@ -535,7 +669,6 @@ public class ReportesController : ControllerBase
             nuevaPrioridad = "Media";
             await _context.SaveChangesAsync();
         }
-        // =========================================================================
 
         return Ok(new
         {
@@ -551,46 +684,63 @@ public class ReportesController : ControllerBase
     }
 
     /// <summary>
-    /// Agregar un comentario o respuesta de seguimiento a un reporte.
+    /// Agregar una respuesta o comentario de seguimiento a un reporte.
     /// </summary>
     [HttpPost("{id}/respuestas")]
-    public async Task<IActionResult> AgregarRespuesta(int id, [FromBody] CrearRespuestaDto dto)
+    public async Task<IActionResult> AgregarRespuesta(int id, [FromBody] CrearRespuestaDto request)
     {
-        if (string.IsNullOrWhiteSpace(dto.Comentario))
-            return BadRequest("El comentario no puede estar vacío.");
-
-        var existe = await _context.Reportes.AnyAsync(r => r.Id == id);
-        if (!existe)
-            return NotFound("Reporte no encontrado.");
-
-        var claimId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int.TryParse(claimId, out int userId);
-        if (userId <= 0)
+        if (string.IsNullOrWhiteSpace(request.Comentario))
         {
-            var u = await _context.Usuarios.FirstOrDefaultAsync();
-            userId = u?.Id ?? 1;
+            return BadRequest("El comentario no puede estar vacío.");
+        }
+
+        var reporteExiste = await _context.Reportes.AnyAsync(r => r.Id == id);
+        if (!reporteExiste)
+        {
+            return NotFound("Reporte no encontrado.");
+        }
+
+        int userId = 0;
+        if (request.IdUser.HasValue && request.IdUser.Value > 0)
+        {
+            userId = request.IdUser.Value;
+        }
+        else
+        {
+            var claimId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(claimId, out userId) || userId <= 0)
+            {
+                var u = await _context.Usuarios.FirstOrDefaultAsync();
+                userId = u?.Id ?? 1;
+            }
+        }
+
+        var usuario = await _context.Usuarios.FindAsync(userId);
+        if (usuario == null)
+        {
+            return BadRequest("Usuario no encontrado.");
         }
 
         var respuesta = new Respuesta
         {
             IdReporte = id,
             IdUser = userId,
-            Comentario = dto.Comentario.Trim(),
+            Comentario = request.Comentario.Trim(),
             Fecha = DateTime.UtcNow
         };
 
         _context.Respuestas.Add(respuesta);
         await _context.SaveChangesAsync();
 
-        var usuario = await _context.Usuarios.FindAsync(userId);
-
         return Ok(new
         {
             respuesta.Id,
             respuesta.IdReporte,
+            IdUser = respuesta.IdUser,
+            UsuarioNombre = $"{usuario.Nombre} {usuario.Apellido}".Trim(),
+            Usuario = $"{usuario.Nombre} {usuario.Apellido}".Trim(),
             respuesta.Comentario,
-            respuesta.Fecha,
-            Usuario = usuario != null ? $"{usuario.Nombre} {usuario.Apellido}" : "Usuario"
+            respuesta.Fecha
         });
     }
 
@@ -744,5 +894,42 @@ public class ReportesController : ControllerBase
             .ToListAsync();
 
         return Ok(logs);
+    }
+
+    /// <summary>
+    /// Catálogo de estados disponibles.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("estados")]
+    public async Task<IActionResult> GetEstados()
+    {
+        var estados = await _context.Estados
+            .Select(e => new CatalogoDto
+            {
+                Id = e.Id,
+                Nombre = e.Nombre
+            })
+            .ToListAsync();
+
+        return Ok(estados);
+    }
+
+    /// <summary>
+    /// Catálogo de tipos de incidentes disponibles.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("incidentes")]
+    public async Task<IActionResult> GetIncidentes()
+    {
+        var incidentes = await _context.Incidentes
+            .Select(i => new CatalogoDto
+            {
+                Id = i.Id,
+                Nombre = i.Nombre,
+                Descripcion = i.Descripcion
+            })
+            .ToListAsync();
+
+        return Ok(incidentes);
     }
 }
