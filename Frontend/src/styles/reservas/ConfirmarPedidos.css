@@ -2,7 +2,7 @@
 
 .cp-section {
   @apply min-h-screen p-6 flex flex-col gap-6;
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #cdd7e3;
 
   width: 100%;
   box-sizing: border-box;
@@ -15,17 +15,19 @@
 
 .cp-header h2 {
   @apply text-3xl font-bold;
-  color: white;
+  color: #0f172a;
 }
 
 .cp-header p {
   @apply text-base;
-  color: #aeb8d4;
+  color: #334155;
 }
 
 .cp-card {
   @apply rounded-3xl p-8 flex flex-col gap-7;
-  background: #f0f2f8;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 
   width: 100%;
   box-sizing: border-box;
@@ -33,7 +35,7 @@
 
 .cp-card h3 {
   @apply text-2xl font-bold;
-  color: #1a1f36;
+  color: #0f172a;
 }
 
 .cp-metodos {
@@ -45,8 +47,8 @@
 .cp-metodo {
   @apply rounded-2xl p-6 flex flex-col items-center justify-center;
 
-  background: white;
-  border: 2px solid transparent;
+  background: #d8e2ed;
+  border: 2px solid #93a4b8;
   min-height: 170px;
 
   cursor: pointer;
@@ -59,12 +61,13 @@
 .cp-metodo:hover {
   @apply -translate-y-1;
 
-  box-shadow: 0 8px 20px rgba(26, 31, 54, 0.12);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+  border-color: #b91c1c;
 }
 
 .cp-metodo.seleccionado {
-  border-color: #c0392b;
-  background: #fff8f7;
+  border-color: #b91c1c;
+  background: #fee2e2;
 }
 
 .cp-metodo-icono {
@@ -74,7 +77,7 @@
 .cp-metodo h4 {
   @apply text-xl font-bold;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   text-align: center;
   overflow-wrap: break-word;
@@ -83,7 +86,7 @@
 .cp-metodo p {
   @apply text-sm mt-2;
 
-  color: #5a6490;
+  color: #334155;
 
   text-align: center;
   overflow-wrap: break-word;
@@ -92,7 +95,7 @@
 .cp-continuar {
   @apply w-full rounded-2xl p-4 text-lg font-bold;
 
-  background: #c0392b;
+  background: #b91c1c;
   color: white;
 
   cursor: pointer;
@@ -102,19 +105,20 @@
 }
 
 .cp-continuar:hover {
-  background: #a93226;
+  background: #991b1b;
 }
 
 .cp-continuar:disabled {
-  background: #b8bdcc;
+  background: #94a3b8;
+  color: #e2e8f0;
   cursor: not-allowed;
 }
 
 .cp-resumen {
   @apply flex justify-between items-center p-4 rounded-xl;
 
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
 
   width: 100%;
   box-sizing: border-box;
@@ -125,7 +129,7 @@
 .cp-resumen p {
   @apply text-base;
 
-  color: #1a1f36;
+  color: #0f172a;
 
   overflow-wrap: break-word;
 }
@@ -133,7 +137,7 @@
 .cp-total {
   @apply text-xl font-bold;
 
-  color: #c0392b;
+  color: #b91c1c;
 
   white-space: nowrap;
 }
@@ -141,7 +145,7 @@
 .cp-volver {
   @apply w-full text-center text-sm font-semibold py-2;
 
-  color: #5a6490;
+  color: #475569;
 
   cursor: pointer;
   background: transparent;
@@ -153,7 +157,7 @@
 }
 
 .cp-volver:hover {
-  color: #1a1f36;
+  color: #0f172a;
   text-decoration: underline;
 }
 

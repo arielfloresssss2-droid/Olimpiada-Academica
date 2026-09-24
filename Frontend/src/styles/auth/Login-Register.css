@@ -1,25 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+
+/* ================= GENERAL ================= */
+
 .login-page {
-  @apply min-h-screen flex flex-col items-center justify-center;
+  @apply min-h-screen flex flex-row;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #ffffff;
+  overflow: hidden;
+  font-family: "Fredoka", sans-serif;
+}
 
-  padding: 20px;
+/* ================= HERO ================= */
+
+.login-hero {
+  position: relative;
+  width: 50%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(160deg, #991b1b 0%, #b91c1c 50%, #dc2626 100%);
+}
+
+.login-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.login-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(15, 23, 42, 0.72) 0%,
+    rgba(15, 23, 42, 0.2) 50%,
+    rgba(15, 23, 42, 0.1) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
   box-sizing: border-box;
 }
 
-.login-card {
-  @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
+.login-hero-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
 
-  background: #f0f2f8;
-  max-width: 100%;
+.login-hero-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  filter: brightness(0) invert(1);
+}
+
+.login-hero-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.2;
+  font-family: "Fredoka", sans-serif;
+}
+
+.login-hero-city {
+  font-size: 32px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  font-family: "Fredoka", sans-serif;
+}
+
+/* ================= PANEL ================= */
+
+
+.login-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 680px; 
+  padding: 24px 16px;
+  box-sizing: border-box;
+  z-index: 1;
+  min-height: auto;
+  background: transparent;
+}
+
+.login-bottom-note {
+  @apply mt-4 text-xs text-center;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+
+  background: linear-gradient(160deg, #b91c1c 0%, #991b1b 100%);
+  border: 1.5px solid #7f1414;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 }
 
 .login-accent-bar {
-  @apply h-2 w-full;
-
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 50%, #c0392b 100%);
+  height: 6px;
+  width: 100%;
+  background: #b91c1c;
 }
 
 .login-body {
@@ -27,26 +128,31 @@
 }
 
 .login-logo {
-  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center;
-  width: 200%;
-  height: 200%;
+  @apply mb-4 flex items-center justify-center;
+
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
+  color: #ffffff;
 }
 
 .login-logo img {
   @apply w-20 h-20 object-contain;
+  color: #ffffff;
 }
 
 .login-school-name {
-  @apply text-xl font-bold text-center;
-
-  color: #1a1f36;
+  @apply text-xl text-center;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .login-school-city {
-  @apply text-xs font-semibold tracking-widest mb-5;
-
-  color: #7b8ab8;
+  @apply text-xs tracking-widest mb-5;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
 }
 
 .login-divider {
@@ -55,22 +161,21 @@
 
 .login-divider-line {
   @apply flex-1 h-px;
-
-  background: #c8cde0;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .login-title {
-  @apply text-2xl font-bold mb-1 tracking-tight;
-
+  @apply text-2xl mb-1 tracking-tight;
   text-align: center;
-  color: #c0392b;
-  font-family: "Georgia", serif;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .login-subtitle {
   @apply text-sm mb-6;
-
-  color: #7b8ab8;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
 }
 
 .login-form {
@@ -79,137 +184,149 @@
 
 .login-field {
   @apply flex flex-col gap-1;
-
   min-width: 0;
 }
 
 .login-label {
-  @apply text-xs font-bold tracking-widest;
-
-  color: #7b8ab8;
+  @apply text-xs tracking-widest;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .iconos {
   filter: brightness(0);
 }
 
+/* ================= INPUTS ================= */
+
 .login-input-wrapper {
   @apply flex items-center gap-2 rounded-xl px-4 py-3 transition-all duration-200;
-
-  background: #fff;
-  border: 1.5px solid #c8cde0;
-  color: #ff5722;
-
+  background: #ffffff;
+  border: 1.5px solid #93a4b8;
+  color: #0f172a;
   min-width: 0;
 }
 
 .login-input-wrapper:focus-within {
-  border-color: #f87171;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
 }
 
 .login-input-icon {
   @apply text-base;
-
-  color: #7b8ab8;
+  color: #475569;
   flex-shrink: 0;
 }
 
 .login-input {
   @apply flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400;
-
-  color: #1a1f36;
+  color: #0f172a;
   min-width: 0;
+  font-family: "Fredoka", sans-serif;
 }
 
 .login-row {
   @apply flex items-center justify-between;
-
   gap: 12px;
 }
 
 .login-remember {
   @apply flex items-center gap-2 cursor-pointer select-none;
-
   min-width: 0;
 }
 
 .login-remember input {
   @apply accent-red-600 w-4 h-4 cursor-pointer;
-
   flex-shrink: 0;
 }
 
 .login-remember-text {
   @apply text-sm;
-
-  color: black;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
 }
 
 .login-forgot {
   @apply text-sm font-semibold transition-colors hover:underline;
-
-  color: #c0392b;
+  color: #ffffff;
   white-space: nowrap;
+  font-family: "Fredoka", sans-serif;
 }
+
+.login-forgot:hover {
+  color: #f5d0d0;
+}
+
+/* ================= PASSWORD ================= */
 
 .login-eye-btn {
   @apply text-base transition-opacity hover:opacity-70;
-
   filter: brightness(0);
   flex-shrink: 0;
 }
 
 .login-eye-btn img {
   @apply w-5 h-5 cursor-pointer transition-opacity hover:opacity-70;
-
   filter: brightness(0.3);
 }
 
+/* ================= BOTÓN LOGIN ================= */
+
 .login-submit-btn {
-  @apply mt-2 w-full py-3 rounded-xl font-bold text-white text-base shadow-md transition-all duration-200 active:scale-[0.98];
-
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
-
-  letter-spacing: 0.03em;
+  @apply mt-2 w-full py-3 rounded-xl text-base shadow-md transition-transform duration-200 active:scale-[0.98];
+  background: #ffffff;
+  color: #b91c1c;
+  letter-spacing: 0.02em;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .login-submit-btn:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  transform: scale(1.03);
 }
 
 .login-submit-btn:disabled {
   @apply opacity-60 cursor-not-allowed active:scale-100;
 }
 
+/* ================= AYUDA / FOOTER ================= */
+
 .login-help-text {
   @apply text-sm text-center mt-1;
-
-  color: #7b8ab8;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
 }
 
-.login-help-link {
+.login-help-link,
+.login-help-link:link,
+.login-help-link:visited,
+.login-help-link:hover,
+.login-help-link:active {
   @apply font-semibold hover:underline;
-
-  color: #2d3561;
+  color: #ffffff;
 }
 
 .login-footer {
   @apply flex items-center justify-center gap-2 py-3 text-xs;
-
-  background: #e2e5f0;
-  color: #9aa0bb;
+  background: #7f1414;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
 }
 
 .login-bottom-note {
   @apply mt-4 text-xs;
-
-  color: #5a6490;
+  color: #475569;
+  font-family: "Fredoka", sans-serif;
 }
 
-.register-logo {
-  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 border-white overflow-hidden;
+/* ================= REGISTER ================= */
 
-  background: #fff;
+.register-logo {
+  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 overflow-hidden;
+  background: #ffffff;
+  border-color: #8496ad;
 }
 
 .register-logo img {
@@ -218,7 +335,6 @@
 
 .register-name-row {
   @apply flex gap-3;
-
   width: 100%;
 }
 
@@ -232,40 +348,48 @@
 
 .register-select {
   @apply flex-1 text-sm outline-none cursor-pointer;
-
-  color: #1a1f36;
+  color: #0f172a;
   min-width: 0;
+  font-family: "Fredoka", sans-serif;
 }
 
 .login-input-wrapper .register-select {
   background-color: transparent;
-  color: #1a1f36;
-
+  color: #0f172a;
   @apply flex-1 text-sm outline-none cursor-pointer;
 }
 
-.register-login-link {
-  color: #c0392b;
+.register-login-link,
+.register-login-link:link,
+.register-login-link:visited,
+.register-login-link:hover,
+.register-login-link:active {
+  color: #ffffff;
 }
 
 .login-input-wrapper select {
   background: transparent;
-  color: #1a1f36;
+  color: #0f172a;
 }
 
-/* Soporte */
+/* ================= SOPORTE ================= */
+
 
 .soporte-card {
-  @apply w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl;
-
-  background: #f0f2f8;
+  @apply w-full rounded-3xl overflow-hidden shadow-2xl;
+  max-width: 100%; 
+  background: linear-gradient(160deg, #b91c1c 0%, #991b1b 100%);
+  border: 1.5px solid #7f1414;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 }
-
 .soporte-enviado-card {
-  @apply w-105 rounded-3xl overflow-hidden shadow-2xl;
-
-  background: #f0f2f8;
+  width: 420px;
   max-width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 }
 
 .soporte-divider-top {
@@ -274,34 +398,33 @@
 
 .soporte-divider-line-full {
   @apply w-full h-px;
-
-  background: #c8cde0;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .soporte-title {
-  @apply text-3xl font-bold mb-2 tracking-tight text-center;
-
-  color: #1a1f36;
-  font-family: "Georgia", serif;
+  @apply text-3xl mb-2 tracking-tight text-center;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .soporte-textarea {
   @apply w-full min-h-32 bg-transparent text-sm outline-none resize-y;
-
-  color: #1a1f36;
-  font-family: inherit;
+  color: #0f172a;
+  font-family: "Fredoka", sans-serif;
 }
 
 .soporte-success-title {
-  @apply text-2xl font-bold text-center mt-2;
-
-  color: #1a1f36;
+  @apply text-2xl text-center mt-2;
+  color: #0f172a;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .soporte-success-subtitle {
   @apply text-sm text-center mt-2 mb-6;
-
-  color: #7b8ab8;
+  color: #475569;
+  font-family: "Fredoka", sans-serif;
 }
 
 .soporte-buttons-container {
@@ -309,90 +432,101 @@
 }
 
 .soporte-btn-secondary {
-  @apply w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 border;
-
+  @apply w-full py-3 rounded-xl text-sm transition-all duration-200 border;
   background: #ffffff;
-  border-color: #c8cde0;
-  color: #4a5578;
+  border-color: #8496ad;
+  color: #475569;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
 }
 
 .soporte-btn-secondary:hover {
-  background: #f3f4f8;
+  background: #d8e2ed;
+  color: #0f172a;
 }
 
 .soporte-btn-primary {
-  @apply w-full py-3 rounded-xl font-bold text-white text-sm shadow-md transition-all duration-200;
-
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+  @apply w-full py-3 rounded-xl text-white text-sm shadow-md transition-all duration-200;
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .soporte-btn-primary:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
 }
 
-/* Recuperar contraseña */
+/* ================= RECUPERAR CONTRASEÑA ================= */
 
 .forgot-error-text {
-  @apply text-xs font-semibold text-center -mt-1;
-
-  color: #c0392b;
+  @apply text-xs text-center -mt-1;
+  color: #b91c1c;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
 }
 
 .forgot-icon-circle {
   @apply w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4;
-
   flex-shrink: 0;
 }
 
 .forgot-icon-circle--info {
-  background: #dbe4f7;
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .forgot-icon-circle--success {
-  background: #dcf3e3;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .forgot-code-inputs {
   @apply flex items-center justify-center gap-2;
-
   max-width: 100%;
 }
 
 .forgot-code-box {
-  @apply w-11 h-14 rounded-xl text-center text-xl font-bold outline-none transition-all duration-200;
-
-  background: #fff;
-  border: 1.5px solid #c8cde0;
-  color: #1a1f36;
+  @apply w-11 h-14 rounded-xl text-center text-xl outline-none transition-all duration-200;
+  background: #ffffff;
+  border: 1.5px solid #93a4b8;
+  color: #0f172a;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .forgot-code-box:focus {
-  border-color: #f87171;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
 }
 
-/* Tablet */
+/* ================= RESPONSIVE ================= */
 
-@media (max-width: 600px) {
+/* En mobile el hero desaparece y queda solo el panel del form */
+
+@media (max-width: 768px) {
   .login-page {
-    padding: 16px;
+    flex-direction: column;
+  }
+
+  .login-hero {
+    display: none;
+  }
+
+  .login-panel {
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 24px 16px;
+    background: #ffffff;
   }
 
   .login-card {
-    width: 100%;
+    max-width: 100%;
+    border-radius: 22px;
   }
 
   .login-body {
     @apply px-6 py-6;
-  }
-
-  .login-logo {
-    width: 70px;
-    height: 70px;
-  }
-
-  .login-logo img {
-    width: 70px;
-    height: 70px;
   }
 
   .login-school-name {
@@ -401,10 +535,6 @@
 
   .login-title {
     font-size: 22px;
-  }
-
-  .login-subtitle {
-    text-align: center;
   }
 
   .soporte-card {
@@ -431,13 +561,12 @@
 /* Celulares chicos */
 
 @media (max-width: 480px) {
-  .login-page {
-    padding: 10px;
+  .login-panel {
+    padding: 16px 10px;
   }
 
   .login-card {
-    width: 100%;
-    border-radius: 22px;
+    border-radius: 20px;
   }
 
   .login-body {
@@ -597,4 +726,134 @@
   .soporte-title {
     font-size: 21px;
   }
+}
+
+/* ================= GENERAL & BACKGROUND ================= */
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Imagen de fondo ocupando el 100% con oscurecimiento suave para legibilidad */
+  background: linear-gradient(
+      rgba(15, 23, 42, 0.45),
+      rgba(15, 23, 42, 0.45)
+    ),
+    url("/FondoLoginRegister.png") no-repeat center center / cover;
+
+  overflow: hidden;
+  font-family: "Fredoka", sans-serif;
+}
+
+/* MARCA EN LA ESQUINA (Opcional) */
+.login-brand-corner {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  z-index: 10;
+}
+
+.login-hero-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.login-hero-city {
+  font-size: 32px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+/* ================= PANEL CENTRADO ================= */
+
+.login-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  z-index: 1;
+  min-height: auto;
+  background: transparent;
+}
+
+.login-bottom-note {
+  @apply mt-4 text-xs text-center;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .login-brand-corner {
+    display: none;
+  }
+
+  .login-panel {
+    padding: 16px;
+  }
+}
+
+.soporte-enviado-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #b91c1c 0%, #991b1b 100%);
+  border: 1.5px solid #7f1414;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+.soporte-success-title {
+  @apply text-2xl text-center mt-2;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+}
+
+.soporte-success-subtitle {
+  @apply text-sm text-center mt-2 mb-6;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
+}
+
+.soporte-btn-secondary {
+  @apply w-full py-3 rounded-xl text-base shadow-md transition-all duration-200;
+  background: #ffffff;
+  color: #b91c1c;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+}
+
+.soporte-btn-secondary:hover {
+  background: #f8fafc;
+  transform: scale(1.02);
+}
+
+.soporte-btn-primary {
+  @apply w-full py-3 rounded-xl text-base shadow-md transition-all duration-200;
+  background: #ffffff;
+  color: #b91c1c;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+}
+
+.soporte-btn-primary:hover {
+  background: #f8fafc;
+  transform: scale(1.02);
 }

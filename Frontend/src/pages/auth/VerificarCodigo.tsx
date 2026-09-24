@@ -138,92 +138,97 @@ function VerificarCodigo() {
 
   return (
     <div className="login-page">
-      <br />
-
-      <div className="login-card">
-        <div className="login-accent-bar" />
-
-        <div className="login-body">
-          <div className="login-logo">
-            <img src="/logo.svg" alt="Logo Municipio de Morón" />
-          </div>
-
-          <h2 className="login-title">Verificá el código</h2>
-          <p className="login-subtitle">
-            {email
-              ? `Ingresá el código de 6 dígitos que enviamos a ${email}`
-              : "Ingresá el código de 6 dígitos que te enviamos"}
-          </p>
-
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="forgot-code-inputs">
-              {digits.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(el) => {
-                    inputsRef.current[index] = el;
-                  }}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  className="forgot-code-box"
-                  value={digit}
-                  onChange={(e) => handleChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                />
-              ))}
-            </div>
-
-            {error && <p className="forgot-error-text">{error}</p>}
-            {resendMessage && (
-              <p
-                className="forgot-error-text"
-                style={{ color: "#27ae60" }}
-              >
-                {resendMessage}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="login-submit-btn"
-              disabled={loading}
-              style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
-            >
-              {loading ? "Verificando..." : "Continuar"}
-            </button>
-
-            <div className="login-help-text" style={{ textAlign: "center", marginTop: "4px" }}>
-              <button
-                type="button"
-                onClick={handleReenviarCodigo}
-                disabled={resending}
-                className="login-help-link"
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-              >
-                {resending ? "Reenviando código..." : "¿No recibiste el código? Reenviar"}
-              </button>
-            </div>
-
-            <p className="login-help-text">
-              <Link to="/forgot-password" className="login-help-link">
-                ‹ Usar otro correo
-              </Link>
-            </p>
-          </form>
-        </div>
-
-        <div className="login-footer">
-          <span>⇄</span>
-          <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
-        </div>
+      {/* MARCA EN ESQUINA INFERIOR IZQUIERDA */}
+      <div className="login-brand-corner">
+        <p className="login-hero-label">MUNICIPIO DE</p>
+        <h2 className="login-hero-city">MORÓN</h2>
       </div>
 
-      <p className="login-bottom-note">
-        Sistema oficial de reporte y gestión de incidentes · Morón
-      </p>
+      {/* PANEL CENTRADO */}
+      <div className="login-panel">
+        <div className="login-card">
+          <div className="login-accent-bar" />
 
-      <br />
+          <div className="login-body">
+            <div className="login-logo">
+              <img src="/logoLogin.png" alt="Logo Municipio de Morón" />
+            </div>
+
+            <h2 className="login-title">Verificá el código</h2>
+            <p className="login-subtitle">
+              {email
+                ? `Ingresá el código de 6 dígitos que enviamos a ${email}`
+                : "Ingresá el código de 6 dígitos que te enviamos"}
+            </p>
+
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="forgot-code-inputs">
+                {digits.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={(el) => {
+                      inputsRef.current[index] = el;
+                    }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    className="forgot-code-box"
+                    value={digit}
+                    onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                  />
+                ))}
+              </div>
+
+              {error && <p className="forgot-error-text">{error}</p>}
+              {resendMessage && (
+                <p
+                  className="forgot-error-text"
+                  style={{ color: "#27ae60" }}
+                >
+                  {resendMessage}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="login-submit-btn"
+                disabled={loading}
+                style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
+              >
+                {loading ? "Verificando..." : "Continuar"}
+              </button>
+
+              <div className="login-help-text" style={{ textAlign: "center", marginTop: "4px" }}>
+                <button
+                  type="button"
+                  onClick={handleReenviarCodigo}
+                  disabled={resending}
+                  className="login-help-link"
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                >
+                  {resending ? "Reenviando código..." : "¿No recibiste el código? Reenviar"}
+                </button>
+              </div>
+
+              <p className="login-help-text">
+                <Link to="/forgot-password" className="login-help-link">
+                  ‹ Usar otro correo
+                </Link>
+              </p>
+            </form>
+          </div>
+
+          <div className="login-footer">
+            <span>⇄</span>
+            <span>Sistema de Soporte de Incidentes · Municipio de Morón</span>
+          </div>
+        </div>
+
+        <p className="login-bottom-note">
+          Sistema oficial de reporte y gestión de incidentes · Morón
+        </p>
+      </div>
     </div>
   );
 }

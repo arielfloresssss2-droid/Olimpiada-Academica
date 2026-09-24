@@ -5,7 +5,7 @@
 .home-page {
   @apply min-h-screen;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  background: #cdd7e3;
 
   width: 100%;
   overflow-x: hidden;
@@ -29,21 +29,21 @@
 .home-title {
   @apply text-3xl font-bold;
 
-  color: white;
+  color: #0f172a;
 }
 
 .home-subtitle {
   @apply text-sm mt-1;
 
-  color: #aeb8d4;
+  color: #334155;
 }
 
 .home-user-card {
   @apply flex items-center gap-3 rounded-3xl px-4 py-3 w-fit;
 
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 
   max-width: 100%;
   box-sizing: border-box;
@@ -52,7 +52,7 @@
 .home-user-card img {
   @apply w-12 h-12 rounded-full p-2;
 
-  background: rgba(255, 255, 255, 0.12);
+  background: #d8e2ed;
 
   flex-shrink: 0;
 }
@@ -60,23 +60,24 @@
 .home-user-card h3 {
   @apply text-sm font-bold;
 
-  color: white;
+  color: #0f172a;
 }
 
 .home-user-card p {
   @apply text-xs;
 
-  color: #c5cee8;
+  color: #475569;
 }
 
-/* ================= MAIN CARD ================= */
+/* ================= MAIN CARD (IGUALADO EXACTO A LA NAVBAR) ================= */
 
 .home-main-card {
   @apply rounded-[32px] p-6 mb-6 flex flex-col gap-6 overflow-hidden relative;
 
-  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  /* Mismo ángulo horizontal (90deg) y mismos cortes exactos que la navbar */
+  background: linear-gradient(90deg, #b91c1c 0%, #dc2626 100%);
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 14px 30px rgba(185, 28, 28, 0.32);
 
   width: 100%;
   box-sizing: border-box;
@@ -93,7 +94,7 @@
 
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
 
   pointer-events: none;
 }
@@ -101,8 +102,9 @@
 .home-badge {
   @apply text-xs font-bold px-3 py-1 rounded-full w-fit mb-3;
 
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   letter-spacing: 0.08em;
 
   max-width: 100%;
@@ -117,7 +119,7 @@
 .home-main-info h2 {
   @apply text-3xl font-bold mb-2;
 
-  color: white;
+  color: #ffffff;
 
   overflow-wrap: break-word;
 }
@@ -125,7 +127,7 @@
 .home-main-info p {
   @apply text-sm leading-6;
 
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.95);
 
   overflow-wrap: break-word;
 }
@@ -137,15 +139,15 @@
 .home-price {
   @apply text-sm font-bold;
 
-  color: white;
+  color: #fecaca;
 }
 
 .home-main-btn {
   @apply px-6 py-3 rounded-2xl font-bold transition-all duration-200;
 
-  background: white;
-  color: #c0392b;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #b91c1c;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 
   width: fit-content;
   max-width: 100%;
@@ -153,6 +155,8 @@
 
 .home-main-btn:hover {
   transform: translateY(-2px);
+  background: #fef2f2;
+  color: #991b1b;
 }
 
 /* ocultar imagen en móvil */
@@ -169,14 +173,14 @@
   width: 100%;
 }
 
-/* ================= GENERIC CARD ================= */
+/* ================= TARJETAS (BLANCO PURO RECORTADO) ================= */
 
 .home-card {
   @apply rounded-[30px] p-5;
 
-  background: #f0f2f8;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.09);
 
   min-width: 0;
   box-sizing: border-box;
@@ -185,10 +189,10 @@
 .home-card-title {
   @apply text-lg font-bold mb-4;
 
-  color: #1a1f36;
+  color: #0f172a;
 }
 
-/* ================= RESERVA ================= */
+/* ================= RESERVA / INCIDENTES ================= */
 
 .home-card-header {
   @apply flex items-center justify-between mb-3;
@@ -200,7 +204,7 @@
 .home-card-header h3 {
   @apply text-lg font-bold;
 
-  color: #1a1f36;
+  color: #0f172a;
 }
 
 .home-success-dot {
@@ -215,40 +219,42 @@
 .home-card-text {
   @apply text-sm mb-4;
 
-  color: #5a6490;
+  color: #334155;
+  font-weight: 500;
 }
 
 .home-qr {
   @apply rounded-2xl px-4 py-5 text-center font-bold text-xl;
 
-  background: #e2e5f0;
-  color: #1a1f36;
-  border: 2px dashed #c0392b;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 2px dashed #b91c1c;
 
   width: 100%;
   box-sizing: border-box;
   overflow-wrap: break-word;
 }
 
-/* ================= SHORTCUTS ================= */
+/* ================= SHORTCUTS / BOTÓN DE ACCIÓN ================= */
 
 .home-shortcuts {
   @apply grid grid-cols-2 gap-3;
 }
 
 .home-shortcut-btn {
-  @apply rounded-2xl py-4 px-3 text-sm font-semibold transition-all duration-200;
+  @apply rounded-2xl py-4 px-3 text-sm font-bold transition-all duration-200;
 
-  background: #e2e5f0;
-  color: #1a1f36;
+  background: #d8e2ed;
+  color: #0f172a;
+  border: 1.5px solid #93a4b8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 
   min-width: 0;
 }
 
 .home-shortcut-btn:hover {
   transform: translateY(-2px);
-
-  background: #d9deee;
+  background: #c9d5e3;
 }
 
 /* ================= NOTIFICATIONS ================= */
@@ -260,7 +266,9 @@
 .home-notification {
   @apply flex items-start gap-3 rounded-2xl p-3;
 
-  background: #e2e5f0;
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 
   transition: all 0.2s ease;
 
@@ -269,24 +277,26 @@
 
 .home-notification:hover {
   transform: translateY(-2px);
+  background: #c9d5e3;
 }
 
 .home-notification p {
   @apply text-sm;
 
-  color: #1a1f36;
+  color: #0f172a;
+  font-weight: 500;
 
   overflow-wrap: break-word;
 }
 
-/* ================= STATS ================= */
+/* ================= CONTENEDORES DE ESTADÍSTICAS (CONTRASTE MARCADO) ================= */
 
 .home-card-stats {
   @apply rounded-[30px] p-5;
 
-  background: #f0f2f8;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border: 1.5px solid #8496ad;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.09);
 
   min-width: 0;
   box-sizing: border-box;
@@ -301,22 +311,25 @@
 .home-stat-box {
   @apply rounded-2xl p-6 text-center;
 
-  background: #e2e5f0;
+  /* Contraste sólido e inequívoco contra el blanco #ffffff */
+  background: #d8e2ed;
+  border: 1.5px solid #93a4b8;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
 
   min-width: 0;
   box-sizing: border-box;
 }
 
 .home-stat-box h4 {
-  @apply text-2xl font-bold;
+  @apply text-3xl font-extrabold;
 
-  color: #c0392b;
+  color: #b91c1c;
 }
 
 .home-stat-box p {
-  @apply text-sm mt-2;
+  @apply text-sm mt-2 font-bold;
 
-  color: #5a6490;
+  color: #1e293b;
 
   overflow-wrap: break-word;
 }
@@ -379,6 +392,9 @@
     width: 180px;
     height: auto;
     max-width: 100%;
+
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
   }
 
   .home-grid {

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 /* Wrapper */
@@ -5,10 +6,16 @@
 .cc-wrapper {
   @apply min-h-screen flex flex-col items-center justify-center;
 
-  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 50%, #1a1f36 100%);
+  /* Fondo oscuro con la imagen de marca */
+  background: linear-gradient(
+      rgba(15, 23, 42, 0.45),
+      rgba(15, 23, 42, 0.45)
+    ),
+    url("/FondoLoginRegister.png") no-repeat center center / cover;
 
   padding: 20px;
   box-sizing: border-box;
+  font-family: "Fredoka", sans-serif;
 }
 
 /* Card */
@@ -16,16 +23,18 @@
 .cc-card {
   @apply w-[420px] rounded-3xl overflow-hidden shadow-2xl;
 
-  background: #f0f2f8;
+  background: linear-gradient(160deg, #b91c1c 0%, #991b1b 100%);
+  border: 1.5px solid #7f1414;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
   max-width: 100%;
 }
 
 /* Accent bar */
 
 .cc-accent-bar {
-  @apply h-2 w-full;
+  @apply h-1.5 w-full;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 50%, #c0392b 100%);
+  background: #b91c1c;
 }
 
 /* Content */
@@ -37,27 +46,31 @@
 /* Logo */
 
 .cc-logo {
-  @apply w-20 h-20 rounded-xl mb-4 flex items-center justify-center shadow-md border-2 border-white overflow-hidden;
+  @apply w-20 h-20 mb-4 flex items-center justify-center overflow-hidden;
 
-  background: #fff;
+  background: transparent;
 }
 
 .cc-logo-img {
-  @apply w-16 h-16 object-contain;
+  @apply w-20 h-20 object-contain;
 }
 
 /* School name */
 
 .cc-school-name {
-  @apply text-xl font-bold text-center;
+  @apply text-xl text-center;
 
-  color: #1a1f36;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .cc-school-sub {
-  @apply text-xs font-semibold tracking-widest mb-5;
+  @apply text-xs tracking-widest mb-5;
 
-  color: #7b8ab8;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
 }
 
 /* Divider */
@@ -69,22 +82,24 @@
 .cc-divider-line {
   @apply flex-1 h-px;
 
-  background: #c8cde0;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* Title */
 
 .cc-title {
-  @apply text-2xl font-bold mb-1 tracking-tight;
+  @apply text-2xl mb-1 tracking-tight text-center;
 
-  color: #c0392b;
-  font-family: "Georgia", serif;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .cc-subtitle {
-  @apply text-sm mb-6;
+  @apply text-sm mb-6 text-center;
 
-  color: #7b8ab8;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
 }
 
 /* Form */
@@ -100,33 +115,38 @@
 }
 
 .cc-field-label {
-  @apply text-xs font-bold tracking-widest;
+  @apply text-xs tracking-widest;
 
-  color: #7b8ab8;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .cc-field-input {
   @apply flex items-center gap-2 rounded-xl px-4 py-3 transition-all duration-200;
 
-  background: #fff;
-  border: 1.5px solid #c8cde0;
+  background: #ffffff;
+  border: 1.5px solid #93a4b8;
 }
 
 .cc-field-input:focus-within {
-  border-color: #e74c3c;
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
 }
 
 .cc-field-icon {
   @apply w-5 h-5;
 
-  filter: brightness(0) opacity(0.4);
+  filter: brightness(0);
+  opacity: 0.5;
 }
 
 .cc-input {
   @apply flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400;
 
-  color: #1a1f36;
+  color: #0f172a;
   min-width: 0;
+  font-family: "Fredoka", sans-serif;
 }
 
 .cc-eye-btn {
@@ -139,32 +159,40 @@
   @apply w-5 h-5 cursor-pointer;
 
   filter: brightness(0);
+  opacity: 0.6;
 }
 
 /* Buttons */
 
 .cc-btn-primary {
-  @apply mt-2 w-full py-3 rounded-xl font-bold text-white text-base shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer;
+  @apply mt-2 w-full py-3 rounded-xl text-base shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer;
 
-  background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
-
-  letter-spacing: 0.03em;
+  background: #ffffff;
+  color: #b91c1c;
+  letter-spacing: 0.02em;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
 .cc-btn-primary:hover {
-  background: linear-gradient(90deg, #a93226 0%, #c0392b 100%);
+  background: #f8fafc;
+  transform: scale(1.02);
 }
 
 .cc-btn-secondary {
-  @apply w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer;
+  @apply w-full py-3 rounded-xl text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer border;
 
   background: transparent;
-  border: 1.5px solid #c8cde0;
-  color: #7b8ab8;
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
 }
 
 .cc-btn-secondary:hover {
-  border-color: #a0a8c8;
+  border-color: #ffffff;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Footer */
@@ -172,16 +200,20 @@
 .cc-footer {
   @apply flex items-center justify-center gap-2 py-3 text-xs;
 
-  background: #e2e5f0;
-  color: #9aa0bb;
+  background: #7f1414;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
 }
 
 /* Bottom note */
 
 .cc-note {
-  @apply mt-4 text-xs;
+  @apply mt-4 text-xs text-center;
 
-  color: #5a6490;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Fredoka", sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Modal */
@@ -189,7 +221,7 @@
 .cc-modal-overlay {
   @apply fixed inset-0 flex items-center justify-center z-50;
 
-  background: rgba(10, 13, 28, 0.5);
+  background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(4px);
 
   padding: 20px;
@@ -199,7 +231,9 @@
 .cc-modal {
   @apply rounded-2xl p-8 flex flex-col gap-5 shadow-2xl items-center;
 
-  background: #f0f2f8;
+  background: linear-gradient(160deg, #b91c1c 0%, #991b1b 100%);
+  border: 1.5px solid #7f1414;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
   width: 320px;
   max-width: 100%;
 }
@@ -207,7 +241,8 @@
 .cc-modal-text {
   @apply text-base text-center font-semibold;
 
-  color: #1a1f36;
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
 }
 
 /* Tablet */
