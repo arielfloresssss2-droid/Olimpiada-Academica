@@ -82,5 +82,4 @@ La aplicación web iniciará en `http://localhost:5173`.
 
 ## 📋 Credenciales de Prueba por Defecto
 
-- **Usuario Administrador:** `admin@moron.gob.ar` | Contraseña: `AdminPassword123!` (o crear uno nuevo desde `/register` con rol Admin).
 - **Usuario Ciudadano:** Registro libre desde la interfaz con validación de Captcha.

@@ -26,6 +26,7 @@ builder.Services.AddSingleton<IVerificationService, VerificationService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IGeminiService, GeminiService>();
 builder.Services.AddHttpClient();
+builder.Services.AddTransient<DataSeeder>();
 
 // 3. Configurar Controladores y serialización JSON (evitando ciclos)
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -127,6 +128,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed initial data
+using var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+await seeder.SeedAsync();
 
 // Redirigir la raíz ("/") directamente a Swagger UI
 app.MapGet("/", () => Results.Redirect("/swagger"));

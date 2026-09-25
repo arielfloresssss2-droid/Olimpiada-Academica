@@ -102,8 +102,8 @@ public class AppDbContext : DbContext
             entity.Property(e => e.IdDireccion).HasColumnName("id_direccion");
             entity.Property(e => e.Titulo).HasColumnName("titulo").HasMaxLength(100).IsRequired();
             entity.Property(e => e.Descripcion).HasColumnName("descripcion").HasMaxLength(500);
-            entity.Property(e => e.Hora).HasColumnName("hora").HasMaxLength(10);
-            entity.Property(e => e.Prioridad).HasColumnName("prioridad").HasMaxLength(10);
+            entity.Property(e => e.Hora).HasColumnName("hora").HasMaxLength(20);
+            entity.Property(e => e.Prioridad).HasColumnName("prioridad").HasMaxLength(50);
             entity.Property(e => e.FechaCreacion).HasColumnName("fecha_creacion").HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.HasOne(e => e.Usuario)
